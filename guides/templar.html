@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 빌드 전용 스킬 가이드</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #1a1d24;
+    --panel-border: #2e323d;
+    --gold: #c8aa6e;
+    --text: #e6e6e6;
+    --muted: #9aa0ab;
+    --new: #6fb3ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: linear-gradient(180deg, #0b0d11 0%, #14161c 100%);
+    color: var(--text);
+    font-family: "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.5;
+  }
+  h1 {
+    text-align: center;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-size: 28px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .tier {
+    max-width: 900px;
+    margin: 0 auto 28px auto;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  }
+  .tier-header {
+    background: linear-gradient(90deg, #2a2416, #1a1d24 60%);
+    border-bottom: 1px solid var(--panel-border);
+    padding: 12px 18px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .tier-body {
+    padding: 14px 18px 18px 18px;
+  }
+  .subcat {
+    margin-top: 14px;
+  }
+  .subcat:first-child { margin-top: 0; }
+  .subcat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #d7c68f;
+    margin-bottom: 8px;
+    padding-left: 8px;
+    border-left: 3px solid var(--gold);
+  }
+  .skill-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .skill-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #22252c;
+    border: 1px solid #33384a;
+    border-radius: 8px;
+    padding: 8px 12px 8px 8px;
+    min-width: 220px;
+    flex: 1 1 260px;
+    position: relative;
+  }
+  .skill-card.is-new {
+    border-color: var(--new);
+    background: #1c2530;
+  }
+  .skill-card.is-new::after {
+    content: "빌드로 추가됨";
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    background: var(--new);
+    color: #0b1520;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .skill-card .icon-slot {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #4a4e5c;
+    position: relative;
+  }
+  .skill-card .icon-slot a {
+    display: block !important;
+    position: relative;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .skill-card .icon-slot a > span:last-child {
+    display: none !important;
+  }
+  .skill-card .icon-slot .iconlarge {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .skill-card .icon-slot .iconlarge ins {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+  .skill-card .icon-slot .iconlarge del {
+    display: none !important;
+  }
+  .skill-card .info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .skill-card .name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #f0e6c8;
+  }
+  .skill-card .desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  footer {
+    text-align: center;
+    color: #555a66;
+    font-size: 12px;
+    margin-top: 30px;
+  }
+  .changelog {
+    max-width: 900px;
+    margin: 0 auto 24px auto;
+    background: #16202a;
+    border: 1px solid #274257;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #cfe3f2;
+  }
+  .changelog b { color: var(--new); }
+.backlink{display:inline-block;margin:0 0 10px;color:#c8aa6e;text-decoration:none;font-size:14px;border:1px solid #4a4e5c;border-radius:999px;padding:4px 12px}
+  .backlink:hover{border-color:#c8aa6e}
+</style>
+</head>
+<body>
+
+<a class="backlink" href="../">← 쐐기 치트시트</a>
+
+<h1>🛡 보호 성기사 스킬 가이드</h1>
+<div class="subtitle">Templar 빌드</div>
+
+<div class="tier">
+  <div class="tier-header">1. 전투 중 항시 사용</div>
+  <div class="tier-body">
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=20271"></a></div>
+        <div class="info"><div class="name">Judgment</div><div class="desc">단일 빌더. 주변 2명에게 연쇄. Sentinel 중엔 Hammer of Wrath로 변함</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=204019"></a></div>
+        <div class="info"><div class="name">Blessed Hammer</div><div class="desc">광역 빌더</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=53600"></a></div>
+        <div class="info"><div class="name">Shield of the Righteous</div><div class="desc">신성한 힘 소모. 방어 핵심, 계속 유지</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=26573"></a></div>
+        <div class="info"><div class="name">Consecration</div><div class="desc">장판 유지. 딛고 있으면 자힐</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=31935"></a></div>
+        <div class="info"><div class="name">Avenger's Shield</div><div class="desc">쿨마다. 3명 튕김 + 차단</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=375576"></a></div>
+        <div class="info"><div class="name">Divine Toll</div><div class="desc">쿨마다. 15초간 Avenger's Shield 자동 시전</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=427453"></a></div>
+        <div class="info"><div class="name">Hammer of Light</div><div class="desc">Divine Toll 후 20초간 그 버튼이 이걸로 바뀜. 광역 큰 딜</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=389539"></a></div>
+        <div class="info"><div class="name">Sentinel</div><div class="desc">Divine Toll과 맞춰 쿨마다. 피해 감소 + 딜 증가</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-header">2. 전투 중 필요시 사용</div>
+  <div class="tier-body">
+    <div class="subcat">
+      <div class="subcat-title">자기 생존</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=31850"></a></div>
+        <div class="info"><div class="name">Ardent Defender</div><div class="desc">큰 피해 들어올 때</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=86659"></a></div>
+        <div class="info"><div class="name">Guardian of Ancient Kings</div><div class="desc">지속 폭딜 구간. 2회 충전</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=642"></a></div>
+        <div class="info"><div class="name">Divine Shield</div><div class="desc">최후 수단. 무적 + 주변 적 전부 도발</div></div>
+      </div>
+    </div>
+    </div>
+    <div class="subcat">
+      <div class="subcat-title">군중 제어</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=115750"></a></div>
+        <div class="info"><div class="name">Blinding Light</div><div class="desc">주변 적 전부 6초 방향 상실</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=853"></a></div>
+        <div class="info"><div class="name">Hammer of Justice</div><div class="desc">단일 6초 기절</div></div>
+      </div>
+    </div>
+    </div>
+    <div class="subcat">
+      <div class="subcat-title">아군 보호</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=1022"></a></div>
+        <div class="info"><div class="name">Blessing of Protection</div><div class="desc">아군 물리 피해 면역</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=204018"></a></div>
+        <div class="info"><div class="name">Blessing of Spellwarding</div><div class="desc">아군 마법 피해 면역 (위와 쿨 공유)</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=1044"></a></div>
+        <div class="info"><div class="name">Blessing of Freedom</div><div class="desc">아군 이동방해 해제</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=6940"></a></div>
+        <div class="info"><div class="name">Blessing of Sacrifice</div><div class="desc">아군 피해 대신 받기</div></div>
+      </div>
+    </div>
+    </div>
+    <div class="subcat">
+      <div class="subcat-title">회복 / 디스펠</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=633"></a></div>
+        <div class="info"><div class="name">Lay on Hands</div><div class="desc">체력 100% 즉시 회복</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=85673"></a></div>
+        <div class="info"><div class="name">Word of Glory</div><div class="desc">자힐. 방패 3번마다 1회 무료</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=213644"></a></div>
+        <div class="info"><div class="name">Cleanse Toxins</div><div class="desc">독/질병 해제</div></div>
+      </div>
+    </div>
+    </div>
+    <div class="subcat">
+      <div class="subcat-title">차단 / 도발</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=96231"></a></div>
+        <div class="info"><div class="name">Rebuke</div><div class="desc">시전 끊기</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=62124"></a></div>
+        <div class="info"><div class="name">Hand of Reckoning</div><div class="desc">도발</div></div>
+      </div>
+    </div>
+    </div>
+    <div class="subcat">
+      <div class="subcat-title">부활</div>
+      <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=391054"></a></div>
+        <div class="info"><div class="name">Intercession</div><div class="desc">전투 중 부활 (신성한 힘 3)</div></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-header">3. 전투 전 준비</div>
+  <div class="tier-body">
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=465"></a></div>
+        <div class="info"><div class="name">오라</div><div class="desc">Devotion / Concentration / Crusader 중 선택</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=391054"></a></div>
+        <div class="info"><div class="name">신성한 힘 3개</div><div class="desc">Intercession 대비로 남겨두기</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=375576"></a></div>
+        <div class="info"><div class="name">Divine Toll + Sentinel</div><div class="desc">큰 풀·보스 직전에 둘 다 준비</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tier">
+  <div class="tier-header">4. 전투 후</div>
+  <div class="tier-body">
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=7328"></a></div>
+        <div class="info"><div class="name">Redemption</div><div class="desc">죽은 아군 부활</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=85673"></a></div>
+        <div class="info"><div class="name">Word of Glory</div><div class="desc">체력 채우기</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=190784"></a></div>
+        <div class="info"><div class="name">Divine Steed</div><div class="desc">다음 풀로 이동 (2회 충전)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>window.whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: true, iconSize: 'large' };</script>
+<script src="https://wow.zamimg.com/widgets/power.js"></script>
+</body>
+</html>
