@@ -191,6 +191,10 @@
   #sptip .tt-meta{color:#a9a9a9;font-size:12px}
   #sptip .tt-desc{color:#ffd100;opacity:.92}
   #sptip .tt-link{display:inline-block;margin-top:8px;font-size:12px;color:#8fb0e6}
+
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+  .badge.immune{background:#4a1f1f;color:#ff8a80;border:1px solid #7a2e2e}
+  .badge.partial{background:#1c2a40;color:#8fb0e6;border:1px solid #2f4a70}
 </style>
 </head>
 <body>
@@ -222,7 +226,7 @@
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=31935"></a></div>
-        <div class="info"><div class="name">Avenger's Shield</div><div class="desc">쿨마다. 3명 튕김 + 차단</div></div>
+        <div class="info"><div class="name">Avenger's Shield<span class="badge partial">보스는 차단 가능 시전만</span></div><div class="desc">쿨마다. 3명 튕김 + 차단</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=375576"></a></div>
@@ -265,11 +269,11 @@
       <div class="skill-grid">
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=115750"></a></div>
-        <div class="info"><div class="name">Blinding Light</div><div class="desc">주변 적 전부 6초 방향 상실</div></div>
+        <div class="info"><div class="name">Blinding Light<span class="badge immune">보스 면역</span></div><div class="desc">10m 안 적 시전 끊기 + 6초 방향 상실. 피해 받으면 풀림</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=853"></a></div>
-        <div class="info"><div class="name">Hammer of Justice</div><div class="desc">단일 6초 기절</div></div>
+        <div class="info"><div class="name">Hammer of Justice<span class="badge immune">보스 면역</span></div><div class="desc">단일 6초 기절, 시전 끊기</div></div>
       </div>
     </div>
     </div>
@@ -316,7 +320,7 @@
       <div class="skill-grid">
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=96231"></a></div>
-        <div class="info"><div class="name">Rebuke</div><div class="desc">시전 끊기</div></div>
+        <div class="info"><div class="name">Rebuke<span class="badge partial">보스는 차단 가능 시전만</span></div><div class="desc">시전 끊기 + 같은 계열 5초 봉쇄</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=62124"></a></div>
