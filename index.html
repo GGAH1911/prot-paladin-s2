@@ -84,6 +84,9 @@ ul.items{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .tbl td:last-child{white-space:nowrap;color:var(--muted);font-size:12.5px}
 .tbl td.me{color:var(--gold);font-weight:700}
 .tbl .tag{display:block}
+.need{display:inline-block;font-size:10.5px;font-weight:700;line-height:1.35;padding:0 5px;border:1px solid currentColor;border-radius:4px;margin-right:6px;vertical-align:1px;white-space:nowrap}
+.need.must{color:var(--tb)}
+.need.rec{color:var(--muted)}
 .tbl .ab{white-space:normal}
 details.fold>summary{list-style:none;cursor:pointer;border-radius:6px}
 details.fold>summary::-webkit-details-marker{display:none}
@@ -178,6 +181,7 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
   </nav>
   <main id="main"></main>
   <footer>
+    <div><b style="color:var(--int)">차단</b> 항목의 <span class="need must">필수</span>는 놓치면 파티가 죽을 수 있는 시전, <span class="need rec">권장</span>은 피해를 줄이는 용도라 놓쳐도 생존기로 버틸 수 있는 시전입니다.</div>
     <div><b style="color:var(--tip)">참고</b> 태그는 가이드 원문이 아니라 보호 성기사 키트에 맞춘 추가 팁입니다.</div>
     <div>출처: <a href="https://www.icy-veins.com/wow/midnight-mythic-season-2-guide" target="_blank" rel="noopener">Icy Veins S2 던전 가이드</a> · <a href="https://www.icy-veins.com/wow/protection-paladin-pve-tank-mythic-plus-tips" target="_blank" rel="noopener">Icy Veins Prot Paladin M+ Tips</a> · <a href="https://www.wowhead.com/guide/midnight/mythic-plus-season-overview" target="_blank" rel="noopener">Wowhead S2 Overview</a> · <a href="https://raider.io/news" target="_blank" rel="noopener">Raider.IO Quick Boss Guides</a> · <a href="https://www.method.gg/guides/dungeons" target="_blank" rel="noopener">Method 던전 가이드</a></div>
   </footer>
@@ -187,6 +191,7 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
 <script>
 const TAGS={tb:"탱버",int:"차단",dodge:"회피",disp:"해제",pos:"위치",tip:"참고"};
 const A=s=>`<span class="ab">${s}</span>`;
+const MUST=`<span class="need must" title="놓치면 파티가 죽을 수 있음">필수</span>`, REC=`<span class="need rec" title="피해를 줄이는 용도, 놓쳐도 생존기로 버틸 수 있음">권장</span>`;
 const M=[
  ["Cleanse Toxins","마우스를 올린 아군, 없으면 자신의 독·질병 해제","#showtooltip\n/cast [@mouseover,help,nodead][@player] Cleanse Toxins"],
  ["Word of Glory","마우스오버 아군 치유, 없으면 현재 대상이나 자신","#showtooltip\n/cast [@mouseover,help,nodead][] Word of Glory"],
@@ -588,7 +593,7 @@ const BRIEF={
    ["dodge",`${A("Regurgitate")} 파도 3줄, ${A("Ravenous Stomp")} 종유석 장판`]],
   "The Writhing Coil":[
    ["tb",`${A("Tail Scythe")} → SotR, 넉백 방향 주의`],
-   ["int",`${A("Toxic Barrage")} 중 ${A("Toxic Atrophy")} 3연속 차단`],
+   ["int",`${MUST}${A("Toxic Barrage")} 중 ${A("Toxic Atrophy")} 3연속 차단`],
    ["dodge",`${A("Vindictive Onslaught")}: 돌진 직선 → ${A("Venom Jet")} 전방기`],
    ["pos",`${A("Death Rattle")} 때 ${A("Vine Grip")} 줄을 10야드 당겨 끊고, 갈라진 ${A("Uncoiled Writhe")} 모으기`]],
   "Zul'jan":[
@@ -601,7 +606,7 @@ const BRIEF={
   "Lightblossom Trinity":[
    ["tb",`${A("Bedrock Slam")} → SotR, 생긴 ${A("Fertile Loam")}에서 보스 빼기`],
    ["pos",`${A("Lightblossom Beam")} 경로에 서서 꽃 대신 맞기`],
-   ["int",`Kezkitt ${A("Light Bolt")}`],
+   ["int",`${MUST}Kezkitt ${A("Light Bolt")}`],
    ["dodge",`${A("Thornblade")} 뒤 ${A("Fan Of Thorns")} 15m 밖으로`]],
   "Ikuzz the Light Hunter":[
    ["tip",`${A("Thorncaller Roar")} 6초 파티 광역, 전원 개인 생존기`],
@@ -610,12 +615,12 @@ const BRIEF={
    ["tip",`50% ${A("Lightcrazed Frenzy")}부터 광역 피해 지속, 쿨기 아껴두기`]],
   "Lightwarden Ruia":[
    ["tb",`곰 형상 ${A("Mangling Claws")} 평타 2배 → SotR 유지`],
-   ["int",`달빛야수 형상 ${A("Warden's Wrath")}`],
+   ["int",`${REC}달빛야수 형상 ${A("Warden's Wrath")}`],
    ["pos",`${A("Pulverizing Strikes")} 대상은 멈춰서 원뿔을 파티 반대로`],
    ["tip",`40% ${A("Spirits of the Vale")}: 가장 위험, 쿨기 아껴두기`]],
   "Ziekket":[
    ["tb",`${A("Thornspike")} 넉백+출혈 → SotR`],
-   ["int",`부활 전 Lasher ${A("Lightspore Shot")} (부활 후엔 차단 면역)`],
+   ["int",`${REC}부활 전 Lasher ${A("Lightspore Shot")} (부활 후엔 차단 면역)`],
    ["pos",`${A("Concentrated Lightbeam")}을 쓰러진 Lasher 시체에 맞히기`],
    ["pos",`${A("Lightbloom's Essence")} 구슬은 보스 닿기 전에 밟기`]]
  },
@@ -626,7 +631,7 @@ const BRIEF={
    ["disp",`${A("Toxic Spores")} 독 중첩 → ${A("Cleanse Toxins")}`],
    ["dodge",`${A("Earthshatter Slam")} 무작위 대상 전방기`]],
   "Sentinel of Winter":[
-   ["int",`${A("Fractured Shivercore")}의 ${A("Winter's Shroud")}`],
+   ["int",`${MUST}${A("Fractured Shivercore")}의 ${A("Winter's Shroud")}`],
    ["pos",`쫄이 죽으면 ${A("Rimeshatter")} 6초 안에 1명 밟기`],
    ["pos",`${A("Frozen Tempest")} 땐 ${A("Snowdrift")} 안으로 (둘째 쫄은 직전에 처치)`],
    ["dodge",`${A("Raging Squall")} 토네이도, 빙판이라 일찍 움직이기`]],
@@ -640,7 +645,7 @@ const BRIEF={
   "Kystia Manaheart":[
    ["tip",`Nibbles를 20%까지 깎아 ${A("Destabilized")} 띄운 뒤 Kystia 딜`],
    ["tb",`${A("Chaos Barrage")} 첫 타 탱커 → SotR`],
-   ["int",`${A("Mirror Images")} 분신 5개 ${A("Felstorm")} 차단·CC`],
+   ["int",`${MUST}${A("Mirror Images")} 분신 5개 ${A("Felstorm")} 차단·CC`],
    ["dodge",`Nibbles ${A("Fel Spray")} 회전 전방기, Kystia ${A("Fel Nova")}`]],
   "Zaen Bladesorrow":[
    ["tb",`${A("Envenom")} → SotR + 생존기`],
@@ -654,7 +659,8 @@ const BRIEF={
    ["dodge",`${A("Infernal Crush")} 전 산개`]],
   "Lithiel Cinderfury":[
    ["pos",`죽지 않는 Infernal이 탱커 추적, 파티·게이트에서 멀리 끌기`],
-   ["int",`${A("Chaos Bolt")} 최우선, Wild Imp ${A("Felfire Burst")}`],
+   ["int",`${MUST}${A("Chaos Bolt")} 최우선`],
+   ["int",`${REC}Wild Imp ${A("Felfire Burst")}, 차단기 남겨 Chaos Bolt 우선`],
    ["dodge",`${A("Malefic Wave")}는 ${A("Demonic Gateway")}로 넘기, 그 전에 쫄 정리`],
    ["tb",`Furious Vilefiend는 탱커가 잡기 (${A("Shadow Bite")})`]]
  },
@@ -681,7 +687,7 @@ const BRIEF={
    ["pos",`${A("Lucre's Call")}: ${A("Animated Gold")}가 보스에 닿지 않게 끌고 CC`],
    ["tip",`${A("Serpentine Gust")} 광역+넉백, 생존기`]],
   "Mchimba the Embalmer":[
-   ["int",`미라의 ${A("Wretched Discharge")} 매번 차단`],
+   ["int",`${MUST}미라의 ${A("Wretched Discharge")} 매번 차단`],
    ["pos",`깨어난 미라는 보스 옆에 모으기`],
    ["pos",`${A("Entomb")}: 흔들리는 관을 빨리 찾아 열기`],
    ["dodge",`${A("Drain Fluids")} 뒤 ${A("Explosive Acids")} 웅덩이`]],
@@ -689,9 +695,9 @@ const BRIEF={
    ["tip",`Kula → Aka'ali → Zanazal 순서`],
    ["tb",`Aka'ali ${A("Debilitating Backhand")}: 큰 생존기 없으면 끝날 때까지 카이팅`],
    ["pos",`${A("Barrel Through")} 전원 모여 분담 (보스 사망 후에도)`],
-   ["int",`Zanazal ${A("Poison Nova")}, 토템은 Explosive부터`]],
+   ["int",`${MUST}Zanazal ${A("Poison Nova")}, 토템은 Explosive부터`]],
   "Dazar, The First King":[
-   ["int",`Reban ${A("Deathly Roar")} 차단, Reban 먼저 처치`],
+   ["int",`${MUST}Reban ${A("Deathly Roar")} 차단, Reban 먼저 처치`],
    ["tb",`80% 이후 ${A("Savage Maul")} + ${A("Blade Combo")} → 큰 쿨기`],
    ["dodge",`${A("Impaling Spear")}, ${A("Quaking Leap")} 산개`],
    ["pos",`${A("Gilded Destruction")} 중 ${A("Searing Gold")} 전방, 보스를 파티 반대로`]]
@@ -699,12 +705,12 @@ const BRIEF={
  ruby:{
   "Melidrussa Chillworn":[
    ["tb",`${A("Frigid Shard")} 탱커 강타 → SotR`],
-   ["int",`${A("Frigid Shard")} 매번 차단 (S2부터 차단 가능)`],
+   ["int",`${REC}${A("Frigid Shard")} 매번 차단 (S2부터 차단 가능)`],
    ["pos",`66·33% ${A("Infused Whelp")} 보스 위에 모으고 ${A("Ice Bulwark")} 깨기`],
    ["dodge",`${A("Hailbombs")} 한곳에 모아 깔기, ${A("Chillstorm")} 넉백`]],
   "Kokia Blazehoof":[
    ["tb",`${A("Searing Blows")} 4연타 출혈 중첩 → 생존기`],
-   ["int",`${A("Blazebound Firestorm")}의 ${A("Blaze Volley")}`],
+   ["int",`${MUST}${A("Blazebound Firestorm")}의 ${A("Blaze Volley")}`],
    ["pos",`${A("Ritual of Blazebinding")} 대상은 보스 근처에 Firestorm 놓기`],
    ["dodge",`${A("Molten Boulder")} 굴러가는 경로`]],
   "Kyrakka & Erkhart Stormvein":[
@@ -723,7 +729,7 @@ const BRIEF={
    ["tb",`${A("Lightning Bite")} 매번 생존기`],
    ["pos",`${A("A Knot of Snakes")} 대상 2명 모여서 광역 CC`],
    ["dodge",`${A("Burrow")} 흙먼지 돌진 경로, 고단에서 치명적`],
-   ["int",`Toxic Viper ${A("Poison Spit")}`]],
+   ["int",`${REC}Toxic Viper ${A("Poison Spit")}`]],
   "Galvazzt":[
    ["pos",`${A("Lightning Spire")} 광선은 딜러·힐러가 교대로 막기 (${A("Galvanized")})`],
    ["dodge",`${A("Induction")} 뒤 ${A("Induction Field")}에서 보스 옮기기`],
@@ -732,7 +738,7 @@ const BRIEF={
    ["tip",`S2 재설계: Avatar는 공격하지 않음. ${A("Essence Defiler")} 먼저 → 힐러가 Avatar 치유`],
    ["tb",`Corrupted Guardian ${A("Tainted Strike")} → SotR`],
    ["pos",`${A("Corrupted Lifeforce")} 3개를 딜러 3명이 6초 안에 소화`],
-   ["int",`Twisted Hexxer ${A("Flame Shock")}`]]
+   ["int",`${MUST}Twisted Hexxer ${A("Flame Shock")}`]]
  }
 };
 D.forEach(d=>d.bosses.forEach(b=>{const x=(BRIEF[d.id]||{})[b.n]; if(x) b.i=x;}));

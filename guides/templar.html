@@ -212,25 +212,6 @@
   .howto{margin:6px 0 0;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.6}
   .howto b{color:#e6e0cc}
   .howto code{font-size:12px;color:#e6e0cc;background:#0f1115;padding:0 4px;border-radius:3px}
-
-  .kick-jump{margin:8px 0 0}
-  .kick-jump a,.jump a+a{color:var(--gold)}
-  .kick-dg{font-size:14px;font-weight:700;color:#d7c68f;margin:16px 0 4px;padding-left:8px;border-left:3px solid var(--gold)}
-  .kick-row{display:flex;align-items:baseline;gap:6px 10px;flex-wrap:wrap;padding:7px 0 7px 11px;border-top:1px solid #2a2e38}
-  .kick-dg+.kick-row{border-top:0}
-  .kick-boss{flex:0 0 160px;font-size:12.5px;color:var(--muted)}
-  .kick-spell{flex:0 0 250px;font-weight:600;font-size:14px;color:#f0e6c8}
-  .kick-desc{flex:1 1 260px;font-size:12.5px;color:var(--muted)}
-  .kick-desc b{color:#e6e0cc}
-  .who,.req{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:1px;white-space:nowrap}
-  .who.boss{background:#3a2f17;color:var(--gold);border:1px solid #6b5a2a}
-  .who.add,.who.note{background:#22252c;color:#cfd3dc;border:1px solid #4a4e5c}
-  .req{margin-left:0}
-  .req.must{background:#4a1f1f;color:#ff8a80;border:1px solid #7a2e2e}
-  .req.rec{background:#3a2d12;color:#f2c26b;border:1px solid #6b5220}
-  .bnote .who,.bnote .req{margin-left:2px}
-  .kick-not{margin-top:4px}
-  @media (max-width:560px){.kick-boss,.kick-spell{flex-basis:100%}}
 </style>
 </head>
 <body>
@@ -239,7 +220,7 @@
 
 <h1>🛡 보호 성기사 스킬 가이드</h1>
 <div class="subtitle">Templar 빌드</div>
-<div class="jump"><a href="#kicks">보스전 차단 목록 ↓</a> · <a href="#builds">특성 빌드 코드 (레이드·쐐기·델브) ↓</a></div>
+<div class="jump"><a href="#builds">특성 빌드 코드 (레이드·쐐기·델브) ↓</a></div>
 
 <div class="tier">
   <div class="tier-header">1. 전투 중 항시 사용</div>
@@ -364,7 +345,6 @@
         <div class="info"><div class="name">Hand of Reckoning</div><div class="desc">도발</div></div>
       </div>
     </div>
-      <p class="bnote kick-jump">어떤 보스 시전을 끊어야 하나 → <a href="#kicks">보스전 차단 목록 ↓</a></p>
     </div>
     <div class="subcat">
       <div class="subcat-title">부활</div>
@@ -375,44 +355,6 @@
       </div>
     </div>
     </div>
-  </div>
-</div>
-
-<div class="tier" id="kicks">
-  <div class="tier-header">보스전 차단 목록 <span class="count">쐐기 S2 · 8개 던전</span></div>
-  <div class="tier-body">
-    <p class="bnote">보스는 <b>시전바에 방패 표시가 없는 시전만</b> 끊깁니다. 8개 던전 보스 중 <b>본체가 끊을 수 있는 시전은 6개뿐</b>이고(<span class="who boss">보스</span>), 나머지 차단 대상은 보스전에 나오는 쫄(<span class="who add">쫄 · …</span>)입니다. 표에 없는 보스는 보스전에 끊을 시전이 없습니다.</p>
-    <p class="bnote"><span class="req must">필수</span> 놓치면 파티가 죽을 수 있음 · <span class="req rec">권장</span> 피해를 줄이는 용도, 놓쳐도 생존기로 버틸 수 있음. 쫄은 보스 면역이 아니라 Hammer of Justice·Blinding Light로도 끊깁니다.</p>
-    <div class="kick-dg">Altar of Fangs</div>
-      <div class="kick-row"><div class="kick-boss">The Writhing Coil</div><div class="kick-spell">Toxic Atrophy<span class="who boss">보스</span></div><span class="req must">필수</span><div class="kick-desc">3연속 시전. 한 번 놓칠 때마다 파티 피해·이속 20% 감소가 중첩. 3칸 순번을 풀 전에 정하기</div></div>
-    <div class="kick-dg">The Blinding Vale</div>
-      <div class="kick-row"><div class="kick-boss">Lightblossom Trinity</div><div class="kick-spell">Light Bolt<span class="who boss">보스</span><span class="who note">Kezkitt</span></div><span class="req must">필수</span><div class="kick-desc">무작위 대상 신성 피해. 풀 시작부터 차단 순번 유지</div></div>
-      <div class="kick-row"><div class="kick-boss">Lightwarden Ruia</div><div class="kick-spell">Warden's Wrath<span class="who boss">보스</span></div><span class="req rec">권장</span><div class="kick-desc">Moonkin 형상에서 평타 대신 탱커에게 연사. 탱커가 직접 끊으면 가장 효율적, 다 끊을 필요는 없음</div></div>
-      <div class="kick-row"><div class="kick-boss">Ziekket</div><div class="kick-spell">Lightspore Shot<span class="who add">쫄 · Lasher</span></div><span class="req rec">권장</span><div class="kick-desc">시전 횟수 줄이기. <b>부활한 Lasher는 차단·CC 면역</b>이라 부활 전에만 끊김</div></div>
-    <div class="kick-dg">Den of Nalorakk</div>
-      <div class="kick-row"><div class="kick-boss">Sentinel of Winter</div><div class="kick-spell">Winter's Shroud<span class="who add">쫄 · Fractured Shivercore</span></div><span class="req must">필수</span><div class="kick-desc">파티 냉기 피해 + 받는 냉기 피해 10% 20초 중첩. 계속 시전하니 2마리 나눠 끊기</div></div>
-    <div class="kick-dg">Murder Row</div>
-      <div class="kick-row"><div class="kick-boss">Kystia Manaheart</div><div class="kick-spell">Felstorm<span class="who add">쫄 · Mirror Images 분신 5</span></div><span class="req must">필수</span><div class="kick-desc">방치하면 파티 광역 피해가 계속. 차단·CC 한 번이면 분신이 바로 사라짐</div></div>
-      <div class="kick-row"><div class="kick-boss">Lithiel Cinderfury</div><div class="kick-spell">Chaos Bolt<span class="who boss">보스</span></div><span class="req must">필수</span><div class="kick-desc">무작위 대상 매우 큰 피해. 최우선 차단</div></div>
-      <div class="kick-row"><div class="kick-boss">Lithiel Cinderfury</div><div class="kick-spell">Felfire Burst<span class="who add">쫄 · Wild Imp</span></div><span class="req rec">권장</span><div class="kick-desc">차단·CC 후 광역으로 처리. 차단기를 다 써서 Chaos Bolt를 놓치지 않기</div></div>
-    <div class="kick-dg">King's Rest</div>
-      <div class="kick-row"><div class="kick-boss">Mchimba the Embalmer</div><div class="kick-spell">Wretched Discharge<span class="who add">쫄 · 미라</span></div><span class="req must">필수</span><div class="kick-desc">파티 전원 12초 질병 도트. 여러 마리 시전이 겹치면 전멸</div></div>
-      <div class="kick-row"><div class="kick-boss">The Council of Tribes</div><div class="kick-spell">Poison Nova<span class="who boss">보스</span><span class="who note">Zanazal</span></div><span class="req must">필수</span><div class="kick-desc">12초 강한 독 도트. 놓치면 독 해제 + 힐 쿨기 없이는 전멸 위험</div></div>
-      <div class="kick-row"><div class="kick-boss">Dazar, The First King</div><div class="kick-spell">Deathly Roar<span class="who add">쫄 · Reban</span></div><span class="req must">필수</span><div class="kick-desc">파티 피해 + 4초 공포. 매번 차단하고 Reban 먼저 처치</div></div>
-    <div class="kick-dg">Ruby Life Pools</div>
-      <div class="kick-row"><div class="kick-boss">Melidrussa Chillworn</div><div class="kick-spell">Frigid Shard<span class="who boss">보스</span></div><span class="req rec">권장</span><div class="kick-desc">탱커 대상 2.5초 시전, 큰 물리 피해. S2부터 차단 가능. 놓치면 SotR·생존기로 받기</div></div>
-      <div class="kick-row"><div class="kick-boss">Kokia Blazehoof</div><div class="kick-spell">Blaze Volley<span class="who add">쫄 · Blazebound Firestorm</span></div><span class="req must">필수</span><div class="kick-desc">3.5초 시전, 파티 화염 피해. 매번 차단. 일부 가이드는 Roaring Blaze로 표기</div></div>
-    <div class="kick-dg">Temple of Sethraliss</div>
-      <div class="kick-row"><div class="kick-boss">Merektha</div><div class="kick-spell">Poison Spit<span class="who add">쫄 · Toxic Viper</span></div><span class="req rec">권장</span><div class="kick-desc">대상에게 독 도트. 맞으면 Cleanse Toxins</div></div>
-      <div class="kick-row"><div class="kick-boss">Avatar of Sethraliss</div><div class="kick-spell">Flame Shock<span class="who add">쫄 · Twisted Hexxer</span></div><span class="req must">필수</span><div class="kick-desc">항상 차단. 이 보스는 차단보다 Essence Defiler 처치가 핵심</div></div>
-    <div class="kick-dg">차단처럼 보이지만 차단이 아닌 것</div>
-    <ul class="howto kick-not">
-      <li><b>Rav'i · Ssscavenging</b>: 흡수 보호막을 딜로 깨야 끝남</li>
-      <li><b>Zul'jan · Ritual of the Fang</b>: 네 모서리 빔을 몸으로 막기</li>
-      <li><b>Galvazzt</b>: 첨탑과 보스 사이에 서서 빔 막기</li>
-      <li><b>Kyrakka &amp; Erkhart · Interrupting Cloudburst</b>: 우리가 끊는 게 아니라, 시전 막바지에 아무 주문도 쓰지 않기</li>
-      <li><b>Charonus</b>: 보스전 차단 없음. 앞 구간 Devouring Brutalizer의 Devour(50% 자힐)는 반드시 차단</li>
-    </ul>
   </div>
 </div>
 
