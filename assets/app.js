@@ -320,6 +320,7 @@ async function sheetPage() {
   const present = new Set();
   D.forEach(d => d.bosses.forEach(b => (b.i || []).forEach(([t]) => present.add(t))));
   Object.values(TRASH).forEach(gs => gs.forEach(g => g.i.forEach(([t]) => present.add(t))));
+  [role.brief, spec && spec.brief].forEach(src => Object.values(src || {}).forEach(bs => Object.values(bs).forEach(arr => arr.forEach(([t]) => present.add(t)))));
   if (spec) Object.values(spec.heroCards).forEach(h => h.items.forEach(([t]) => present.add(t)));
   const tagRe = new RegExp(`^\\[(${Object.values(TAGS).join("|")})\\]\\s*`);
   [DETAIL, RDETAIL, SDETAIL].forEach(src => Object.values(src).forEach(bs => Object.values(bs).forEach(x => {
@@ -542,7 +543,9 @@ async function sheetPage() {
     const blockHtml = b => b.block === "dispel" ? dispelTable() : macros();
     mainEl.innerHTML = `<div><h2 class="dname">${d.name}</h2><p class="dsub">${d.sub}${d.time ? ` · <span class="dtime">제한 시간 <b>${d.time}분</b></span>` : ""}${RIO[d.id] ? `</p><p class="dlinks"><a class="vid" href="${rioVideo(d.id)}" target="_blank" rel="noopener">▶ Raider.IO 영상</a><a class="vid rio" href="${rioArticle(d.id)}" target="_blank" rel="noopener">Raider.IO 글</a><button class="expall" type="button">상세 모두 펼치기</button>` : ` · <a class="vid" href="${core.generalVideo.href}" target="_blank" rel="noopener">${core.generalVideo.label}</a>`}</p></div>` + (d.id !== "general" ? heroCard(d) : "") + bosses.map(b => {
       if (b.block) return fold(b, blockHtml(b));
-      const lis = b.i.filter(([t]) => on.has(t)).map(it => `<li><span class="tag t-${it[0]}">${TAGS[it[0]]}</span><span>${itemHtml(it)}</span></li>`).join("");
+      // 보스 요약 항목 = 공용 층 + 역할 층(role.brief) + 전문화 층(spec.brief)
+      const extra = [...(((role.brief || {})[d.id] || {})[b.n] || []), ...(((spec && spec.brief || {})[d.id] || {})[b.n] || [])];
+      const lis = [...b.i, ...extra].filter(([t]) => on.has(t)).map(it => `<li><span class="tag t-${it[0]}">${TAGS[it[0]]}</span><span>${itemHtml(it)}</span></li>`).join("");
       const body = lis ? `<ul class="items">${lis}</ul>` : `<p class="empty">선택한 태그 항목 없음</p>`;
       if (d.id === "general") return fold(b, body, b.hero ? " herocard" : "");
       const vid = (RIO[d.id] && b.k !== "Trash") ? `<a class="vid" href="${rioVideo(d.id, b.t)}" target="_blank" rel="noopener">▶ 영상</a>` : "";
