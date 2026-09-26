@@ -37,3 +37,5 @@
 - Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.
 
 - 한글 모드에서 통칭 "Holy Word"가 "신성 Word"로 반쯤 번역돼, 통칭을 모두 정확한 기술 이름(Holy Word: Serenity·Holy Word: Chastise)으로 바꿨다.
+
+- (부모 보완) Stormslam은 시전 기술 381512와 디버프 381515의 id가 따로 있고, 디버프는 Wowhead 기술 페이지·nether 툴팁 모두 **Magic**이다. 첫 판에서 381512만 보고 "해제 종류 없음"으로 판단한 것을 바로잡아 해제 문장을 넣었다(core 층의 "힐러가 해제한다"가 맞았다).

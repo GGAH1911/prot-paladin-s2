@@ -1,30 +1,33 @@
-# 작업 이어받기 안내 (2026-09-27 2단계 완료 기준)
+# 작업 이어받기 안내 (2026-09-27 3단계 완료 기준)
 
 다른 컴퓨터의 Aside가 이 파일만 읽고 이어서 작업할 수 있게 적었습니다. 사이트 파일은 전부 이 저장소에 있고, 이전 컴퓨터의 임시 폴더에만 있던 것은 없습니다.
 
 ## 1. 지금 상태
-- **라이브**: https://ggah1911.github.io/prot-paladin-s2/ (main, 2단계 머지 커밋), tme-laptop http://tme-laptop:8431 (같은 내용)
+- **라이브**: https://ggah1911.github.io/prot-paladin-s2/ (main, 3단계 머지 커밋), tme-laptop http://tme-laptop:8431 (같은 내용)
 - **끝난 단계**
   - 0단계: 층별 데이터(`data/`), 공용 엔진(`assets/`), 첫 화면(직업/역할 두 갈래), 전환 시트, 404, 옛 주소·저장값 이전
   - 1단계: 탱커 6개 전부 ready (보호 성기사, 혈기, 방어 전사, 수호 드루이드, 복수 악사, 양조 수도사)
   - 2단계: 힐러 역할 층(`data/role/healer.json`)과 힐러 7개 전부 ready (신성 성기사, 수양 사제, 신성 사제, 복원 주술사, 운무 수도사, 회복 드루이드, 보존 기원사). 요약·검증·엔진 변경은 `audits/stage2-healers.md`.
+  - 3단계: 딜러 역할 층(`data/role/dps.json`)과 딜러 27개 전부 ready. **40개 전문화 전부 ready.** 요약·바로잡은 것·검증은 `audits/stage3-dps.md`.
 - 동시 작업은 **3개 이하**로 돌린다(2단계는 포크 3개씩 두 배치 + 1개로 끝냈다).
 
-## 2. 다음에 할 일: 3단계 딜러 27개
-1. **딜러 역할 층**을 `data/role/dps.json`에 넣는다. 힐러 역할 층(`data/role/healer.json`)과 같은 형식: `detail`(28보스, 보스당 3~4줄, 우선 처치 `[우선 처치]`, 제어 `[제어]`, 차단 담당), `brief`(`prio`·`cc`·`int` 중심 1~2개), `answers`.
-2. **딜러 전문화 27개**: 지시문은 `tools/prompts/healer-spec.md`를 딜러용으로 바꿔 쓴다(구획: 딜 순환·광역·쿨기·생존·차단·유틸). 2단계 포크 안내와 도구가 참고가 된다(아래 6절).
-3. 각 폴더를 `node tools/add-spec.mjs <폴더> --check`로 검사하고, 통과하면 `node tools/add-spec.mjs <폴더>`로 반영한다. add-spec은 기록을 `audits/stage1-<id>.md`로 복사하니 단계 번호에 맞게 이름을 바꾼다.
-4. `node tools/build.mjs`로 페이지 셸을 다시 만든다.
-5. 검증(아래 4절) → PR → 머지 → 배포(아래 5절).
+## 2. 다음에 할 일
+- 40개 전문화 데이터는 다 찼다. 남은 일은 `audits/stage0-followups.md`의 0단계 후속 과제와, 각 `audits/stage2-*.md`·`stage3-*.md`의 "확인 못 한 것"(대부분 게임 안 확인 필요) 정리다.
+- 새 시즌이나 패치로 데이터를 바꿀 때: 빌드 코드·툴팁을 다시 받아 `tools/add-spec.mjs <폴더> --check` → 반영 → `tools/build.mjs` → 4절 검증 → 5절 배포. 딜러 지시문은 `tools/prompts/dps-spec.md`, 힐러는 `tools/prompts/healer-spec.md`.
+- 조사 도구는 `tools/research/`에 있다(설명은 그 폴더의 README). 툴팁 받기·정리, 툴팁 점검, ★ 대조, 빌드 표 읽기, 해제 종류 수집, 역할 층 생성 스크립트.
 
-### 2단계에서 알게 된 것 (3단계에도 해당)
+### 2·3단계에서 알게 된 것
 - 해제 종류는 **Wowhead 기술 페이지의 Dispel type 칸**(효과로 적용되는 하위 디버프 포함)을 먼저 본다. nether 툴팁 `buff` 칸은 비어 있는 경우가 있다(Mind-Numbing Poison·Poison Splash·Cold Claws). 던전 기술 401개 결과는 `audits/research/dungeon-dispel-types.txt`. 어디에도 없으면 해제 종류를 쓰지 않는다.
 - Wowhead(CloudFront)는 한 IP에서 연속 요청하면 403으로 막는다. 막히면 tme-laptop(다른 공인 IP)에서 `ssh 100.124.146.14 'curl -s -L -A "Mozilla/5.0" <url>'`로 받는다.
 - Wowhead 가이드 페이지와 nether 툴팁은 `curl -A 'Mozilla/5.0'`로 받힌다. Icy Veins는 curl 403이라 WebFetch나 브라우저를 쓴다. Wowhead 특성 계산기는 JS로 그려지므로 브라우저로 열어 `.dragonflight-talent-trees-tree[data-tree-type]`별로 선택 노드를 읽는다.
 - 툴팁의 전문화 문단 머리는 아이콘이 없거나 전문화 아이콘이 아닌 경우가 있다(성기사 등). 머리글 줄 글자(전문화 이름 쉼표 목록)로 알아보는 편이 안전하다.
 - 전문화 기술 이름이 보스 기술과 같으면(Void Blast, Healing Tide Totem) 그 던전에서는 core 툴팁이 이긴다. 그런 이름은 그 던전 문장에 쓰지 않는다.
 - 상세 문장 속 쉼표가 든 이름은 한 덩어리로 못 감싼다. 짧은 별칭을 쓰고 tips에 같은 id를 넣는다.
-- core 층에 기술 데이터와 어긋나는 문장 2건(Stormslam 해제, Searing Blows 출혈)을 `audits/stage2-healers.md`에 적어 뒀다. 보호 성기사 화면에도 나오는 문장이라 무변경 규칙 때문에 그대로 두고, 역할·전문화 층에서는 확인된 사실만 쓴다.
+- Wowhead 빌드 표의 추천은 "(Recommended)" 글자 대신 추천 아이콘(`wow-atlas-quest-legendary-available`)만 있는 경우가 많다. ★는 행 단위로 아이콘까지 보고 단다.
+- 어픽스: 160 Devour(파티 디버프), 158 Voidbound(Voidbound Emissary), 162 Pulsar, 148 Ascendant. 이름을 섞지 않는다.
+- 한글 모드에서 통칭이나 다른 id에 연결한 이름은 반쯤 번역된다("신성 Word"). 정확한 기술 이름을 쓰거나 names에 한글명을 넣는다.
+- 같은 이름의 기술이 시전 id와 디버프 id로 나뉘는 경우가 있다(Stormslam 381512 → 디버프 381515 Magic). 해제 판단 전에 근처 id·같은 이름 id를 확인한다: `audits/research/dungeon-dispel-same-name.txt`.
+- core 층에 기술 데이터와 어긋나는 문장 1건(Searing Blows를 출혈로 표기, 툴팁상 Searing Wounds는 화염 도트)을 `audits/stage2-healers.md`에 적어 뒀다. 보호 성기사 화면에도 나오는 문장이라 무변경 규칙 때문에 그대로 둔다.
 
 ## 3. 꼭 지킬 규칙 (사용자가 정한 것과 실제로 틀렸던 것)
 - 기술·자원·스탯 이름은 **항상 영어**. 설명은 한국어(`AGENTS.md` 한국어 규칙).

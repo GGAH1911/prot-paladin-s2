@@ -1,0 +1,3 @@
+nalorakk:Glacial Torment | 1235548 → 1235549 | Magic
+ruby:Cold Claws | 1305233 → 1305234 | Magic
+ruby:Stormslam | 381512 → 381515 | Magic
