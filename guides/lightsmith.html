@@ -216,7 +216,7 @@
 </head>
 <body>
 
-<div class="topbar"><a class="backlink" href="../">← 쐐기 치트시트</a><div class="langseg"><span>툴팁</span><div class="seg" id="tiplang" role="group" aria-label="툴팁 언어"><button data-l="ko" aria-pressed="true">한글</button><button data-l="en" aria-pressed="false">English</button></div></div></div>
+<div class="topbar"><a class="backlink" href="../">← 쐐기 치트시트</a><div class="langseg"><span>게임 언어</span><div class="seg" id="tiplang" role="group" aria-label="게임 언어 (기술 이름과 툴팁)"><button data-l="ko" aria-pressed="true">한글</button><button data-l="en" aria-pressed="false">English</button></div></div></div>
 
 <h1>🛡 보호 성기사 스킬 가이드</h1>
 <div class="subtitle">Lightsmith 빌드</div>
@@ -456,7 +456,7 @@ let tipFor=null;
 const esc=x=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 function applyLang(){
   document.querySelectorAll("#tiplang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===tipLang));
-  document.querySelectorAll(".skill-card[data-sid]").forEach(c=>{const k=G_KO[c.dataset.sid]; const el=c.querySelector(".kname"); if(el) el.textContent=(tipLang==="ko"&&k)?k.n:"";});
+  applyBodyLang();
   if(tipFor) showTip(tipFor);
 }
 function showTip(card){
@@ -491,6 +491,51 @@ document.addEventListener("focusin",e=>{const c=e.target.closest&&e.target.close
 document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest(".skill-card[data-sid]")) hideTip();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape") hideTip();});
 addEventListener("scroll",()=>{if(!tipEl.hidden) hideTip();},{passive:true});
+
+// ---- 게임 언어: 한글 모드에서 카드·본문의 기술 이름과 게임 메뉴 이름을 한글 클라이언트 이름으로 ----
+const KO_EXTRA={"Hammer of Wrath":"천벌의 망치","Holy Power":"신성한 힘","Grand Crusader":"위대한 성전사","Vanguard":"선봉대","Divine Purpose":"신성한 목적","Shining Light":"눈부신 빛","Strength in Adversity":"위기 극복의 저력","Devotion":"헌신","Concentration":"집중","Crusader":"성전사","Bulwark":"보루","Weapon":"무기","SotR":"정의의 방패","parry":"무기 막기","stack":"중첩","charge":"충전","Templar":"기사단","Lightsmith":"빛의 대장장이","Holy Armaments":"신성한 무장","Options":"설정","Gameplay Enhancements":"게임 플레이 개선","Advanced Cooldown Settings":"고급 재사용 대기시간 설정","Buffs":"강화 효과","Tracked Bars":"추적 중인 막대","Tracked Buffs":"추적 중인 강화 효과","Import":"가져오기","Mythic+":"신화+"};
+const KO_ALL=(()=>{const o={};for(const id in G_EN){if(G_KO[id])o[G_EN[id].n]=G_KO[id].n;}return Object.assign(o,KO_EXTRA);})();
+const KO_RE=new RegExp("(?<![A-Za-z'’])("+Object.keys(KO_ALL).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z'’])","g");
+const JOSA=[["으로","로"],["이나","나"],["을","를"],["은","는"],["이","가"],["과","와"]];
+function josaFix(word,rest){
+  const c=word.charCodeAt(word.length-1); if(c<0xAC00||c>0xD7A3) return null;
+  const jong=(c-0xAC00)%28;
+  for(const [a,b] of JOSA) for(const p of [a,b]){
+    if(!rest.startsWith(p)) continue;
+    const nx=rest.charAt(p.length);
+    const ok=!/[가-힣]/.test(nx)||(b==="로"&&/[도는서써부만의]/.test(nx))||(b==="와"&&/[의도는]/.test(nx));
+    if(!ok) continue;
+    return [p.length, b==="로"?((jong===0||jong===8)?"로":"으로"):(jong?a:b)];
+  }
+  return null;
+}
+function koText(s){
+  let out="",i=0,m; KO_RE.lastIndex=0;
+  while((m=KO_RE.exec(s))){
+    const ko=KO_ALL[m[1]]; out+=s.slice(i,m.index)+ko; i=m.index+m[0].length;
+    const p=josaFix(ko,s.slice(i)); if(p){out+=p[1];i+=p[0];}
+    KO_RE.lastIndex=i;
+  }
+  return out+s.slice(i);
+}
+const koOrig=new Map();
+(function(){
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n;
+  while((n=w.nextNode())){const p=n.parentElement; if(!p.closest("script,style,#sptip,.kname,.langseg")&&/[A-Za-z]/.test(n.data)) koOrig.set(n,n.data);}
+})();
+function applyBodyLang(){
+  const ko=tipLang==="ko";
+  koOrig.forEach((en,n)=>{
+    const card=n.parentElement.classList.contains("name")&&n.parentElement.closest(".skill-card[data-sid]");
+    const k=card&&G_KO[card.dataset.sid];
+    n.data=ko?((k&&n===n.parentElement.firstChild&&en.trim()===G_EN[card.dataset.sid].n)?k.n:koText(en)):en;
+  });
+  document.querySelectorAll(".skill-card").forEach(c=>{
+    const nm=c.querySelector(".info .name"), el=c.querySelector(".kname"); if(!nm||!el) return;
+    const t=nm.firstChild, en=koOrig.get(t);
+    el.textContent=(ko&&en&&t.data!==en)?en:"";
+  });
+}
 applyLang();
 </script>
 
