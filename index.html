@@ -67,6 +67,7 @@ html,body{overflow-x:clip}
 .boss{min-width:0}
 .dname{font-family:Cinzel,Georgia,serif;font-size:21px;font-weight:700;margin:6px 0 0;letter-spacing:.02em}
 .dsub{color:var(--muted);font-size:12.5px;margin:0 0 4px}
+.dtime b{color:var(--ink);font-weight:700}
 .boss{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px}
 .boss h3{margin:0 0 10px;font-size:15.5px;font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
 .boss h3 small{font-weight:500;color:var(--muted);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
@@ -438,7 +439,7 @@ const D=[
    ["pos",`Pulsar 주간: 오브 수집하며 ${A("Divine Steed")}로 이동, ${A("Consecration")} 유지`],
    ["tip",`12단 이상 Xal'atath's Guile: 죽을 때마다 15초 감소`]]}
  ]},
- {id:"altar",name:"Altar of Fangs",sub:"Midnight 신규",bosses:[
+ {id:"altar",name:"Altar of Fangs",sub:"Midnight 신규",time:30,bosses:[
   {n:"Rav'i",k:"Boss 1",i:[
    ["tb",`${A("Hydrastrike")} → SotR`],
    ["pos",`시체 밟으면 ${A("Scent of Blood")} 버프, 시체에서 떨어뜨리기`],
@@ -454,7 +455,7 @@ const D=[
    ["dodge",`${A("Boneslicer")} 전방기, ${A("Axegrinder")} 칼날`],
    ["pos",`${A("Ritual of the Fang")}: 빔 4개 소화, ${A("Ritual Venom")} 중첩 관리`]]}
  ]},
- {id:"vale",name:"The Blinding Vale",sub:"Midnight 신규",bosses:[
+ {id:"vale",name:"The Blinding Vale",sub:"Midnight 신규",time:30,bosses:[
   {n:"Lightblossom Trinity",k:"Boss 1",i:[
    ["tb",`${A("Bedrock Slam")} → SotR`],
    ["int",`${A("Light Bolt")}`],
@@ -474,7 +475,7 @@ const D=[
    ["pos",`Lasher 빠르게 모으기`],
    ["int",`${A("Awaken the Lightbloom")} 쫄 시전 끊기`]]}
  ]},
- {id:"nalorakk",name:"Den of Nalorakk",sub:"Midnight 신규",bosses:[
+ {id:"nalorakk",name:"Den of Nalorakk",sub:"Midnight 신규",time:32,bosses:[
   {n:"The Hoardmonger",k:"Boss 1",i:[
    ["dodge",`${A("Earthshatter Slam")} 전방기`],
    ["pos",`${A("Spoiled Supplies")} 버섯은 탱커가 더 많이 소화`],
@@ -489,7 +490,7 @@ const D=[
    ["tb",`이어지는 ${A("Forceful Slam")} 탱커가 받기`],
    ["pos",`${A("Echoing Maul")} 디버프는 구석에, 곰 혼령이 Zul'jarra에 닿지 않게 (${A("Echoing Fury")})`]]}
  ]},
- {id:"murder",name:"Murder Row",sub:"Midnight 신규",bosses:[
+ {id:"murder",name:"Murder Row",sub:"Midnight 신규",time:34,bosses:[
   {n:"Kystia Manaheart",k:"Boss 1",i:[
    ["pos",`Kystia와 Nibbles 붙여두기`],
    ["dodge",`${A("Fel Spray")} 전방기`],
@@ -510,7 +511,7 @@ const D=[
    ["pos",`Bribed Captain: ${A("Deep Corruption")} 때문에 먼저 처치`],
    ["tb",`Defiled Golem ${A("Defiled Slam")} 생존기`]]}
  ]},
- {id:"voidscar",name:"Voidscar Arena",sub:"Midnight 신규",bosses:[
+ {id:"voidscar",name:"Voidscar Arena",sub:"Midnight 신규",time:30,bosses:[
   {n:"Taz'Rah",k:"Boss 1",i:[
    ["tb",`${A("Void Blast")} → SotR`],
    ["pos",`벽 따라 한 방향으로 돌기`],
@@ -529,7 +530,7 @@ const D=[
    ["tb",`Devouring Brutalizer ${A("Dreadbellow")} 생존기`],
    ["int",`${A("Devour")} (50% 자힐) 반드시 차단`]]}
  ]},
- {id:"kings",name:"King's Rest",sub:"BfA 복귀",bosses:[
+ {id:"kings",name:"King's Rest",sub:"BfA 복귀",time:33,bosses:[
   {n:"The Golden Serpent",k:"Boss 1",i:[
    ["tb",`${A("Tail Thrash")} → SotR`],
    ["pos",`${A("Lucre's Call")}: Animated Gold에서 보스 멀리. 닿으면 보호막 + 파티 치명 피해`]]},
@@ -548,7 +549,7 @@ const D=[
    ["dodge",`Royal Berserker ${A("Violent Lunge")} 전방기, ${A("Bloodthirsty Axe")} 출혈 중첩`],
    ["dodge",`Ghostly Brute ${A("Seismic Upheaval")}: 무조건 도망`]]}
  ]},
- {id:"ruby",name:"Ruby Life Pools",sub:"DF 복귀",bosses:[
+ {id:"ruby",name:"Ruby Life Pools",sub:"DF 복귀",time:28,bosses:[
   {n:"Melidrussa Chillworn",k:"Boss 1",i:[
    ["tb",`${A("Crushing Smash")} → SotR`],
    ["int",`${A("Frigid Shard")}`],
@@ -568,7 +569,7 @@ const D=[
    ["pos",`${A("Summon Primal Thundercloud")} 쫄 어그로 빨리`],
    ["tip",`Storm Warrior ${A("Thunderclap")} 공속·이속 감소`]]}
  ]},
- {id:"temple",name:"Temple of Sethraliss",sub:"BfA 복귀",bosses:[
+ {id:"temple",name:"Temple of Sethraliss",sub:"BfA 복귀",time:32,bosses:[
   {n:"Adderis & Aspix",k:"Boss 1",i:[
    ["tb",`${A("Overload")} → SotR`],
    ["pos",`${A("Storm Blessed")} 보호막 넘어가면 대상 전환`],
@@ -876,7 +877,7 @@ function render(){
     return `<details class="boss fold${cls}" data-k="${key}"${open?" open":""}><summary><h3>${b.n}<small>${b.k} <span class="chev" aria-hidden="true">▾</span></small></h3></summary>${body}</details>`;
   };
   const htmlCard=b=>d.id==="general"?fold(b,b.html):`<section class="boss"><h3>${b.n}<small>${b.k}</small></h3>${b.html}</section>`;
-  mainEl.innerHTML=`<div><h2 class="dname">${d.name}</h2><p class="dsub">${d.sub}${RIO[d.id]?`</p><p class="dlinks"><a class="vid" href="${rioVideo(d.id)}" target="_blank" rel="noopener">▶ Raider.IO 영상</a><a class="vid rio" href="${rioArticle(d.id)}" target="_blank" rel="noopener">Raider.IO 글</a><button class="expall" type="button">상세 모두 펼치기</button>`:` · <a class="vid" href="https://www.youtube.com/watch?v=a3dZhEYU6Mc" target="_blank" rel="noopener">▶ Dalaran Gaming S2 가이드</a>`}</p></div>`+(d.id!=="general"?heroCard(d):"")+bosses.map(b=>{
+  mainEl.innerHTML=`<div><h2 class="dname">${d.name}</h2><p class="dsub">${d.sub}${d.time?` · <span class="dtime">제한 시간 <b>${d.time}분</b></span>`:""}${RIO[d.id]?`</p><p class="dlinks"><a class="vid" href="${rioVideo(d.id)}" target="_blank" rel="noopener">▶ Raider.IO 영상</a><a class="vid rio" href="${rioArticle(d.id)}" target="_blank" rel="noopener">Raider.IO 글</a><button class="expall" type="button">상세 모두 펼치기</button>`:` · <a class="vid" href="https://www.youtube.com/watch?v=a3dZhEYU6Mc" target="_blank" rel="noopener">▶ Dalaran Gaming S2 가이드</a>`}</p></div>`+(d.id!=="general"?heroCard(d):"")+bosses.map(b=>{
     if(b.html) return htmlCard(b);
     const lis=b.i.filter(([t])=>on.has(t)).map(([t,x])=>`<li><span class="tag t-${t}">${TAGS[t]}</span><span>${x}</span></li>`).join("");
     const body=lis?`<ul class="items">${lis}</ul>`:`<p class="empty">선택한 태그 항목 없음</p>`;
