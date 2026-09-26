@@ -64,3 +64,4 @@ voidscar:melt armor | 1250043 | Magic | page
 voidscar:mind-numbing poison | 1263971 | Poison | page
 voidscar:poison splash | 1226031 | Poison | page
 voidscar:savage leap | 1267754 | Bleed | tooltip-sub 1267894:Bleed
+ruby:Stormslam (debuff) | 381515 | Magic | page+tooltip (381512의 디버프, 같은 이름 다른 id)

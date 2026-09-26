@@ -24,10 +24,10 @@
 - 첫 판(PR #10)은 툴팁 buff 칸만 봐서 굵게 표시한 3개를 "해제 종류 없음"으로 뺐다. 기술 페이지와 대조해 바로잡고 역할 층·전문화 7개에 해제 문장을 넣었다(PR #11). 툴팁 buff 칸은 비어 있어도 기술 페이지에는 종류가 있을 수 있으니, 앞으로는 기술 페이지를 먼저 본다.
 
 ## core 층과 어긋나는 점 (고치지 않고 기록만 함)
-- **Stormslam**(Kyrakka & Erkhart): core는 "힐러가 다음 Stormslam 전에 탱커 디버프를 해제한다"고 쓰지만, 툴팁 buff 칸과 기술 페이지 Dispel type 모두 해제 종류가 없다(n/a). 역할 층은 해제 대신 "다음 Stormslam 전에 탱커 체력을 가득 채워라"로 썼다.
+- ~~Stormslam~~: 시전 기술 381512에는 해제 종류가 없지만, 따로 걸리는 **디버프 381515는 Magic**이다(3단계 중 암흑 사제 포크가 발견, 같은 이름 근처 id 조사 `audits/research/dungeon-dispel-same-name.txt`로 확인). core 층 "힐러가 해제한다"가 맞았고, 힐러 역할 층·전문화 7개에 해제 문장을 넣었다(3단계 PR).
 - ~~Mind-Numbing Poison~~: 기술 페이지 Dispel type이 Poison이라 core 요약(`dispel.poison`)이 맞았다. 어긋남 아님.
 - **Searing Blows**(Kokia): core 요약은 "출혈 중첩"이라고 쓰지만, 툴팁상 Searing Wounds는 화염 도트다.
-- 남은 2건은 core 문장이 보호 성기사 화면에도 그대로 나오고, 보호 성기사 무변경 규칙이 있어 바꾸지 않았다. 힐러 층은 확인된 사실만 쓴다(Stormslam은 "체력을 가득 채워라", Searing Blows는 "Searing Wounds 화염 도트").
+- 남은 1건(Searing Blows 출혈 표기)은 core 문장이 보호 성기사 화면에도 그대로 나오고, 보호 성기사 무변경 규칙이 있어 바꾸지 않았다. 힐러 층은 툴팁대로 "Searing Wounds 화염 도트"로 쓴다.
 
 ## 엔진 변경 (`assets/app.js`)
 1. 상세 공략 `abWrap`: `Power Word: Shield`, `Holy Word: Serenity`처럼 콜론이 든 이름을, 그 이름이 tips(core·전문화)나 한글 사전에 있을 때만 한 덩어리로 감싼다. 전에는 "Power Word"와 "Shield"로 쪼개져 툴팁·한글 변환이 안 됐다.

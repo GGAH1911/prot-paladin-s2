@@ -45,3 +45,5 @@
 ## 해제 종류 재확인 (2026-09-27, 머지 뒤 보완)
 - 2단계 첫 판에서는 해제 종류를 nether 툴팁 buff 칸으로만 봤다. Wowhead 기술 페이지의 Dispel type 칸과 대조하니 **Mind-Numbing Poison(1263971)·Poison Splash(1226031)는 Poison**, **Cold Claws(적용 디버프 1305234)는 Magic**이었다(툴팁 buff 칸은 비어 있음). 이 전문화가 풀 수 있는 종류에 맞춰 Atroxus·Melidrussa 해제 문장을 넣었다. 앞의 "확인 못 한 것"에 적은 Mind-Numbing Poison·Poison Splash·Cold Claws 항목은 이것으로 해결됐다.
 - Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.
+
+- (부모 보완) Stormslam은 시전 기술 381512와 디버프 381515의 id가 따로 있고, 디버프는 Wowhead 기술 페이지·nether 툴팁 모두 **Magic**이다. 첫 판에서 381512만 보고 "해제 종류 없음"으로 판단한 것을 바로잡아 해제 문장을 넣었다(core 층의 "힐러가 해제한다"가 맞았다).
