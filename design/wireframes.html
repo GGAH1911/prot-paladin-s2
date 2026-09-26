@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="ko" data-theme="light" data-font="b">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>쐐기 가이드 확장 · UI 프로토타입</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* ===== 토큰 (design/expansion-ui.md 4번과 같은 값) ===== */
+:root{
+  --bg:#F5F5F7;--surface:#FFFFFF;--ink:#1D1D1F;--ink-2:#424245;--muted:#6E6E73;--line:#D2D2D7;--fill:#E8E8ED;--link:#0066CC;--focus:#0071E3;
+  --bar:rgba(245,245,247,.82);--sheet:rgba(0,0,0,.32);
+  --role:#0066CC;           /* 역할 층 띠 */
+  --common:#C7C7CC;         /* 공용 층 띠 */
+  /* 태그 글자색 (라이트) */
+  --t-tb:#B42318;--t-int:#6B3FD4;--t-cc:#8A5A00;--t-dodge:#B54708;--t-disp:#067647;--t-aoe:#C11574;--t-prio:#1D4ED8;--t-pos:#0E7090;--t-tip:#6E6E73;
+  --r-tag:6px;--r-card:12px;--r-tile:18px;--r-pill:980px;
+  --fs-cap:12px;--fs-sm:13px;--fs-item:15px;--fs-body:17px;--fs-h4:21px;--fs-h2:28px;--fs-h1:40px;
+  --ease:cubic-bezier(.25,.1,.25,1);--dur:200ms;
+  --title-font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body-font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --ab-font:var(--body-font);
+}
+[data-theme=dark]{
+  --bg:#000000;--surface:#1D1D1F;--ink:#F5F5F7;--ink-2:#D2D2D7;--muted:#86868B;--line:#424245;--fill:#2C2C2E;--link:#2997FF;--focus:#2997FF;
+  --bar:rgba(22,22,23,.8);--sheet:rgba(0,0,0,.55);--role:#2997FF;--common:#48484A;
+  --t-tb:#FF8A80;--t-int:#B69CFF;--t-cc:#F2C35B;--t-dodge:#FFA64D;--t-disp:#5FD8A0;--t-aoe:#FF7AC6;--t-prio:#7EB6FF;--t-pos:#5CC8E6;--t-tip:#98989D;
+}
+[data-font=a]{--title-font:"Cinzel",Georgia,serif;--ab-font:"IBM Plex Mono",ui-monospace,monospace}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#DADADF;font-family:var(--body-font);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+[data-theme=dark] body{background:#111}
+button{font:inherit;color:inherit}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+img{display:block}
+
+/* ===== 프로토타입 조작 바 (실제 사이트에는 없음) ===== */
+.proto{position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 14px;background:#1D1D1F;color:#F5F5F7;font-size:12.5px}
+.proto b{font-weight:700;color:#fff}
+.proto .grp{display:inline-flex;align-items:center;gap:6px}
+.proto .grp>span{color:#98989D}
+.pseg{display:inline-flex;border:1px solid #48484A;border-radius:8px;overflow:hidden}
+.pseg button{border:0;background:transparent;color:#F5F5F7;padding:4px 9px;cursor:pointer;font-size:12px}
+.pseg button[aria-pressed=true]{background:#F5F5F7;color:#1D1D1F;font-weight:700}
+.proto select{font:inherit;font-size:12px;background:#2C2C2E;color:#F5F5F7;border:1px solid #48484A;border-radius:8px;padding:4px 6px;max-width:260px}
+.proto a{color:#7EB6FF}
+
+/* ===== 기기 프레임 ===== */
+.stage{padding:18px 12px 60px;display:flex;justify-content:center}
+.device{width:100%;max-width:1280px;background:var(--bg);container-type:inline-size;container-name:dev;min-height:calc(100vh - 110px);position:relative;overflow:hidden;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.device.phone{max-width:390px;border-radius:38px;border:10px solid #1D1D1F;box-shadow:0 20px 60px rgba(0,0,0,.25);min-height:844px;max-height:844px;overflow:auto}
+[data-theme=dark] .device.phone{border-color:#3A3A3C}
+.screen{min-height:100%;animation:fade var(--dur) var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen,.sheet-panel{animation:none!important}html{scroll-behavior:auto!important}*{transition:none!important}}
+
+/* 화면 ID 라벨 */
+.sid{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;padding:6px 10px;font-size:11px;color:var(--muted);background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,102,204,.05) 6px 12px);border-bottom:1px dashed var(--line)}
+.sid b{color:var(--link);font-weight:700}
+.sid code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-2);word-break:break-all}
+
+/* ===== 공통 조각 ===== */
+.wm{font-family:var(--title-font);font-weight:700;letter-spacing:.01em}
+[data-font=b] .wm{letter-spacing:-.02em}
+.gnav{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:13px;color:var(--ink-2)}
+.gnav .wm{font-size:15px;color:var(--ink)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.wide{max-width:980px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:var(--r-pill);padding:8px 16px;font-size:14px;font-weight:600;background:var(--link);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--link);padding:8px 4px}
+.btn.gray{background:var(--fill);color:var(--ink)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.muted{color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--cls);flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.draft{display:inline-block;margin-left:6px!important;font-size:10.5px;font-weight:700;color:#B54708;border:1px solid currentColor;border-radius:4px;padding:0 4px;margin-left:4px;vertical-align:1px}
+[data-theme=dark] .draft{color:#FFA64D}
+.badge{font-size:10.5px;font-weight:700;border-radius:var(--r-pill);padding:1px 7px;background:var(--fill);color:var(--muted);white-space:nowrap}
+.badge.ready{background:rgba(3,118,71,.12);color:#067647}.badge.draft2{background:rgba(181,71,8,.12);color:#B54708}
+[data-theme=dark] .badge.ready{color:#5FD8A0}[data-theme=dark] .badge.draft2{color:#FFA64D}
+.ico{width:var(--s,36px);height:var(--s,36px);border-radius:50%;overflow:hidden;flex:0 0 auto;box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--cls);background:var(--cls);display:grid;place-items:center;color:#fff;font-weight:700;font-size:calc(var(--s,36px)*.42)}
+.ico img{width:100%;height:100%;object-fit:cover}
+.ico.priest{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--line)}
+.ab{font-family:var(--ab-font);font-weight:600}
+[data-font=a] .ab{font-size:.93em}
+
+/* ===== S1 선택 ===== */
+.s1-hero{padding:56px 0 28px;text-align:left}
+.s1-hero h1{font-family:var(--title-font);font-size:var(--fs-h1);line-height:1.1;margin:0 0 10px;letter-spacing:-.02em}
+[data-font=a] .s1-hero h1{letter-spacing:0;font-size:36px}
+.s1-hero p{font-size:var(--fs-body);color:var(--muted);margin:0;line-height:1.5}
+@container dev (min-width:700px){.s1-hero{padding:88px 0 40px}.s1-hero h1{font-size:56px}}
+.summary{position:sticky;top:0;z-index:20;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.summary .in{display:flex;align-items:center;gap:8px;min-height:52px;flex-wrap:wrap;padding:6px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-pill);padding:5px 11px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip.empty{color:var(--muted);font-weight:500;border-style:dashed;background:transparent;cursor:default}
+.summary .go{margin-left:auto}
+.step{padding:36px 0 8px;transition:opacity var(--dur) var(--ease)}
+.step.locked{opacity:.32;pointer-events:none}
+.step h2{font-size:var(--fs-h2);margin:0 0 4px;letter-spacing:-.02em;font-weight:700}
+.step h2 span{color:var(--muted);font-weight:600}
+.step .hint{font-size:14px;color:var(--muted);margin:0 0 18px}
+.tiles{display:grid;gap:10px;grid-template-columns:1fr}
+@container dev (min-width:560px){.tiles.c3{grid-template-columns:repeat(3,1fr)}.tiles.c2{grid-template-columns:repeat(2,1fr)}}
+.tile{display:flex;align-items:center;gap:14px;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-tile);padding:16px 18px;cursor:pointer;transition:border-color var(--dur),box-shadow var(--dur)}
+.tile:hover{border-color:var(--muted)}
+.tile[aria-pressed=true]{border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)}
+.tile .tt{font-size:17px;font-weight:700}
+.tile .ts{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.4}
+.tile .ro{font-size:26px;width:44px;height:44px;border-radius:12px;background:var(--fill);display:grid;place-items:center;flex:0 0 auto}
+.stiles{display:grid;gap:8px;grid-template-columns:repeat(2,1fr)}
+@container dev (min-width:560px){.stiles{grid-template-columns:repeat(3,1fr)}}
+@container dev (min-width:860px){.stiles{grid-template-columns:repeat(4,1fr)}}
+.stile{display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;min-height:58px}
+.stile[aria-pressed=true]{border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)}
+.stile .sn{font-size:14.5px;font-weight:700;line-height:1.2}
+.stile .sc{font-size:12px;color:var(--cls-ink);font-weight:600}
+.stile .badge{margin-top:3px;display:inline-block}
+.clsgrp{margin:16px 0 8px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--cls-ink)}
+.clsgrp:first-child{margin-top:0}
+.s1-foot{padding:40px 0 80px;font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ===== 상단 고정 바 (애플 localnav 대응) ===== */
+.lnav{position:sticky;top:0;z-index:30;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.lnav .in{height:52px;display:flex;align-items:center;gap:10px}
+.lnav .nm{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:17px;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden}
+.lnav .nm .h{color:var(--muted);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.lnav .nm .n{overflow:hidden;text-overflow:ellipsis}
+@container dev (max-width:520px){.lnav .nm{font-size:14.5px}.lnav .in{gap:6px}}
+.seg{display:inline-flex;background:var(--fill);border-radius:9px;padding:2px;flex:0 0 auto}
+.seg button{border:0;background:transparent;padding:4px 10px;border-radius:7px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+@container dev (max-width:520px){.seg button{padding:4px 7px;font-size:12px}}
+.pill{border:0;border-radius:var(--r-pill);background:var(--link);color:#fff;font-size:12.5px;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.long{display:inline}.short{display:none}
+@container dev (max-width:520px){.long{display:none}.short{display:inline}}
+
+/* 같은 역할 전문화 줄 (chapternav 대응) */
+.specrow{border-bottom:1px solid var(--line);background:var(--bg)}
+.specrow .in{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:10px 0 8px}
+.specrow .in::-webkit-scrollbar{display:none}
+.sr{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:64px;border:0;background:none;cursor:pointer;padding:2px 4px;font-size:11px;color:var(--ink-2);line-height:1.2;text-align:center}
+.sr .ico{--s:32px}
+.sr[aria-current=true]{color:var(--ink);font-weight:700}
+.sr[aria-current=true] .ico{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--cls)}
+.sr.soon{opacity:.55}
+.sr .more{width:32px;height:32px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-size:16px;color:var(--ink-2)}
+
+/* 배너 */
+.banner{margin:12px 0 0;border-radius:var(--r-card);padding:12px 14px;background:var(--surface);border:1px solid var(--line);display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
+.banner .bt{flex:1}
+.banner b{font-weight:700}
+.banner .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.banner.share{border-left:4px solid var(--cls)}
+.banner.soon{border-left:4px solid var(--muted)}
+
+/* ===== 치트시트 (애플 '기술 사양' 대응: 깔끔하지만 촘촘) ===== */
+.ctrl{padding:0 0 6px;border-bottom:1px solid var(--line)}
+.tabbar{position:sticky;top:52px;z-index:25;background:var(--bg);padding:8px 0 6px;margin:0 -16px;padding-left:16px;padding-right:16px}
+@container dev (max-width:520px){.lensnote{display:none}.specrow .in{padding:6px 0 4px}.sr{min-width:56px;font-size:10.5px;gap:4px}.sr .ico{--s:28px}.dhead{padding:12px 0 2px}.row2 .lbl{display:none}.row2{gap:6px 8px}.dname{font-size:22px}.ft{padding:2px 7px;font-size:11.5px}}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:5px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--ink-2)}
+.tab[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.row2{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:8px;font-size:12px;color:var(--muted)}
+.row2 .g{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.row2 .lang{margin-left:auto}
+@container dev (max-width:520px){.row2 .lang{margin-left:0}}
+.filters{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.ft{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-tag);padding:3px 8px;font-size:12px;font-weight:700;cursor:pointer;color:var(--t)}
+.ft[aria-pressed=false]{color:var(--muted);background:transparent;border-style:dashed;font-weight:500;text-decoration:line-through;text-decoration-color:var(--line)}
+.lensnote{font-size:11.5px;color:var(--muted);margin-top:6px}
+.dhead{padding:18px 0 6px}
+.dname{font-family:var(--title-font);font-size:26px;font-weight:700;margin:0;letter-spacing:-.02em}
+[data-font=a] .dname{letter-spacing:.01em;font-size:24px}
+.dsub{font-size:13px;color:var(--muted);margin:4px 0 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:10px 0 2px}
+.legend i{display:inline-block;width:3px;height:12px;border-radius:2px;margin-right:5px;vertical-align:-2px}
+.card{background:var(--surface);border-radius:var(--r-card);margin:10px 0;overflow:hidden}
+.card h3{margin:0;padding:11px 14px 5px;font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px;letter-spacing:-.01em}
+.card h3 small{font-size:11.5px;color:var(--muted);font-weight:500;white-space:nowrap}
+.card h3 small a{margin-right:8px}
+.items{list-style:none;margin:0;padding:2px 0 8px}
+.items li{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:4px 14px 4px 11px;font-size:var(--fs-item);line-height:1.42;border-left:3px solid var(--band,var(--common))}
+.items li.role{--band:var(--role)}
+.items li.spec{--band:var(--cls)}
+.tag{font-size:11.5px;font-weight:700;color:var(--t);padding-top:2px;white-space:nowrap}
+.need{font-size:10.5px;font-weight:800;border-radius:4px;padding:0 4px;margin-right:4px;vertical-align:1px}
+.need.must{background:var(--t-tb);color:#fff}.need.rec{border:1px solid var(--t-int);color:var(--t-int)}
+.resp{color:var(--cls-ink);font-weight:600}
+.resp.none{color:var(--muted);font-weight:500}
+.herocard{border-left:0}
+.herocard h3 .hl{color:var(--cls-ink)}
+.deep{border-top:1px solid var(--line)}
+.deep summary{list-style:none;cursor:pointer;padding:8px 14px;font-size:13px;font-weight:600;color:var(--link);display:flex;justify-content:space-between}
+.deep summary::-webkit-details-marker{display:none}
+.deep[open] summary .chev{transform:rotate(180deg)}
+.chev{transition:transform var(--dur)}
+.dblk h4{margin:8px 14px 2px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+.lay{font-size:10.5px;font-weight:700;border-radius:4px;padding:0 5px;background:var(--fill);color:var(--muted)}
+.lay.role{background:rgba(0,102,204,.1);color:var(--role)}
+.lay.spec{background:transparent;color:var(--cls-ink);border:1px solid var(--cls)}
+.dover{margin:4px 14px 6px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 4px}
+.sechead h2{font-size:19px;margin:0;font-weight:700}
+.sechead p{margin:0;font-size:12px;color:var(--muted)}
+.foot{padding:28px 0 60px;font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ===== S2b 층 비교 ===== */
+.cmp2{display:grid;gap:14px;grid-template-columns:1fr}
+@container dev (min-width:760px){.cmp2{grid-template-columns:1fr 1fr}}
+.cmp2 .colh{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin:6px 0 0}
+
+/* ===== S3 스킬 가이드 (애플 제품 소개 섹션 대응) ===== */
+.ghero{padding:56px 0 40px;text-align:center}
+.ghero .eb{font-size:14px;font-weight:600;color:var(--cls-ink);margin:0 0 8px}
+.ghero h1{font-family:var(--title-font);font-size:48px;line-height:1.05;margin:0;letter-spacing:-.03em}
+[data-font=a] .ghero h1{letter-spacing:0;font-size:42px}
+.ghero p{font-size:19px;line-height:1.45;color:var(--muted);margin:14px auto 0;max-width:560px}
+.ghero .lk{margin-top:18px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:15px}
+@container dev (min-width:760px){.ghero{padding:96px 0 64px}.ghero h1{font-size:72px}}
+.gsec{padding:48px 0;border-top:1px solid var(--line)}
+@container dev (min-width:760px){.gsec{padding:80px 0}}
+.gsec h2{font-size:32px;line-height:1.1;margin:0;letter-spacing:-.02em}
+.gsec h2 span{color:var(--muted)}
+@container dev (min-width:760px){.gsec h2{font-size:44px}}
+.gsec .lead{font-size:17px;color:var(--muted);margin:10px 0 24px;line-height:1.5;max-width:620px}
+.sub{font-size:13px;font-weight:700;color:var(--muted);margin:18px 0 8px}
+.kgrid{display:grid;gap:8px;grid-template-columns:1fr}
+@container dev (min-width:640px){.kgrid{grid-template-columns:1fr 1fr}}
+.kc{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border-radius:14px;padding:12px 14px}
+.kc img{width:38px;height:38px;border-radius:8px;flex:0 0 auto}
+.kc .kn{font-size:15px;font-weight:700}
+.kc .kk{font-size:12px;color:var(--muted)}
+.kc .kd{font-size:13.5px;color:var(--ink-2);line-height:1.45;margin-top:2px}
+.codes .cr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.codes .cr:first-child{border-top:0}
+.codes code{flex:1 1 200px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--ink-2)}
+@media print{.proto,.sid,.lnav,.specrow,.gprint{display:none!important}.device{box-shadow:none;border:0;max-height:none}.gsec{break-inside:avoid;padding:16px 0}.ghero{padding:12px 0}}
+
+/* ===== S4 비교 (애플 비교 페이지 대응) ===== */
+.cmphead{position:sticky;top:52px;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0}
+.cmpcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cmpcol{text-align:center}
+.cmpcol select{width:100%;font:inherit;font-size:15px;font-weight:700;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 10px;text-align:center}
+.cmprow{padding:18px 0;border-bottom:1px solid var(--line)}
+.cmprow .lb{font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:8px}
+.cmprow .vals{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center;font-size:15px;line-height:1.45}
+.big{font-size:32px;font-weight:700;letter-spacing:-.02em;display:block}
+.meter{display:inline-flex;gap:3px}.meter i{width:18px;height:6px;border-radius:3px;background:var(--fill)}.meter i.on{background:var(--cls)}
+
+/* ===== S5 전환 시트 ===== */
+.sheet{position:absolute;inset:0;z-index:60;background:var(--sheet);display:flex;align-items:flex-end;justify-content:center}
+.device:not(.phone) .sheet{position:fixed;align-items:center}
+.sheet-panel{width:100%;max-width:720px;max-height:88%;overflow:auto;background:var(--bg);border-radius:18px 18px 0 0;box-shadow:0 12px 40px rgba(0,0,0,.18);animation:up var(--dur) var(--ease)}
+.device:not(.phone) .sheet-panel{border-radius:18px;max-height:84vh}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet-head{position:sticky;top:0;background:var(--bg);padding:14px 18px 10px;border-bottom:1px solid var(--line);z-index:2}
+.sheet-head .t{display:flex;justify-content:space-between;align-items:center}
+.sheet-head h2{margin:0;font-size:21px}
+.x{border:0;background:var(--fill);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px}
+.search{width:100%;margin-top:10px;font:inherit;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 12px}
+.sheet-body{padding:12px 18px 24px}
+
+/* ===== S8/S9 ===== */
+.center{min-height:560px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px}
+.center h1{font-size:34px;margin:0 0 10px;letter-spacing:-.02em}
+.center p{color:var(--muted);font-size:17px;margin:0 0 18px;line-height:1.5}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;text-align:left;background:var(--surface);border-radius:12px;overflow:hidden}
+.tbl th,.tbl td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:12px;color:var(--muted);font-weight:700;border-top:0}
+.tbl code{font-family:ui-monospace,Menlo,monospace;font-size:12px;word-break:break-all}
+
+/* ===== 지도 ===== */
+.map h1{font-size:34px;margin:40px 0 6px;letter-spacing:-.02em}
+.mapl{list-style:none;padding:0;margin:20px 0}
+.mapl li{background:var(--surface);border-radius:14px;padding:14px 16px;margin:8px 0;display:grid;grid-template-columns:52px 1fr;gap:4px 12px}
+.mapl .id{font-weight:800;color:var(--link);font-size:18px;grid-row:span 3}
+.mapl .nmm{font-weight:700;font-size:16px}
+.mapl code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);word-break:break-all}
+.mapl .ds{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.flowline{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:var(--surface);border-radius:12px;padding:14px;line-height:1.7;overflow-x:auto;white-space:pre;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="proto" role="toolbar" aria-label="프로토타입 조작">
+  <b>프로토타입</b>
+  <span class="grp"><span>화면</span><select id="p-screen" aria-label="화면으로 이동"></select></span>
+  <a href="#map">화면 지도</a>
+  <span class="grp"><span>제목 글꼴</span><span class="pseg" id="p-font"><button data-v="a">A Cinzel 유지</button><button data-v="b">B Pretendard</button></span></span>
+  <span class="grp"><span>테마</span><span class="pseg" id="p-theme"><button data-v="light">라이트</button><button data-v="dark">다크</button></span></span>
+  <span class="grp"><span>폭</span><span class="pseg" id="p-width"><button data-v="phone">휴대폰 390</button><button data-v="desk">데스크톱</button></span></span>
+  <span class="grp"><span>저장된 전문화</span><b id="p-saved"></b></span>
+  <button class="pseg" id="p-reset" style="padding:4px 9px;cursor:pointer;background:transparent;color:#F5F5F7">첫 방문으로 초기화</button>
+</div>
+<div class="stage"><div class="device" id="dev"><div id="app"></div></div></div>
+
+<script>
+// ===== 데이터 (빌드 시 주입: design/roster.json, index.html D·BRIEF·TRASH·KO_NAMES, guides/*.html) =====
+const ROSTER=[{"s":"warrior","en":"Warrior","ko":"전사","t":"WARRIOR","c":"#C69B6D","li":"#906538","di":"#C69B6D","sp":[{"id":71,"s":"arms","en":"Arms","ko":"무기","r":"dps","ic":"ability_warrior_savageblow","h":[{"s":"slayer","en":"Slayer","ko":"학살자"},{"s":"colossus","en":"Colossus","ko":"거신"}]},{"id":72,"s":"fury","en":"Fury","ko":"분노","r":"dps","ic":"ability_warrior_innerrage","h":[{"s":"slayer","en":"Slayer","ko":"학살자"},{"s":"mountain-thane","en":"Mountain Thane","ko":"산왕"}]},{"id":73,"s":"protection","en":"Protection","ko":"방어","r":"tank","ic":"ability_warrior_defensivestance","h":[{"s":"mountain-thane","en":"Mountain Thane","ko":"산왕"},{"s":"colossus","en":"Colossus","ko":"거신"}]}]},{"s":"paladin","en":"Paladin","ko":"성기사","t":"PALADIN","c":"#F48CBA","li":"#D7156B","di":"#F48CBA","sp":[{"id":65,"s":"holy","en":"Holy","ko":"신성","r":"healer","ic":"spell_holy_holybolt","h":[{"s":"lightsmith","en":"Lightsmith","ko":"빛의 대장장이"},{"s":"herald-of-the-sun","en":"Herald of the Sun","ko":"태양의 사자"}]},{"id":66,"s":"protection","en":"Protection","ko":"보호","r":"tank","ic":"ability_paladin_shieldofthetemplar","h":[{"s":"templar","en":"Templar","ko":"기사단"},{"s":"lightsmith","en":"Lightsmith","ko":"빛의 대장장이"}]},{"id":70,"s":"retribution","en":"Retribution","ko":"징벌","r":"dps","ic":"spell_holy_auraoflight","h":[{"s":"templar","en":"Templar","ko":"기사단"},{"s":"herald-of-the-sun","en":"Herald of the Sun","ko":"태양의 사자"}]}]},{"s":"hunter","en":"Hunter","ko":"사냥꾼","t":"HUNTER","c":"#AAD372","li":"#557725","di":"#AAD372","sp":[{"id":253,"s":"beast-mastery","en":"Beast Mastery","ko":"야수","r":"dps","ic":"ability_hunter_bestialdiscipline","h":[{"s":"pack-leader","en":"Pack Leader","ko":"무리의 지도자"},{"s":"dark-ranger","en":"Dark Ranger","ko":"어둠 순찰자"}]},{"id":254,"s":"marksmanship","en":"Marksmanship","ko":"사격","r":"dps","ic":"ability_hunter_focusedaim","h":[{"s":"sentinel","en":"Sentinel","ko":"파수꾼"},{"s":"dark-ranger","en":"Dark Ranger","ko":"어둠 순찰자"}]},{"id":255,"s":"survival","en":"Survival","ko":"생존","r":"dps","ic":"ability_hunter_camouflage","h":[{"s":"sentinel","en":"Sentinel","ko":"파수꾼"},{"s":"pack-leader","en":"Pack Leader","ko":"무리의 지도자"}]}]},{"s":"rogue","en":"Rogue","ko":"도적","t":"ROGUE","c":"#FFF468","li":"#776F00","di":"#FFF468","sp":[{"id":259,"s":"assassination","en":"Assassination","ko":"암살","r":"dps","ic":"ability_rogue_deadlybrew","h":[{"s":"fatebound","en":"Fatebound","ko":"운명결속"},{"s":"deathstalker","en":"Deathstalker","ko":"죽음추적자"}]},{"id":260,"s":"outlaw","en":"Outlaw","ko":"무법","r":"dps","ic":"ability_rogue_waylay","h":[{"s":"trickster","en":"Trickster","ko":"기만자"},{"s":"fatebound","en":"Fatebound","ko":"운명결속"}]},{"id":261,"s":"subtlety","en":"Subtlety","ko":"잠행","r":"dps","ic":"ability_stealth","h":[{"s":"trickster","en":"Trickster","ko":"기만자"},{"s":"deathstalker","en":"Deathstalker","ko":"죽음추적자"}]}]},{"s":"priest","en":"Priest","ko":"사제","t":"PRIEST","c":"#FFFFFF","li":"#707070","di":"#FFFFFF","sp":[{"id":256,"s":"discipline","en":"Discipline","ko":"수양","r":"healer","ic":"spell_holy_powerwordshield","h":[{"s":"voidweaver","en":"Voidweaver","ko":"공허술사"},{"s":"oracle","en":"Oracle","ko":"예언자"}]},{"id":257,"s":"holy","en":"Holy","ko":"신성","r":"healer","ic":"spell_holy_guardianspirit","h":[{"s":"archon","en":"Archon","ko":"집정관"},{"s":"oracle","en":"Oracle","ko":"예언자"}]},{"id":258,"s":"shadow","en":"Shadow","ko":"암흑","r":"dps","ic":"spell_shadow_shadowwordpain","h":[{"s":"voidweaver","en":"Voidweaver","ko":"공허술사"},{"s":"archon","en":"Archon","ko":"집정관"}]}]},{"s":"death-knight","en":"Death Knight","ko":"죽음의 기사","t":"DEATHKNIGHT","c":"#C41E3A","li":"#C41E3A","di":"#E44F69","sp":[{"id":250,"s":"blood","en":"Blood","ko":"혈기","r":"tank","ic":"spell_deathknight_bloodpresence","h":[{"s":"sanlayn","en":"San'layn","ko":"산레인"},{"s":"deathbringer","en":"Deathbringer","ko":"죽음의 인도자"}]},{"id":251,"s":"frost","en":"Frost","ko":"냉기","r":"dps","ic":"spell_deathknight_frostpresence","h":[{"s":"rider-of-the-apocalypse","en":"Rider of the Apocalypse","ko":"종말의 기수"},{"s":"deathbringer","en":"Deathbringer","ko":"죽음의 인도자"}]},{"id":252,"s":"unholy","en":"Unholy","ko":"부정","r":"dps","ic":"spell_deathknight_unholypresence","h":[{"s":"sanlayn","en":"San'layn","ko":"산레인"},{"s":"rider-of-the-apocalypse","en":"Rider of the Apocalypse","ko":"종말의 기수"}]}]},{"s":"shaman","en":"Shaman","ko":"주술사","t":"SHAMAN","c":"#0070DD","li":"#006DD8","di":"#0282FF","sp":[{"id":262,"s":"elemental","en":"Elemental","ko":"정기","r":"dps","ic":"spell_nature_lightning","h":[{"s":"stormbringer","en":"Stormbringer","ko":"폭풍인도자"},{"s":"farseer","en":"Farseer","ko":"선견자"}]},{"id":263,"s":"enhancement","en":"Enhancement","ko":"고양","r":"dps","ic":"spell_shaman_improvedstormstrike","h":[{"s":"totemic","en":"Totemic","ko":"토템술사"},{"s":"stormbringer","en":"Stormbringer","ko":"폭풍인도자"}]},{"id":264,"s":"restoration","en":"Restoration","ko":"복원","r":"healer","ic":"spell_nature_magicimmunity","h":[{"s":"totemic","en":"Totemic","ko":"토템술사"},{"s":"farseer","en":"Farseer","ko":"선견자"}]}]},{"s":"mage","en":"Mage","ko":"마법사","t":"MAGE","c":"#3FC7EB","li":"#107A96","di":"#3FC7EB","sp":[{"id":62,"s":"arcane","en":"Arcane","ko":"비전","r":"dps","ic":"spell_holy_magicalsentry","h":[{"s":"sunfury","en":"Sunfury","ko":"성난태양"},{"s":"spellslinger","en":"Spellslinger","ko":"주문술사"}]},{"id":63,"s":"fire","en":"Fire","ko":"화염","r":"dps","ic":"spell_fire_firebolt02","h":[{"s":"sunfury","en":"Sunfury","ko":"성난태양"},{"s":"frostfire","en":"Frostfire","ko":"서리불꽃"}]},{"id":64,"s":"frost","en":"Frost","ko":"냉기","r":"dps","ic":"spell_frost_frostbolt02","h":[{"s":"spellslinger","en":"Spellslinger","ko":"주문술사"},{"s":"frostfire","en":"Frostfire","ko":"서리불꽃"}]}]},{"s":"warlock","en":"Warlock","ko":"흑마법사","t":"WARLOCK","c":"#8788EE","li":"#5A5CE8","di":"#8788EE","sp":[{"id":265,"s":"affliction","en":"Affliction","ko":"고통","r":"dps","ic":"spell_shadow_deathcoil","h":[{"s":"soul-harvester","en":"Soul Harvester","ko":"영혼 수확자"},{"s":"hellcaller","en":"Hellcaller","ko":"지옥소환사"}]},{"id":266,"s":"demonology","en":"Demonology","ko":"악마","r":"dps","ic":"spell_shadow_metamorphosis","h":[{"s":"soul-harvester","en":"Soul Harvester","ko":"영혼 수확자"},{"s":"diabolist","en":"Diabolist","ko":"악마학자"}]},{"id":267,"s":"destruction","en":"Destruction","ko":"파괴","r":"dps","ic":"spell_shadow_rainoffire","h":[{"s":"hellcaller","en":"Hellcaller","ko":"지옥소환사"},{"s":"diabolist","en":"Diabolist","ko":"악마학자"}]}]},{"s":"monk","en":"Monk","ko":"수도사","t":"MONK","c":"#00FF98","li":"#007F4C","di":"#00FF98","sp":[{"id":268,"s":"brewmaster","en":"Brewmaster","ko":"양조","r":"tank","ic":"spell_monk_brewmaster_spec","h":[{"s":"shado-pan","en":"Shado-Pan","ko":"음영파"},{"s":"master-of-harmony","en":"Master of Harmony","ko":"조화의 종사"}]},{"id":270,"s":"mistweaver","en":"Mistweaver","ko":"운무","r":"healer","ic":"spell_monk_mistweaver_spec","h":[{"s":"conduit-of-the-celestials","en":"Conduit of the Celestials","ko":"천신의 대변자"},{"s":"master-of-harmony","en":"Master of Harmony","ko":"조화의 종사"}]},{"id":269,"s":"windwalker","en":"Windwalker","ko":"풍운","r":"dps","ic":"spell_monk_windwalker_spec","h":[{"s":"conduit-of-the-celestials","en":"Conduit of the Celestials","ko":"천신의 대변자"},{"s":"shado-pan","en":"Shado-Pan","ko":"음영파"}]}]},{"s":"druid","en":"Druid","ko":"드루이드","t":"DRUID","c":"#FF7C0A","li":"#B25300","di":"#FF7C0A","sp":[{"id":102,"s":"balance","en":"Balance","ko":"조화","r":"dps","ic":"spell_nature_starfall","h":[{"s":"keeper-of-the-grove","en":"Keeper of the Grove","ko":"숲의 수호자"},{"s":"elunes-chosen","en":"Elune's Chosen","ko":"엘룬의 대행자"}]},{"id":103,"s":"feral","en":"Feral","ko":"야성","r":"dps","ic":"ability_druid_catform","h":[{"s":"druid-of-the-claw","en":"Druid of the Claw","ko":"발톱의 드루이드"},{"s":"wildstalker","en":"Wildstalker","ko":"야생추적자"}]},{"id":104,"s":"guardian","en":"Guardian","ko":"수호","r":"tank","ic":"ability_racial_bearform","h":[{"s":"druid-of-the-claw","en":"Druid of the Claw","ko":"발톱의 드루이드"},{"s":"elunes-chosen","en":"Elune's Chosen","ko":"엘룬의 대행자"}]},{"id":105,"s":"restoration","en":"Restoration","ko":"회복","r":"healer","ic":"spell_nature_healingtouch","h":[{"s":"wildstalker","en":"Wildstalker","ko":"야생추적자"},{"s":"keeper-of-the-grove","en":"Keeper of the Grove","ko":"숲의 수호자"}]}]},{"s":"demon-hunter","en":"Demon Hunter","ko":"악마사냥꾼","t":"DEMONHUNTER","c":"#A330C9","li":"#A330C9","di":"#BA5ED8","sp":[{"id":577,"s":"havoc","en":"Havoc","ko":"파멸","r":"dps","ic":"ability_demonhunter_specdps","h":[{"s":"fel-scarred","en":"Fel-Scarred","ko":"지옥상흔"},{"s":"aldrachi-reaver","en":"Aldrachi Reaver","ko":"알드라치 파괴자"}]},{"id":581,"s":"vengeance","en":"Vengeance","ko":"복수","r":"tank","ic":"ability_demonhunter_spectank","h":[{"s":"aldrachi-reaver","en":"Aldrachi Reaver","ko":"알드라치 파괴자"},{"s":"annihilator","en":"Annihilator","ko":"궤멸자"}]},{"id":1480,"s":"devourer","en":"Devourer","ko":"포식","r":"dps","ic":"classicon_demonhunter_void","h":[{"s":"annihilator","en":"Annihilator","ko":"궤멸자"},{"s":"void-scarred","en":"Void-Scarred","ko":"공허상흔"}]}]},{"s":"evoker","en":"Evoker","ko":"기원사","t":"EVOKER","c":"#33937F","li":"#2B7C6B","di":"#33937F","sp":[{"id":1467,"s":"devastation","en":"Devastation","ko":"황폐","r":"dps","ic":"classicon_evoker_devastation","h":[{"s":"scalecommander","en":"Scalecommander","ko":"비늘사령관"},{"s":"flameshaper","en":"Flameshaper","ko":"불꽃형성자"}]},{"id":1468,"s":"preservation","en":"Preservation","ko":"보존","r":"healer","ic":"classicon_evoker_preservation","h":[{"s":"flameshaper","en":"Flameshaper","ko":"불꽃형성자"},{"s":"chronowarden","en":"Chronowarden","ko":"시간 감시자"}]},{"id":1473,"s":"augmentation","en":"Augmentation","ko":"증강","r":"dps","ic":"classicon_evoker_augmentation","h":[{"s":"scalecommander","en":"Scalecommander","ko":"비늘사령관"},{"s":"chronowarden","en":"Chronowarden","ko":"시간 감시자"}]}]}];
+const DUNGEONS=[{"id": "altar", "name": "Altar of Fangs", "sub": "Midnight 신규", "time": 30, "bosses": [{"n": "Rav'i", "k": "Boss 1", "i": [["tb", "{Hydrastrike} 머리 3연타", null, ["spec-response"]], ["pos", "에너지 0 전에 보스를 {Fresh Meat} 없는 {Carrion Pile} 옆으로", null, []], ["pos", "{Ssscavenging} 중 {Messy Eater} 장판 전원 밟고 보호막에 딜", null, []], ["dodge", "{Regurgitate} 파도 3줄, {Ravenous Stomp} 종유석 장판", null, []]]}, {"n": "The Writhing Coil", "k": "Boss 2", "i": [["tb", "{Tail Scythe}, 넉백 방향 주의", null, ["spec-response"]], ["int", "{Toxic Barrage} 중 {Toxic Atrophy} 3연속 차단", "must", []], ["dodge", "{Vindictive Onslaught}: 돌진 직선 → {Venom Jet} 전방기", null, []], ["pos", "{Death Rattle} 때 {Vine Grip} 줄을 10야드 당겨 끊고, 갈라진 {Uncoiled Writhe} 모으기", null, []]]}, {"n": "Zul'jan", "k": "Boss 3", "i": [["tb", "{Chop Down} 2연타", null, ["spec-response"]], ["pos", "{Ritual of the Fang} 빔 4개를 담당 자리에서 몸으로 막기", null, []], ["pos", "{Boneslicer} 직선에 일부러 맞아 {Ritual Venom} 지우기", null, []], ["dodge", "{Axegrinder} 회전 도끼 3개, 피 웅덩이는 외곽에", null, []]]}], "trash": [{"n": "Rav'i 전", "i": [["pos", "[Ritual Chieftain] 최우선 처치. {Unstable Totem} 지속 광역 피해, {Blood Sacrifice}", null, []], ["int", "[Primal Serpent] {Piercing Hiss} 차단. {Fetid Spit}은 무작위 대상 피해", null, []], ["tb", "[Ravenous Descendant] {Ravenous Claws} 버프 중 SotR 유지", null, []], ["dodge", "[Twinfang Harrower] {Toxic Breath} 전방기. {Paralyzing Shots}은 {Blessing of Freedom}", null, []], ["dodge", "[Venom Leech] 처치 후 {Septic Spatter} 장판", null, []]]}, {"n": "The Writhing Coil 전", "i": [["int", "[High Evolutionist] {Mass Envenom}, {Envenom} 차단. {Evolve} 채널은 차단·기절", null, []], ["int", "[Bloodletter] {Bloodletting} 기절 등 군중제어로 끊기", null, []], ["tb", "[Rattling Writhe] {Rattle} 시전 중 큰 생존기", null, []]]}, {"n": "Zul'jan 전", "i": [["int", "[Ula'tek's Chosen] {Mass Envenom} 차단, {Toxic Beam} 전방 회피", null, []], ["tb", "[Living Venom] 처치 직전 생존기 ({Venom Burst} 폭발)", null, []], ["dodge", "[Ascendant Serpent] 파티 쪽으로 모으고 {Noxious Spray}, {Virulent Whirl} 회피", null, []]]}]}, {"id": "vale", "name": "The Blinding Vale", "sub": "Midnight 신규", "time": 30, "bosses": [{"n": "Lightblossom Trinity", "k": "Boss 1", "i": [["tb", "{Bedrock Slam}, 생긴 {Fertile Loam}에서 보스 빼기", null, ["spec-response"]], ["pos", "{Lightblossom Beam} 경로에 서서 꽃 대신 맞기", null, []], ["int", "Kezkitt {Light Bolt}", "must", []], ["dodge", "{Thornblade} 뒤 {Fan Of Thorns} 15m 밖으로", null, []]]}, {"n": "Ikuzz the Light Hunter", "k": "Boss 2", "i": [["tip", "{Thorncaller Roar} 6초 파티 광역, 전원 개인 생존기", null, []], ["dodge", "{Bloodthirsty Gaze} 대상은 10초 도망, 뿌리 쪽으로 보스 끌기", null, []], ["disp", "{Bloodthorn Roots} 묶인 아군", null, ["spec-response"]], ["tip", "50% {Lightcrazed Frenzy}부터 광역 피해 지속, 쿨기 아껴두기", null, []]]}, {"n": "Lightwarden Ruia", "k": "Boss 3", "i": [["tb", "Bear Form {Mangling Claws} 평타 2배 유지", null, ["spec-response"]], ["int", "Moonkin Form {Warden's Wrath}", "rec", []], ["pos", "{Pulverizing Strikes} 대상은 멈춰서 원뿔을 파티 반대로", null, []], ["tip", "40% {Spirits of the Vale}: 가장 위험, 쿨기 아껴두기", null, []]]}, {"n": "Ziekket", "k": "Boss 4", "i": [["tb", "{Thornspike} 넉백+출혈", null, ["spec-response"]], ["int", "부활 전 Lasher {Lightspore Shot} (부활 후엔 차단 면역)", "rec", []], ["pos", "{Concentrated Lightbeam}을 쓰러진 Lasher 시체에 맞히기", null, []], ["pos", "{Lightbloom's Essence} 구슬은 보스 닿기 전에 밟기", null, []]]}], "trash": [{"n": "Lightblossom Trinity 전", "i": [["pos", "[Radiant Spellsower] 우선 처치. 근처 Lasher 무리에 닿으면 {Frantic Blooming}", null, []], ["int", "[Radiant Spellsower] {Light Bolt Volley} 차단, 여유 있으면 {Light Bolt}", null, []], ["int", "[Lightgorged Lasher] {Lightbloom Pollination}", null, []], ["tb", "[Sporeblight Belcher] {Spouting Floret} 때 큰 생존기, 남은 장판 회피", null, []], ["dodge", "[Virid Grovekeeper] {Uproot} 넉백 방향 주의", null, []]]}, {"n": "Lightwarden Ruia 전", "i": [["int", "[Lightfeather Petalwing] {Disorienting Screech}", null, []], ["dodge", "[Luminous Thornmaw] {Solar Breath} 전방기", null, []], ["dodge", "[Thorny Saptor] {Hunting Leap} 전방기", null, []]]}, {"n": "Ziekket 전", "i": [["disp", "[Potatoad Matriarch] {Toxic Spew} 독. Potadpole Egg는 빨리 처치", null, ["spec-response"]], ["tb", "[Overgrown Hydra] {Lightmaw Beams} 대상이면 생존기, {Bullet Seeds} 장판 회피", null, []]]}]}, {"id": "nalorakk", "name": "Den of Nalorakk", "sub": "Midnight 신규", "time": 32, "bosses": [{"n": "The Hoardmonger", "k": "Boss 1", "i": [["pos", "90·70·40%에 가까운 자원 더미를 먹음: 고기 → 뼈 → 버섯 순으로 끌기", null, []], ["pos", "{Spoiled Supplies} 버섯 12초 안에 전부 밟기, 탱커가 많이", null, []], ["disp", "{Toxic Spores} 독 중첩", null, ["spec-response"]], ["dodge", "{Earthshatter Slam} 무작위 대상 전방기", null, []]]}, {"n": "Sentinel of Winter", "k": "Boss 2", "i": [["int", "{Fractured Shivercore}의 {Winter's Shroud}", "must", []], ["pos", "쫄이 죽으면 {Rimeshatter} 6초 안에 1명 밟기", null, []], ["pos", "{Frozen Tempest} 땐 {Snowdrift} 안으로 (둘째 쫄은 직전에 처치)", null, []], ["dodge", "{Raging Squall} 토네이도, 빙판이라 일찍 움직이기", null, []]]}, {"n": "Nalorakk", "k": "Boss 3", "i": [["pos", "{Overwhelming Onslaught} 때 Zul'jarra 방패 뒤로, 탱커 등 뒤에 Echo 두지 않기", null, []], ["tb", "넉백 직후 {Forceful Slam} 6m 안에서 탱커가 받기", null, []], ["pos", "{Echoing Maul} Echo는 가장자리 한쪽에 모으기", null, []], ["pos", "{Fury of the War God} 때 Zul'jarra 둘러싸고 Echo 몸으로 막기", null, []]]}], "trash": [{"n": "The Hoardmonger 전", "i": [["int", "[Earthwhisper Tender] {Earth Bolt}, {Healing Breeze} 둘 다 차단", null, []], ["tb", "[Territorial Matriarch] {Mother's Wrath} 격노 → 탱커 피해 큼, 격노 해제 요청", null, []], ["tb", "[Keen-Eyed Striker] {Razor Dive} 출혈 중첩 쌓이면 생존기", null, []], ["tip", "[Thornclaw Gatherer] {Shredding Claws} 방어도 감소 중첩, {Rotten Supplies} 장판 회피", null, []], ["pos", "[Spirit of Hunger] {Starvation Effigy} 토템 우선, {Feast of Misery} 채널 중 생존기", null, []]]}, {"n": "Sentinel of Winter 전", "i": [["int", "[Frigid Mauler] {Frigid Roar}", null, []], ["dodge", "[Avatar of Determination] {Pulverize} 회피, {Glacial Tomb} 속박은 다음 시전 전 해제", null, []], ["pos", "[Glacial Revenant] {Cryo Surge} 해제 못 하면 파티와 거리", null, []], ["tip", "[The Winter Squall] (선택) {Harsh Winter} 오라, 다른 몹과 같이 풀지 않기", null, []]]}, {"n": "Nalorakk 전", "i": [["int", "[Stormbound Mystic] {Arc Lightning} 차단, 여유 있으면 {Lightning Bolt}", null, []], ["int", "[Loa Speaker Nanea] {Lightning Bolt} 차단, {Earthquake}는 파티 밖에, 빨리 처치", null, []], ["pos", "[Ruthless Totemcaller] {Magma Totem} 우선 처치", null, []], ["tb", "[Grizzled Warbringer] {Primal Echo} 때 생존기, {Poison Spear Volley} 장판 회피", null, []], ["tip", "[Bonded Beasttamer] 펫 {Bestial Wrath} 격노 + 대상 고정", null, []]]}]}, {"id": "murder", "name": "Murder Row", "sub": "Midnight 신규", "time": 34, "bosses": [{"n": "Kystia Manaheart", "k": "Boss 1", "i": [["tip", "Nibbles를 20%까지 깎아 {Destabilized} 띄운 뒤 Kystia 딜", null, []], ["tb", "{Chaos Barrage} 첫 타 탱커", null, ["spec-response"]], ["int", "{Mirror Images} 분신 5개 {Felstorm} 차단·CC", "must", []], ["dodge", "Nibbles {Fel Spray} 회전 전방기, Kystia {Fel Nova}", null, []]]}, {"n": "Zaen Bladesorrow", "k": "Boss 2", "i": [["tb", "{Envenom} + 생존기", null, ["spec-response"]], ["disp", "뒤따르는 {Heartstop Poison}", null, ["spec-response"]], ["pos", "{Murder in a Row} 때 통 하나에 한 명씩 숨기", null, []], ["tip", "{Fire Bomb}으로 {Fel-Infused Freight} 먼저 제거", null, []]]}, {"n": "Xathuux the Annihilator", "k": "Boss 3", "i": [["tb", "{Legion Strike} 치유 감소 8초 + 생존기", null, ["spec-response"]], ["pos", "가장자리에서 보스를 바깥으로, {Axe Toss} 도끼는 보스 옆에서 부수기", null, []], ["dodge", "{Demonic Rage} 중 {Burning Steps}: 벽 따라 천천히 끌기", null, []], ["dodge", "{Infernal Crush} 전 산개", null, []]]}, {"n": "Lithiel Cinderfury", "k": "Boss 4", "i": [["pos", "죽지 않는 Infernal이 탱커 추적, 파티·게이트에서 멀리 끌기", null, []], ["int", "{Chaos Bolt} 최우선", "must", []], ["int", "Wild Imp {Felfire Burst}, 차단기 남겨 Chaos Bolt 우선", "rec", []], ["dodge", "{Malefic Wave}는 {Demonic Gateway}로 넘기, 그 전에 쫄 정리", null, []], ["tb", "Furious Vilefiend는 탱커가 잡기 ({Shadow Bite})", null, []]]}], "trash": [{"n": "Kystia Manaheart 전", "i": [["pos", "[Bribed Captain] (준보스) 먼저 처치, {Deep Corruption} 오라. {Shield Bash}, {Glaive Toss}", null, []], ["int", "[Felonious Mage] {Fel Missiles}", null, []], ["int", "[Seductive Sayaad] {Seduction} 차단·기절", null, []], ["disp", "[Street Sneak] {Heartstop Poison}", null, ["spec-response"]], ["tb", "[Row Hooligan] {Cutpurse} 출혈, 다른 디버프와 겹치면 생존기", null, []]]}, {"n": "Zaen Bladesorrow 전", "i": [["pos", "[Keen Taskmaster] 먼저 처치 ({Back to Work!}가 Warehouse Worker 격노)", null, []], ["dodge", "[Warehouse Worker] {Workplace Accident}", null, []]]}, {"n": "Xathuux 전", "i": [["int", "[Unleashed Imp] {Felfire Burst}", null, []], ["int", "[Fel Invoker] {Health Funnel} 차단, {Felfire Bombardment} 회피", null, []], ["dodge", "[Shivan Punisher] {Whirlwind}에서 빠지기, {Demonic Frenzy} 격노. 우선 처치", null, []], ["tip", "[Wrathguard Flayer] {Fel Rage} 격노, 여러 마리 동시에 풀지 않기", null, []], ["tip", "[Corrupted Warlock] {Curse of Doom}은 마법사 등 저주 해제, {Dark Pact} 보호막. {Drain Life} 차단 불가", null, []]]}]}, {"id": "voidscar", "name": "Voidscar Arena", "sub": "Midnight 신규", "time": 30, "bosses": [{"n": "Taz'Rah", "k": "Boss 1", "i": [["tb", "{Void Blast} 넉백, 뒤가 빈 방향 등지기", null, ["spec-response"]], ["pos", "벽 따라 한 방향으로 돌기", null, []], ["dodge", "{Umbral Rupture} {Void Fissure} 10m, {Dark Bloom} 구슬은 치명적", null, []]]}, {"n": "Atroxus", "k": "Boss 2", "i": [["tb", "{Hulking Claw}", null, ["spec-response"]], ["dodge", "{Toxic Creeper}에게 절대 맞지 않게 끌기 ({Sickening Bite})", null, []], ["dodge", "{Noxious Breath} 전방기, {Poison Pool} 장판", null, []], ["disp", "{Mind-Numbing Poison}", null, ["spec-response"]]]}, {"n": "Charonus", "k": "Boss 3", "i": [["tb", "{Dark Waves} 5초 시전 전방기, 파티 반대쪽 + 생존기", null, []], ["pos", "{Unstable Singularity} 3개 중앙에 보스, 닿으면 {Atomized}", null, []], ["pos", "{Gravitic Orbs} 대상은 구슬을 Singularity로 끌고 가기", null, []], ["dodge", "{Cosmic Crash} 산개, {Void Cascade} 대상은 달리기", null, []]]}], "trash": [{"n": "Taz'Rah 전", "i": [["tip", "시작 갈림길은 오른쪽 추천: [Raj'kess the Spellstorm] 처치 시 던전 진행이 빨라지는 {Proof of Mastery} 버프. 왼쪽 {Proof of Endurance}는 효과가 약함", null, []], ["tb", "오른쪽 길 [Raj'kess the Spellstorm]: {Thundering Storm} 광역 생존기, 구슬 빨리 처치, {Raging Typhoon} 회피", null, []], ["dodge", "왼쪽 길 [Aegyra the Unyielding]: {Savage Smash} 옆으로, {Earthsplitter}와 {Aftershock}에서 도망, {Champion's Spear} 속박 빨리 풀기", null, []]]}, {"n": "공통 일반몹", "i": [["int", "[Voidtouched Magi] {Shadowbolt Volley} 차단, {Null Eruption} 대상이면 파티와 거리", null, []], ["int", "[Dominated Brawler] {Demoralizing Shout}", null, []], ["pos", "[Enthralled Shaman] {Magma Totem} 우선 처치, 여유 있으면 {Lava Bolt} 차단", null, []], ["tb", "[Sycophantic Tarasek] {Melt Armor} 탱커 생존기 (해제 가능)", null, []], ["tb", "[Chitigoth] {Insidious Aura} 개인 생존기, {Ravenous Swarm} 장판 회피", null, []]]}, {"n": "Atroxus 전", "i": [["int", "[Kilivore Screamer] {Mad Shriek}", null, []], ["pos", "[Brutal Overseer] 우선 처치 ({Brutal Slams} 점점 세짐), {Macestorm} 계속 이동", null, []], ["disp", "[Agitated Voidscythe] {Corrosive Essence} 독", null, ["spec-response"]], ["tip", "[Watchful Harrower] {Sky Strike} 모여서 나눠 맞기, {Void Beam} 대상이면 파티와 거리", null, []], ["tb", "[Savage Shredclaw] {Shred Defense} 여러 마리면 탱커 피해 주의", null, []]]}]}, {"id": "kings", "name": "King's Rest", "sub": "BfA 복귀", "time": 33, "bosses": [{"n": "The Golden Serpent", "k": "Boss 1", "i": [["tb", "{Tail Thrash}", null, ["spec-response"]], ["pos", "{Spit Gold} 웅덩이는 보스에서 먼 벽 쪽에 모으기", null, []], ["pos", "{Lucre's Call}: {Animated Gold}가 보스에 닿지 않게 끌고 CC", null, []], ["tip", "{Serpentine Gust} 광역+넉백, 생존기", null, []]]}, {"n": "Mchimba the Embalmer", "k": "Boss 2", "i": [["int", "미라의 {Wretched Discharge} 매번 차단", "must", []], ["pos", "깨어난 미라는 보스 옆에 모으기", null, []], ["pos", "{Entomb}: 흔들리는 관을 빨리 찾아 열기", null, []], ["dodge", "{Drain Fluids} 뒤 {Explosive Acids} 웅덩이", null, []]]}, {"n": "The Council of Tribes", "k": "Boss 3", "i": [["tip", "Kula → Aka'ali → Zanazal 순서", null, []], ["tb", "Aka'ali {Debilitating Backhand}: 큰 생존기 없으면 끝날 때까지 카이팅", null, []], ["pos", "{Barrel Through} 전원 모여 분담 (보스 사망 후에도)", null, []], ["int", "Zanazal {Poison Nova}, 토템은 {Explosive Totem}부터", "must", []]]}, {"n": "Dazar, The First King", "k": "Boss 4", "i": [["int", "Reban {Deathly Roar} 차단, Reban 먼저 처치", "must", []], ["tb", "80% 이후 {Savage Maul} + {Blade Combo} → 큰 쿨기", null, []], ["dodge", "{Impaling Spear}, {Quaking Leap} 산개", null, []], ["pos", "{Gilded Destruction} 중 {Searing Gold} 전방, 보스를 파티 반대로", null, []]]}], "trash": [{"n": "The Golden Serpent 전", "i": [["int", "[Risen Hexer] {Hex Volley} 차단, 여유 있으면 {Shadowfrost Bolt}", null, []], ["tb", "[Animated Guardian] {Suppression Slam} 여러 마리면 생존기", null, []], ["tip", "[Shadow-Borne Champion] {Vigilant Defense} 흡수 중 공격 멈추기, {Ancestral Fury} 격노, {Necrotic Energy} 장판", null, []], ["tip", "[Minion of Zul] {Bound by Shadow} 보호막, 가까이 가면 공포", null, []]]}, {"n": "도전의 방 (Mchimba 전)", "i": [["int", "[Queen Wasi] {Bind Soul}, {Soul Bolt} 둘 다 차단", null, []], ["int", "[Seneschal M'bara] {Unholy Mending}", null, []], ["dodge", "[King Timalji] {Bladestorm}에서 도망, {Erupting Slam} 회피", null, []], ["dodge", "[King Rahu'ai] {Overload} 채널에서 도망", null, []], ["tb", "[Bloodsworn Assassin] {Sudden Rupture} 출혈, 생존기", null, []]]}, {"n": "Mchimba 전", "i": [["int", "[Half-Finished Mummy] {Wretched Discharge}", null, []], ["pos", "[Interment Construct] {Entomb}: 추가 버튼으로 관 위치 확인, 빨리 구출", null, []], ["dodge", "[Purification Construct] {Purifying Flame} 장판, [Embalming Fluid] {Putrid Seekers}", null, []]]}]}, {"id": "ruby", "name": "Ruby Life Pools", "sub": "DF 복귀", "time": 28, "bosses": [{"n": "Melidrussa Chillworn", "k": "Boss 1", "i": [["tb", "{Frigid Shard} 탱커 강타", null, ["spec-response"]], ["int", "{Frigid Shard} 매번 차단 (S2부터 차단 가능)", "rec", []], ["pos", "66·33% {Infused Whelp} 보스 위에 모으고 {Ice Bulwark} 깨기", null, []], ["dodge", "{Hailbombs} 한곳에 모아 깔기, {Chillstorm} 넉백", null, []]]}, {"n": "Kokia Blazehoof", "k": "Boss 2", "i": [["tb", "{Searing Blows} 4연타 출혈 중첩 → 생존기", null, []], ["int", "{Blazebound Firestorm}의 {Blaze Volley}", "must", []], ["pos", "{Ritual of Blazebinding} 대상은 보스 근처에 Firestorm 놓기", null, []], ["dodge", "{Molten Boulder} 굴러가는 경로", null, []]]}, {"n": "Kyrakka & Erkhart Stormvein", "k": "Boss 3", "i": [["tb", "{Stormslam} 자연 취약 → 다음 Stormslam 전 힐러 해제", null, []], ["tip", "{Interrupting Cloudburst} 끝나기 전에 내 시전 멈추기", null, []], ["pos", "{Inferno Spit} 대상은 파티 밖, {Winds of Change} 방향 고려", null, []], ["tip", "한 보스 50%에 Erkhart가 Kyrakka 탑승 → 2페이즈", null, []]]}], "trash": [{"n": "Melidrussa 전", "i": [["int", "[Flashfrost Chillweaver] {Ice Shield} 채널 반드시 차단, {Frostbolt}", null, []], ["tb", "[Primal Juggernaut] {Crushing Smash}", null, ["spec-response"]], ["tb", "[Defier Draghar] (준보스) {Steel Barrage}, {Blazing Rush} 돌진 회피 (벽 근처에서 유도)", null, ["spec-response"]], ["pos", "용 알 밟지 않기 (Infused Whelp 생성). {Primal Chill} 중첩 관리", null, []]]}, {"n": "Kokia 전", "i": [["int", "[Primalist Cinderweaver] {Cinderbolt}", null, []], ["int", "[Ashseer Flamelasher] {Flaming Barrage}: 차단 안 됨, 기절로 끊기", null, []], ["pos", "[Blazebound Destroyer] {Living Bomb} 파티에서 떨어지기, {Inferno} 생존기, 처치 시 {Burnout}에서 즉시 빠지기", null, []]]}, {"n": "Kyrakka & Erkhart Stormvein 전", "i": [["int", "[Flame Channeler] {Flashfire} 무조건 차단", null, []], ["int", "[Tempest Channeler] {Thunderbolt} 차단, {Lightning Storm} 생존기", null, []], ["pos", "{Summon Primal Thunderclouds} 쫄 즉시 어그로. {Stormcloud Barrier}는 마법 제거 가능한 직업이 삭제", null, []], ["tip", "[Storm Warrior] {Thunderous Stomp} 공속·이속 감소", null, []], ["int", "[High Channeler Ryvati] (준보스) {Shock Blast} 차단, {Tempest Stormshield} 빨리 깨기", null, []]]}]}, {"id": "temple", "name": "Temple of Sethraliss", "sub": "BfA 복귀", "time": 32, "bosses": [{"n": "Adderis & Aspix", "k": "Boss 1", "i": [["tb", "Adderis {Overload}", null, ["spec-response"]], ["pos", "{Storm Blessed} 없는 보스만 공격 (40%마다 교대)", null, []], ["dodge", "{Gale Force} 넉백 직후 {Thunder and Lightning} 모여 분담", null, []], ["tip", "Adderis 처치 후 Aspix Frenzy로 기술 주기 빨라짐", null, []]]}, {"n": "Merektha", "k": "Boss 2", "i": [["tb", "{Lightning Bite} 매번 생존기", null, []], ["pos", "{A Knot of Snakes} 대상 2명 모여서 광역 CC", null, []], ["dodge", "{Burrow} 흙먼지 돌진 경로, 고단에서 치명적", null, []], ["int", "Toxic Viper {Poison Spit}", "rec", []]]}, {"n": "Galvazzt", "k": "Boss 3", "i": [["pos", "{Lightning Spire} 광선은 딜러·힐러가 교대로 막기 ({Galvanized})", null, []], ["dodge", "{Induction} 뒤 {Induction Field}에서 보스 옮기기", null, []], ["tip", "기력 100이면 {Consume Charge}로 전멸, 광선 하나도 놓치지 않기", null, []]]}, {"n": "Avatar of Sethraliss", "k": "Boss 4", "i": [["tip", "S2 재설계: Avatar는 공격하지 않음. {Essence Defiler} 먼저 → 힐러가 Avatar 치유", null, []], ["tb", "Corrupted Guardian {Tainted Strike}", null, ["spec-response"]], ["pos", "{Corrupted Lifeforce} 3개를 딜러 3명이 6초 안에 소화", null, []], ["int", "Twisted Hexxer {Flame Shock}", "must", []]]}], "trash": [{"n": "Adderis & Aspix 전", "i": [["int", "[Storm Adept] {Lightning Bolt}", null, []], ["int", "[Sandswept Hunter] {Arrow Barrage} 기절 등으로 끊기", null, []], ["tb", "[Barbed Krolusk] {Serrated Charge} 출혈, 걸리면 생존기", null, []], ["int", "[Shrouded Fang] {Poisoned Cheap Shot} 치명적, 끊기", null, []]]}, {"n": "Merektha 전", "i": [["int", "[Faithless Subjugator] {Addle Mind} 최우선 차단", null, []], ["disp", "[Poisonous Viper] {Cytotoxin} 독 계속", null, ["spec-response"]], ["pos", "[Sand-Sworn Rider] 빨리 처치 ({Swarming Krolusks}), {Scouring Sand} 전방 회피", null, []], ["dodge", "[Lightning Serpent] {Serpent's Stormcall} 장판", null, []]]}, {"n": "Galvazzt 전", "i": [["int", "[Imbued Stormcaller] {Lightning Bolt} 차단, {Imbued Conduction}은 힐러 해제", null, []], ["tb", "[Agitated Nimbus] {Release Charge} 광역 생존기", null, []], ["tip", "[Static Anomaly] {Spark Step} 무작위 점프, 산개", null, []]]}]}];
+const KO={"Unstable Totem": "불안정한 토템", "Blood Sacrifice": "피의 제물", "Piercing Hiss": "날카로운 쉭쉭거림", "Fetid Spit": "고약한 타액", "Ravenous Claws": "굶주린 할퀴기", "Toxic Breath": "독성 숨결", "Paralyzing Shots": "마비 사격", "Blessing of Freedom": "자유의 축복", "Septic Spatter": "패혈성 분사", "Envenom": "독살", "Evolve": "진화", "Bloodletting": "유혈", "Rattle": "방울 소리", "Toxic Beam": "독성 광선", "Venom Burst": "맹독 폭발", "Noxious Spray": "맹독 분무", "Virulent Whirl": "악성 소용돌이", "Fertile Loam": "비옥한 양토", "Frantic Blooming": "날뛰는 개화", "Light Bolt Volley": "빛 화살 연발", "Light Bolt": "빛 화살", "Lightbloom Pollination": "빛만개 수분", "Spouting Floret": "싹트는 꽃", "Uproot": "뿌리 들기", "Solar Breath": "태양 숨결", "Hunting Leap": "사냥의 도약", "Lightmaw Beams": "빛아귀 광선", "Bullet Seeds": "탄환 씨앗", "Winter's Shroud": "겨울의 장막", "Earth Bolt": "대지 화살", "Healing Breeze": "치유의 산들바람", "Mother's Wrath": "어미의 분노", "Razor Dive": "서슬 강하", "Shredding Claws": "찢어발기는 발톱", "Rotten Supplies": "썩은 보급품", "Starvation Effigy": "기근의 입상", "Feast of Misery": "불행의 탐식", "Pulverize": "파쇄", "Glacial Tomb": "혹한의 무덤", "Cryo Surge": "냉각 쇄도", "Harsh Winter": "모진 겨울", "Lightning Bolt": "번개 화살", "Earthquake": "지진", "Magma Totem": "용암 토템", "Primal Echo": "원시 메아리", "Poison Spear Volley": "연발 독 창", "Bestial Wrath": "야수의 격노", "Deep Corruption": "깊은 타락", "Shield Bash": "방패 가격", "Glaive Toss": "글레이브 투척", "Fel Missiles": "지옥 투사체", "Seduction": "유혹", "Heartstop Poison": "심정지 독", "Cutpurse": "소매치기", "Workplace Accident": "산업 재해", "Health Funnel": "생명력 집중", "Felfire Bombardment": "지옥불 폭격", "Whirlwind": "소용돌이", "Demonic Frenzy": "악마의 광기", "Fel Rage": "지옥 분노", "Curse of Doom": "파멸의 저주", "Dark Pact": "어둠의 서약", "Drain Life": "생명력 흡수", "Proof of Mastery": "특화의 증명", "Proof of Endurance": "인내의 증명", "Thundering Storm": "우레와 같은 폭풍", "Raging Typhoon": "성난 태풍", "Savage Smash": "야만적인 강타", "Earthsplitter": "대지 분열자", "Aftershock": "여진", "Champion's Spear": "용사의 창", "Null Eruption": "무효화의 분출", "Demoralizing Shout": "사기의 외침", "Lava Bolt": "용암 화살", "Melt Armor": "방어구 녹이기", "Insidious Aura": "사악한 오라", "Ravenous Swarm": "굶주린 무리벌레", "Brutal Slams": "무자비한 격돌", "Macestorm": "철퇴폭풍", "Corrosive Essence": "부식성 정수", "Sky Strike": "하늘의 일격", "Void Beam": "공허 광선", "Shred Defense": "방어 찢기", "Hex Volley": "사술 연발 공격", "Shadowfrost Bolt": "암흑냉기 화살", "Suppression Slam": "억제의 강타", "Vigilant Defense": "경계 방어", "Ancestral Fury": "선조의 분노", "Necrotic Energy": "괴저 마력", "Bound by Shadow": "어둠의 결속", "Soul Bolt": "영혼의 화살", "Unholy Mending": "부정한 복원", "Bladestorm": "칼날폭풍", "Erupting Slam": "분출의 격돌", "Overload": "과부하", "Sudden Rupture": "갑작스러운 파열", "Entomb": "매장", "Purifying Flame": "정화의 화염", "Embalming Fluid": "불변의 액체", "Putrid Seekers": "부패한 추적자", "Ice Shield": "얼음의 보호막", "Frostbolt": "얼음 화살", "Crushing Smash": "분쇄하는 강타", "Steel Barrage": "강철 탄막", "Blazing Rush": "이글거리는 질주", "Flaming Barrage": "타오르는 포화", "Living Bomb": "살아있는 폭탄", "Inferno": "지옥불", "Burnout": "연소", "Thunderbolt": "벼락", "Lightning Storm": "번개 폭풍", "Thunderous Stomp": "천둥 발구르기", "Shock Blast": "충격 작렬", "Tempest Stormshield": "거센 폭풍우의 보호막", "Galvanized": "활력 주입", "Arrow Barrage": "화살 포화", "Serrated Charge": "톱니 돌진", "Poisoned Cheap Shot": "독 묻은 비열한 습격", "Cytotoxin": "세포 독소", "Swarming Krolusks": "들끓는 크롤러스크", "Scouring Sand": "소탕의 모래", "Serpent's Stormcall": "뱀의 폭풍 소환", "Imbued Conduction": "주입된 전도", "Release Charge": "전하 방출", "Spark Step": "불똥 걸음", "Altar of Fangs": "송곳니의 제단", "Rav'i": "라비", "The Writhing Coil": "격동하는 똬리", "Zul'jan": "줄잔", "The Blinding Vale": "눈부신 골짜기", "Lightblossom Trinity": "빛송이 삼위일체", "Ikuzz the Light Hunter": "빛 사냥꾼 이쿠즈", "Lightwarden Ruia": "빛의 감시자 루이아", "Ziekket": "지케트", "Den of Nalorakk": "날로라크의 소굴", "The Hoardmonger": "비축광", "Sentinel of Winter": "겨울의 파수꾼", "Nalorakk": "날로라크", "Murder Row": "죽음의 골목", "Kystia Manaheart": "키스티아 마나하트", "Zaen Bladesorrow": "자엔 블레이드소로우", "Xathuux the Annihilator": "파멸자 자투스", "Lithiel Cinderfury": "리시엘 신더퓨리", "Voidscar Arena": "공허흉터 투기장", "Taz'Rah": "타즈라", "Atroxus": "아트로서스", "Charonus": "차로누스", "King's Rest": "왕들의 안식처", "The Golden Serpent": "황금 날뱀", "Mchimba the Embalmer": "장의사 음침바", "The Council of Tribes": "부족 의회", "Dazar, The First King": "초대 왕 다자르", "Ruby Life Pools": "루비 생명의 웅덩이", "Melidrussa Chillworn": "멜리드루사 칠원", "Kokia Blazehoof": "코키아 블레이즈후프", "Kyrakka & Erkhart Stormvein": "카이락카와 에크하트 스톰베인", "Temple of Sethraliss": "세스랄리스 사원", "Adderis & Aspix": "애더리스와 아스픽스", "Merektha": "메레크타", "Galvazzt": "갈바즈트", "Avatar of Sethraliss": "세스랄리스의 화신"};
+const GUIDE={"templar": [{"hd": "1. 전투 중 항시 사용", "sub": [], "cards": [[20271, "Judgment", "단일 빌더. 주변 2명에게 연쇄. Sentinel 중엔 Hammer of Wrath로 변함"], [204019, "Blessed Hammer", "광역 빌더"], [53600, "Shield of the Righteous", "Holy Power 소모. 방어 핵심, 계속 유지"], [26573, "Consecration", "장판 유지. 딛고 있으면 자힐"], [31935, "Avenger's Shield", "쿨마다. 3명 튕김 + 차단"], [375576, "Divine Toll", "쿨마다. 15초간 Avenger's Shield 자동 시전"], [427453, "Hammer of Light", "Divine Toll 후 20초간 그 버튼이 이걸로 바뀜. 광역 큰 딜"], [389539, "Sentinel", "Divine Toll과 맞춰 쿨마다. 피해 감소 + 딜 증가"]]}, {"hd": "2. 전투 중 필요시 사용", "sub": ["자기 생존", "군중 제어", "아군 보호", "회복 / 디스펠", "차단 / 도발", "부활"], "cards": [[31850, "Ardent Defender", "큰 피해 들어올 때"], [86659, "Guardian of Ancient Kings", "지속 폭딜 구간. 2회 충전"], [642, "Divine Shield", "최후 수단. 무적 + 주변 적 전부 도발"], [115750, "Blinding Light", "10m 안 적 시전 끊기 + 6초 방향 상실. 피해 받으면 풀림"], [853, "Hammer of Justice", "단일 6초 기절, 시전 끊기"], [1022, "Blessing of Protection", "아군 물리 피해 면역"], [204018, "Blessing of Spellwarding", "아군 마법 피해 면역 (위와 쿨 공유)"], [1044, "Blessing of Freedom", "아군 이동방해 해제"], [6940, "Blessing of Sacrifice", "아군 피해 대신 받기"], [633, "Lay on Hands", "체력 100% 즉시 회복"], [85673, "Word of Glory", "자힐. 방패 3번마다 1회 무료"], [213644, "Cleanse Toxins", "독/질병 해제"], [96231, "Rebuke", "시전 끊기 + 같은 계열 5초 봉쇄"], [62124, "Hand of Reckoning", "도발"], [391054, "Intercession", "전투 중 부활 (Holy Power 3)"]]}, {"hd": "3. 전투 전 준비", "sub": [], "cards": [[465, "오라", "Devotion Aura / Concentration Aura / Crusader Aura 중 선택"], [391054, "Holy Power 3개", "Intercession 대비로 남겨두기"], [375576, "Divine Toll + Sentinel", "큰 풀·보스 직전에 둘 다 준비"]]}, {"hd": "4. 전투 후", "sub": [], "cards": [[7328, "Redemption", "죽은 아군 부활"], [85673, "Word of Glory", "체력 채우기"], [190784, "Divine Steed", "다음 풀로 이동 (2회 충전)"]]}, {"hd": "5. 유지 버프 ", "sub": [], "cards": [[53600, "Shield of the Righteous", "최대 13.5초까지 쌓임. 막대가 절반쯤 내려오면 다시 사용"], [26573, "Consecration", "12초 장판. 꺼지기 전에 다시 깔기"]]}, {"hd": "특성 빌드 코드 ", "sub": [], "cards": []}], "lightsmith": [{"hd": "1. 전투 중 항시 사용", "sub": [], "cards": [[20271, "Judgment", "단일 빌더. 주변 2명에게 연쇄. 치명타 시 주변 충격파. Sentinel 중엔 Hammer of Wrath로 변함"], [204019, "Blessed Hammer", "광역 빌더"], [53600, "Shield of the Righteous", "Holy Power 소모. 방어 핵심, 계속 유지"], [26573, "Consecration", "장판 유지. Holy Power 쓸수록 다음 장판이 즉시 추가 피해"], [31935, "Avenger's Shield", "쿨마다. 3명 튕김 + 차단"], [375576, "Divine Toll", "쿨마다. 15초간 Avenger's Shield 자동 시전 + 충격파"], [432459, "Holy Bulwark ↔ Sacred Weapon", "2회 충전. 쓸 때마다 보호막(Holy Bulwark)과 추가 피해(Sacred Weapon)가 번갈아 나옴. 아군에게 주면 나도 같이 받음"], [389539, "Sentinel", "Divine Toll과 맞춰 쿨마다. 피해 감소 + 딜 증가"]]}, {"hd": "2. 전투 중 필요시 사용", "sub": ["자기 생존", "군중 제어", "아군 보호", "회복 / 디스펠", "차단 / 도발", "부활"], "cards": [[31850, "Ardent Defender", "큰 피해 들어올 때"], [86659, "Guardian of Ancient Kings", "지속 폭딜 구간. 2회 충전"], [642, "Divine Shield", "최후 수단. 무적 + 주변 적 전부 도발"], [115750, "Blinding Light", "10m 안 적 시전 끊기 + 6초 방향 상실. 피해 받으면 풀림"], [853, "Hammer of Justice", "단일 6초 기절, 시전 끊기"], [1022, "Blessing of Protection", "아군 물리 피해 면역"], [204018, "Blessing of Spellwarding", "아군 마법 피해 면역 (위와 쿨 공유)"], [1044, "Blessing of Freedom", "아군 이동방해 해제"], [6940, "Blessing of Sacrifice", "아군 피해 대신 받기"], [633, "Lay on Hands", "체력 100% 즉시 회복"], [85673, "Word of Glory", "자힐. 방패 3번마다 1회 무료"], [213644, "Cleanse Toxins", "독/질병 해제"], [96231, "Rebuke", "시전 끊기 + 같은 계열 5초 봉쇄"], [62124, "Hand of Reckoning", "도발"], [391054, "Intercession", "전투 중 부활 (Holy Power 3)"]]}, {"hd": "3. 전투 전 준비", "sub": [], "cards": [[433568, "Rite of Sanctification", "무기 강화 1시간 (방어도·주스탯 증가)"], [465, "오라", "Devotion Aura / Concentration Aura / Crusader Aura 중 선택"], [432459, "Holy Bulwark 2회 충전", "큰 탱버·풀 직전에 쓸 수 있게 남겨두기"], [391054, "Holy Power 3개", "Intercession 대비로 남겨두기"]]}, {"hd": "4. 전투 후", "sub": [], "cards": [[7328, "Redemption", "죽은 아군 부활"], [85673, "Word of Glory", "체력 채우기"], [190784, "Divine Steed", "다음 풀로 이동 (2회 충전)"]]}, {"hd": "5. 유지 버프 ", "sub": [], "cards": [[53600, "Shield of the Righteous", "최대 13.5초까지 쌓임. 막대가 절반쯤 내려오면 다시 사용"], [26573, "Consecration", "12초 장판. 꺼지기 전에 다시 깔기"], [432472, "Sacred Weapon", "20초 딜 버프, 중첩 안 됨. Sentinel로 나온 것을 먼저 쓰고, 끝나면 직접 시전"], [433106, "Divine Guidance", "Holy Power 기술 시전마다 1 stack. 5 stack이면 Consecration 먼저"]]}, {"hd": "특성 빌드 코드 ", "sub": [], "cards": []}]};
+const SUBS={"templar": [{"n": "자기 생존", "ids": [31850, 86659, 642]}, {"n": "군중 제어", "ids": [115750, 853]}, {"n": "아군 보호", "ids": [1022, 204018, 1044, 6940]}, {"n": "회복 / 디스펠", "ids": [633, 85673, 213644]}, {"n": "차단 / 도발", "ids": [96231, 62124]}, {"n": "부활", "ids": [391054]}], "lightsmith": [{"n": "자기 생존", "ids": [31850, 86659, 642]}, {"n": "군중 제어", "ids": [115750, 853]}, {"n": "아군 보호", "ids": [1022, 204018, 1044, 6940]}, {"n": "회복 / 디스펠", "ids": [633, 85673, 213644]}, {"n": "차단 / 도발", "ids": [96231, 62124]}, {"n": "부활", "ids": [391054]}]};
+const ICONS={"465": {"i": "spell_holy_devotionaura", "en": "Devotion Aura", "ko": "헌신의 오라"}, "633": {"i": "spell_holy_layonhands", "en": "Lay on Hands", "ko": "신의 축복"}, "642": {"i": "spell_holy_divineshield", "en": "Divine Shield", "ko": "천상의 보호막"}, "853": {"i": "spell_holy_sealofmight", "en": "Hammer of Justice", "ko": "심판의 망치"}, "1022": {"i": "spell_holy_sealofprotection", "en": "Blessing of Protection", "ko": "보호의 축복"}, "1044": {"i": "spell_holy_sealofvalor", "en": "Blessing of Freedom", "ko": "자유의 축복"}, "6940": {"i": "spell_holy_sealofsacrifice", "en": "Blessing of Sacrifice", "ko": "희생의 축복"}, "7328": {"i": "spell_holy_resurrection", "en": "Redemption", "ko": "구원"}, "20271": {"i": "spell_holy_righteousfury", "en": "Judgment", "ko": "심판"}, "26573": {"i": "spell_holy_innerfire", "en": "Consecration", "ko": "신성화"}, "31850": {"i": "spell_holy_ardentdefender", "en": "Ardent Defender", "ko": "헌신적인 수호자"}, "31935": {"i": "spell_holy_avengersshield", "en": "Avenger's Shield", "ko": "응징의 방패"}, "53600": {"i": "ability_paladin_shieldofvengeance", "en": "Shield of the Righteous", "ko": "정의의 방패"}, "62124": {"i": "spell_holy_unyieldingfaith", "en": "Hand of Reckoning", "ko": "집행의 손길"}, "85673": {"i": "inv_helmet_96", "en": "Word of Glory", "ko": "영광의 서약"}, "86659": {"i": "spell_holy_heroism", "en": "Guardian of Ancient Kings", "ko": "고대 왕의 수호자"}, "96231": {"i": "spell_holy_rebuke", "en": "Rebuke", "ko": "비난"}, "115750": {"i": "ability_paladin_blindinglight", "en": "Blinding Light", "ko": "눈부신 빛"}, "190784": {"i": "ability_paladin_divinesteed", "en": "Divine Steed", "ko": "천상의 군마"}, "204018": {"i": "spell_holy_blessingofprotection", "en": "Blessing of Spellwarding", "ko": "주문 수호의 축복"}, "204019": {"i": "paladin_retribution", "en": "Blessed Hammer", "ko": "축복받은 망치"}, "213644": {"i": "spell_holy_renew", "en": "Cleanse Toxins", "ko": "독소 정화"}, "375576": {"i": "inv_ability_paladin_divinetoll", "en": "Divine Toll", "ko": "천상의 종"}, "389539": {"i": "spell_holy_holynova", "en": "Sentinel", "ko": "파수꾼"}, "391054": {"i": "ability_paladin_intercession", "en": "Intercession", "ko": "중재"}, "427453": {"i": "inv_mace_1h_gryphonrider_d_02_silver", "en": "Hammer of Light", "ko": "빛의 망치"}, "432459": {"i": "inv_ability_lightsmithpaladin_holybulwark", "en": "Holy Bulwark", "ko": "신성한 보루"}, "432472": {"i": "inv_ability_lightsmithpaladin_sacredweapon", "en": "Sacred Weapon", "ko": "신성한 무기"}, "433106": {"i": "spell_holy_lightsgrace", "en": "Divine Guidance", "ko": "천상의 인도"}, "433568": {"i": "inv_inscription_weaponscroll01", "en": "Rite of Sanctification", "ko": "축성의 의식"}};
+
+// ============ 기본 데이터 ============
+const BASE="/prot-paladin-s2";
+const ROLE_KO={tank:"탱커",healer:"힐러",dps:"딜러"};
+const ROLE_ICON={tank:"🛡",healer:"✚",dps:"⚔"};
+const SPEC={};                       // key "paladin/protection" → 정보
+ROSTER.forEach(c=>c.sp.forEach(s=>{SPEC[c.s+"/"+s.s]={key:c.s+"/"+s.s,c,s,role:s.r};}));
+const STATUS={"paladin/protection":"ready","death-knight/blood":"draft","shaman/restoration":"draft","mage/fire":"draft"};
+const status=k=>STATUS[k]||"soon";
+const STATUS_KO={ready:"준비됨",draft:"예시 초안",soon:"준비 중"};
+// 게임 이름 한글화 (던전 데이터 + 키트 기술)
+const KO2=Object.assign({},KO,{"Hydrastrike": "히드라 강타", "Tail Scythe": "꼬리 낫", "Chop Down": "찍어 넘기기", "Fresh Meat": "신선한 고기", "Ssscavenging": "뱀의 탐색", "Messy Eater": "지저분한 포식자", "Regurgitate": "게워내기", "Ravenous Stomp": "게걸스러운 발구르기", "Triple Shot": "삼중 사격", "Carrion Burst": "부패의 파열", "Feeding Frenzy": "탐식의 광란", "Toxic Barrage": "맹독 포화", "Toxic Atrophy": "유독한 쇠약", "Vindictive Onslaught": "원한 서린 공세", "Venom Jet": "맹독 분사", "Death Rattle": "죽음의 방울 소리", "Vine Grip": "덩굴 손아귀", "Ritual of the Fang": "송곳니의 의식", "Boneslicer": "뼈절단자", "Ritual Venom": "의식의 맹독", "Axegrinder": "도끼분쇄자", "Unstable Totem": "불안정한 토템", "Blood Sacrifice": "피의 제물", "Piercing Hiss": "날카로운 쉭쉭거림", "Fetid Spit": "고약한 타액", "Ravenous Claws": "굶주린 할퀴기", "Toxic Breath": "독성 숨결", "Paralyzing Shots": "마비 사격", "Septic Spatter": "패혈성 분사", "Mass Envenom": "대규모 독살", "Envenom": "독살", "Evolve": "진화", "Carrion Pile": "썩은 더미"},{
+ "Shield of the Righteous":"정의의 방패","SotR":"정의의 방패","Ardent Defender":"헌신적인 수호자","Guardian of Ancient Kings":"고대 왕의 수호자","Cleanse Toxins":"독소 정화","Word of Glory":"영광의 서약","Divine Steed":"천상의 군마","Rebuke":"비난","Hammer of Justice":"심판의 망치","Blinding Light":"눈부신 빛","Blessing of Freedom":"자유의 축복","Divine Toll":"천상의 종","Hammer of Light":"빛의 망치","Holy Bulwark":"신성한 보루","Sacred Weapon":"신성한 무기","Sentinel":"파수꾼",
+ "Mind Freeze":"정신 얼리기","Death Strike":"죽음의 일격","Bone Shield":"뼈의 보호막","Vampiric Blood":"흡혈","Icebound Fortitude":"얼음같은 인내력","Gorefiend's Grasp":"고어핀드의 손아귀","Asphyxiate":"어둠의 질식","Anti-Magic Shell":"대마법 보호막","Marrowrend":"골수분쇄","Dancing Rune Weapon":"춤추는 룬 무기",
+ "Wind Shear":"날카로운 바람","Purify Spirit":"영혼 정화","Healing Tide Totem":"치유의 해일 토템","Spirit Link Totem":"정신의 고리 토템","Capacitor Totem":"축전 토템","Astral Shift":"영혼 이동","Riptide":"성난 해일","Chain Heal":"연쇄 치유","Poison Cleansing Totem":"독 정화 토템",
+ "Counterspell":"마법 차단","Ice Block":"얼음 방패","Blazing Barrier":"이글거리는 방벽","Remove Curse":"저주 해제","Dragon's Breath":"용의 숨결","Combustion":"발화"
+});
+// 역할 렌즈: 태그 순서와 기본 켜짐
+const TAGS={tb:"탱버",int:"차단",cc:"제어",dodge:"회피",disp:"해제",aoe:"광역 피해",prio:"우선 처치",pos:"위치",tip:"참고"};
+const LENS={
+ tank:{order:["tb","int","pos","dodge","disp","cc","aoe","prio","tip"],off:[]},
+ healer:{order:["aoe","disp","tb","dodge","int","pos","tip","prio","cc"],off:["prio","cc"]},
+ dps:{order:["int","prio","cc","dodge","aoe","disp","pos","tip","tb"],off:["tb"]}
+};
+// ============ 전문화 키트 (메커니즘 키 → 내 기술) ============
+const DISPEL_WHO={disease:"성기사·사제·수도사",poison:"성기사·드루이드·수도사·기원사·주술사",curse:"마법사·드루이드·주술사",magic:"사제와 힐러 대부분"};
+const KIT={
+ "paladin/protection":{tb:"{SotR}",big:"{Ardent Defender}",kick:"{Rebuke}",stun:"{Hammer of Justice}",aoecc:"{Blinding Light}",dispel:{disease:"{Cleanse Toxins}",poison:"{Cleanse Toxins}"},freedom:"{Blessing of Freedom}",am:"SotR",
+   heroes:{templar:[["tip","{Divine Toll} → {Hammer of Light}는 큰 일반몹 풀과 쫄 단계에 맞추기"],["tb","폭딜 중에도 {SotR} 유지. 주요 탱버: {Hydrastrike}, {Tail Scythe}, {Chop Down}"]],lightsmith:[["tb","{Holy Bulwark} 자신에게 쓸 타이밍: {Hydrastrike}, {Tail Scythe}, {Chop Down}"],["tip","쫄·광역 피해 구간엔 {Holy Bulwark}를 힐러나 약한 아군에게"],["tip","{Sacred Weapon}은 큰 일반몹 풀과 쫄 단계에 맞추기"]]}},
+ "death-knight/blood":{draft:1,tb:"{Death Strike} 직전 사용, {Bone Shield} 유지",big:"{Vampiric Blood}",kick:"{Mind Freeze}",stun:"{Asphyxiate}",aoecc:"{Gorefiend's Grasp}로 모으기",dispel:{},freedom:null,am:"Bone Shield",
+   heroes:{sanlayn:[["tip","큰 풀에 {Dancing Rune Weapon}을 맞추고 {Death Strike}로 체력 유지"]],deathbringer:[["tb","탱버 전 {Marrowrend}로 {Bone Shield} 채우기"]]}},
+ "shaman/restoration":{draft:1,tb:"탱커에게 {Riptide} 미리",heal:"{Healing Tide Totem}, 길어지면 {Spirit Link Totem}",kick:"{Wind Shear}",aoecc:"{Capacitor Totem}",dispel:{magic:"{Purify Spirit}",curse:"{Purify Spirit}",poison:"{Poison Cleansing Totem}"},freedom:null,
+   heroes:{totemic:[["aoe","광역 피해 구간 전에 토템을 미리 깔아 두기"]],farseer:[["aoe","{Chain Heal} 연속 시전 구간을 광역 피해 타이밍에 맞추기"]]}},
+ "mage/fire":{draft:1,burst:"{Combustion}",kick:"{Counterspell}",aoecc:"{Dragon's Breath}",big:"{Ice Block}",dispel:{curse:"{Remove Curse}"},freedom:null,
+   heroes:{sunfury:[["prio","{Combustion}을 보호막·우선 처치 대상 구간에 맞추기"]],frostfire:[["prio","쫄 단계에 맞춰 폭딜 아끼기"]]}}
+};
+function respond(key,m,txt){
+  const k=KIT[key]; if(!m) return null;
+  if(!k) return {t:"내 기술 준비 중",none:1};
+  if(m==="tb") return k.tb?{t:k.tb}:null;
+  if(m==="kick") return k.kick?{t:k.kick}:{t:"차단기 없음 → 다른 파티원",none:1};
+  if(m==="healcd") return k.heal?{t:k.heal}:null;
+  if(m==="burst") return k.burst?{t:k.burst}:null;
+  if(m.startsWith("dispel")){const ty=m.split(".")[1]||detectType(txt);if(!ty) return null;const d=k.dispel&&k.dispel[ty];return d?{t:d}:{t:`해제 불가 → ${DISPEL_WHO[ty]} 담당`,none:1};}
+  return null;
+}
+function detectType(t){return /질병/.test(t)?"disease":/독/.test(t)?"poison":/저주/.test(t)?"curse":/마법/.test(t)?"magic":null;}
+// ============ Rav'i: 층을 나눈 데이터 (공용 문장은 index.html BRIEF·DETAIL 그대로) ============
+const RAVI_ITEMS=[
+ {tag:"tb",t:"{Hydrastrike} 머리 3연타",m:"tb",layer:"common"},
+ {tag:"pos",t:"에너지 0 전에 보스를 {Fresh Meat} 없는 {Carrion Pile} 옆으로",layer:"role",roles:["tank"]},
+ {tag:"pos",t:"{Ssscavenging} 중 {Messy Eater} 장판 전원 밟고 보호막에 딜",layer:"common"},
+ {tag:"dodge",t:"{Regurgitate} 파도 3줄, {Ravenous Stomp} 종유석 장판",layer:"common"},
+ {tag:"disp",t:"{Regurgitate}에 맞은 파티원의 질병",m:"dispel.disease",layer:"common",fromDetail:1},
+ {tag:"aoe",t:"{Ssscavenging} 동안 {Carrion Burst} 반복. 보호막이 깨질 때까지 이어짐",m:"healcd",layer:"role",roles:["healer"],draft:1},
+ {tag:"prio",t:"{Ssscavenging} 보호막에 딜 집중. 깨면 채널과 파티 피해가 끝남",m:"burst",layer:"role",roles:["dps"],draft:1},
+ {tag:"pos",t:"{Triple Shot} 대상자는 5야드 범위가 겹치지 않게 산개",layer:"common",fromDetail:1}
+];
+const RAVI_DETAIL={
+ overview:"에너지가 0이 되면 {Rav'i}가 가장 가까운 {Carrion Pile}로 가서 {Ssscavenging}으로 보호막을 두르고 파티 피해를 준다. 탱커가 {Fresh Meat} 없는 더미로 미리 끌어두는 것이 핵심이다.",
+ phases:[["상시",["[참고] {Ravenous Stomp}는 파티 피해를 주고 {Carrion Pile} 3개 중 2개에 {Fresh Meat}를 떨어뜨린다","[회피] {Ravenous Stomp} 뒤 떨어지는 종유석 장판을 피하라, 맞으면 큰 피해와 기절","[회피] {Regurgitate} 파도 3줄을 피하라, 맞으면 이속과 주는 피해가 50% 줄어든다","[위치] {Triple Shot} 대상자는 5야드 범위 피해가 겹치지 않게 느슨하게 산개하라"]],
+         ["{Ssscavenging} (에너지 0)",["[참고] 가장 가까운 {Carrion Pile}을 먹으며 흡수 보호막을 두르고, 깨질 때까지 {Carrion Burst}가 반복된다","[위치] {Messy Eater} 고기 장판을 전원 밟아라, 놓친 장판마다 {Carrion Burst}가 추가된다","[참고] {Fresh Meat} 더미를 먹으면 {Feeding Frenzy}로 {Carrion Burst} 주기가 3초에서 1.5초로 준다","[참고] 보호막을 깨면 채널과 파티 피해가 끝나니 딜을 보호막에 몰아라"]]],
+ group:["[위치] {Ssscavenging} 중 {Messy Eater} 장판을 모두 밟고 보호막에 딜을 몰아라","[참고] 힐러는 {Ravenous Stomp} 전에 체력을 채우고 {Ssscavenging}에 쿨기를 써라","[회피] {Regurgitate} 파도와 종유석 낙하 장판을 피하라"],
+ role:{
+  tank:{title:"탱커 운영",draft:0,pts:["[위치] {Ravenous Stomp} 직후 {Fresh Meat}가 안 떨어진 빈 더미를 확인하라","[위치] 에너지 0 전에 보스를 빈 더미 옆으로 옮겨 {Feeding Frenzy}를 막아라","[탱버] {Hydrastrike}는 머리 3개가 연달아 치는 큰 물리 피해이니 생존기를 미리 켜라","[위치] 보스 이동은 짧게 끊어 {Triple Shot} 산개와 {Regurgitate} 회피 공간을 남겨라"]},
+  healer:{title:"힐러 운영",draft:1,pts:["[광역 피해] {Ravenous Stomp} 직전 파티 체력을 채워라","[광역 피해] {Ssscavenging}은 보호막이 깨질 때까지 피해가 이어진다. 쿨기는 여기에","[위치] {Messy Eater} 장판은 힐러도 밟아야 한다"]},
+  dps:{title:"딜러 운영",draft:1,pts:["[우선 처치] {Ssscavenging} 보호막에 딜을 몰아라. 깨면 채널이 끝난다","[위치] {Messy Eater} 장판을 딜러가 나눠 밟아라","[회피] {Regurgitate}에 맞으면 주는 피해가 50% 줄어 딜 손해가 크다"]}
+ },
+ spec:{
+  "paladin/protection":{draft:0,pts:["[탱버] {Hydrastrike}에 {SotR}을 유지하고, 체력이 낮으면 {Ardent Defender}나 {Guardian of Ancient Kings}를 써라","[해제] {Regurgitate}에 맞은 파티원의 질병 디버프를 {Cleanse Toxins}로 해제하라","[참고] {Ssscavenging} 광역 피해 구간에 {Word of Glory}로 위험한 파티원을 받쳐라","[위치] 빈 더미가 멀면 {Divine Steed}로 빠르게 이동해 보스를 끌어가라"]},
+  "death-knight/blood":{draft:1,pts:["[탱버] {Hydrastrike} 3연타 직전에 {Death Strike}로 체력을 채우고 {Bone Shield} 중첩을 유지하라. 위험하면 {Vampiric Blood}","[해제] {Regurgitate} 질병은 혈기가 풀 수 없다 → 성기사·사제·수도사에게 맡겨라","[참고] {Ssscavenging} 구간에 체력이 낮으면 {Icebound Fortitude}","[차단] 이 우두머리엔 차단할 시전이 없다. {Mind Freeze}는 일반몹 {Piercing Hiss}에 아껴라"]},
+  "shaman/restoration":{draft:1,pts:["[광역 피해] {Ssscavenging} 첫 {Carrion Burst}에 맞춰 {Healing Tide Totem}, 길어지면 {Spirit Link Totem}","[해제] {Regurgitate} 질병은 {Purify Spirit}으로 못 푼다(마법·저주만) → 성기사·사제·수도사 담당","[탱버] {Hydrastrike} 전에 탱커에게 {Riptide}"]},
+  "mage/fire":{draft:1,pts:["[우선 처치] 보호막 구간에 {Combustion}을 맞춰라","[해제] {Remove Curse}는 저주만 푼다 → 이 우두머리엔 해당 없음","[회피] {Ravenous Stomp} 종유석 기절이 위험하면 {Blazing Barrier}를 미리"]}
+ }
+};
+const TAGK={"탱버":"tb","차단":"int","제어":"cc","회피":"dodge","해제":"disp","광역 피해":"aoe","우선 처치":"prio","위치":"pos","참고":"tip"};
+// ============ 상태 ============
+const ST={
+ saved:"paladin/protection", view:"paladin/protection", hero:{}, lang:"en", tab:"altar", tags:{}, s1:{role:null,spec:null,hero:null}, sheetRole:null, q:"", shareFrom:null
+};
+function hero(key){const s=SPEC[key].s;return ST.hero[key]||s.h[0].s;}
+function heroObj(key){return SPEC[key].s.h.find(h=>h.s===hero(key));}
+function tagsFor(role){if(!ST.tags[role]){const L=LENS[role];ST.tags[role]=new Set(L.order.filter(t=>!L.off.includes(t)));}return ST.tags[role];}
+// ============ 도우미 ============
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function nm(en){const e=en==="SotR"?"SotR":en;return ST.lang==="ko"&&KO2[e]?KO2[e]:en;}
+function rich(t){return esc(t).replace(/\{([^}]+)\}/g,(_,n)=>`<span class="ab">${esc(nm(n))}</span>`).replace(/\[([^\]]+)\]/g,(_,n)=>`<b>${esc(nm(n))}</b>`);}
+function specName(key,withHero){const {c,s}=SPEC[key];const h=heroObj(key);
+  const n=ST.lang==="ko"?`${s.ko} ${c.ko}`:`${s.en} ${c.en}`;const hn=ST.lang==="ko"?h.ko:h.en;
+  return withHero?`<span class="n">${n}</span><span class="h">· ${hn}</span>`:n;}
+function sn(key){const {c,s}=SPEC[key];return ST.lang==="ko"?`${s.ko} ${c.ko}`:`${s.en} ${c.en}`;}
+function clsVars(c){const dark=document.documentElement.dataset.theme==="dark";return `--cls:${c.c};--cls-ink:${dark?c.di:c.li}`;}
+function ico(key,size){const {c,s}=SPEC[key];const st=`${clsVars(c)};--s:${size||36}px`;
+  return `<span class="ico ${c.t==="PRIEST"?"priest":""}" style="${st}"><img src="https://wow.zamimg.com/images/wow/icons/large/${s.ic}.jpg" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode('${s.ko[0]}'))"></span>`;}
+function sid(id,url,note){return `<div class="sid"><b>${id}</b><code>${esc(BASE+url)}</code>${note?`<span>· ${note}</span>`:""}</div>`;}
+function go(h){if(location.hash===h) render(); else location.hash=h;}
+// ============ S1 첫 방문 선택 ============
+function S1(){
+ const p=ST.s1; const roles=["tank","healer","dps"];
+ const cnt={tank:0,healer:0,dps:0};Object.values(SPEC).forEach(x=>cnt[x.role]++);
+ const roleDesc={tank:"몹을 붙잡고 파티를 지킵니다",healer:"파티 체력을 책임집니다",dps:"피해를 넣고 차단을 돕습니다"};
+ const chips=`<span class="chip ${p.role?"":"empty"}" data-act="s1role">${p.role?ROLE_ICON[p.role]+" "+ROLE_KO[p.role]:"역할"}</span>›
+  <span class="chip ${p.spec?"":"empty"}" ${p.spec?`style="${clsVars(SPEC[p.spec].c)}" data-act="s1spec"`:""}>${p.spec?`<span class="dot"></span>${sn(p.spec)}`:"전문화"}</span>›
+  <span class="chip ${p.hero?"":"empty"}">${p.hero?(ST.lang==="ko"?p.hero.ko:p.hero.en):"영웅 특성"}</span>
+  <button class="btn go" data-act="s1go" ${p.spec?"":"disabled"}>치트시트 열기</button>`;
+ const roleTiles=roles.map(r=>`<button class="tile" data-act="pickrole" data-v="${r}" aria-pressed="${p.role===r}"><span class="ro">${ROLE_ICON[r]}</span><span><span class="tt">${ROLE_KO[r]}</span><span class="ts"> · 전문화 ${cnt[r]}개</span><div class="ts">${roleDesc[r]}</div></span></button>`).join("");
+ const specs=p.role?specTiles(p.role,"pickspec",p.spec):`<p class="muted">역할을 먼저 고르세요.</p>`;
+ let heroTiles=`<p class="muted">전문화를 먼저 고르세요.</p>`;
+ if(p.spec){const s=SPEC[p.spec].s;const HD=HERODESC[p.spec]||{};
+  heroTiles=`<div class="tiles c2">`+s.h.map(h=>`<button class="tile" data-act="pickhero" data-v="${h.s}" aria-pressed="${p.hero&&p.hero.s===h.s}" style="${clsVars(SPEC[p.spec].c)}"><span><span class="tt">${ST.lang==="ko"?h.ko:h.en}</span>${HD[h.s]?.star?` <span class="badge ready">${HD[h.s].star}</span>`:""}<div class="ts">${HD[h.s]?.one||"한 줄 소개 준비 중"}</div></span></button>`).join("")+`</div>
+  <p style="margin:14px 0 0;display:flex;gap:18px;flex-wrap:wrap;font-size:15px"><a href="#S4">두 영웅 특성 비교하기 ›</a><a href="#" data-act="herolater">나중에 고를게요 ›</a></p>`;}
+ return sid("S1","/","첫 방문 · 한 페이지에서 역할 → 전문화 → 영웅 특성")+`
+ <div class="gnav wrap"><span class="wm">Keystone Guide</span><span>한밤 2 시즌 · 쐐기 8개 던전</span></div>
+ <div class="wrap s1-hero"><h1>나에게 맞는<br>쐐기 치트시트.</h1><p>역할과 전문화를 고르면 8개 던전 공략이 내 기술로 바뀝니다.<br>한 번 고르면 다음부터는 바로 열립니다.</p></div>
+ <div class="summary"><div class="wrap in">${chips}</div></div>
+ <div class="wrap">
+  <section class="step" id="st-role"><h2>역할. <span>파티에서 맡는 자리</span></h2><p class="hint">탱커·힐러·딜러에 따라 먼저 보이는 태그가 달라집니다.</p><div class="tiles c3">${roleTiles}</div></section>
+  <section class="step ${p.role?"":"locked"}" id="st-spec"><h2>전문화. <span>${p.role?ROLE_KO[p.role]+" "+cnt[p.role]+"개":"지금 플레이하는 것"}</span></h2><p class="hint">${p.role==="dps"?"딜러는 직업별로 묶었습니다.":"회색 배지는 전문화 팁이 아직 없는 전문화입니다. 골라도 던전 공용 공략은 볼 수 있습니다."}</p>${specs}</section>
+  <section class="step ${p.spec?"":"locked"}" id="st-hero"><h2>영웅 특성. <span>나중에 바꿔도 됩니다</span></h2><p class="hint">치트시트의 영웅 특성 카드와 스킬 가이드가 이 선택을 따릅니다.</p>${heroTiles}</section>
+  <div class="s1-foot">고르고 나면 이 화면은 건너뜁니다. 다시 고르려면 치트시트 위의 <b>전문화 변경</b>을 누르세요.<br>저장되는 값: <code>wg:spec</code>, <code>wg:hero:&lt;전문화&gt;</code></div>
+ </div>`;
+}
+function specTiles(role,act,sel,q){
+ const list=Object.values(SPEC).filter(x=>x.role===role&&(!q||(x.s.ko+x.c.ko+x.s.en+x.c.en).toLowerCase().includes(q.toLowerCase())));
+ const tile=x=>{const st=status(x.key);return `<button class="stile" data-act="${act}" data-v="${x.key}" aria-pressed="${sel===x.key}" style="${clsVars(x.c)}">${ico(x.key,34)}<span><div class="sn">${x.s.ko}</div><div class="sc">${x.c.ko}</div>${st!=="ready"?`<span class="badge ${st==="draft"?"draft2":""}">${STATUS_KO[st]}</span>`:""}</span></button>`;};
+ if(role!=="dps") return `<div class="stiles">${list.map(tile).join("")||'<p class="muted">검색 결과 없음</p>'}</div>`;
+ const by={};list.forEach(x=>(by[x.c.s]=by[x.c.s]||[]).push(x));
+ return Object.entries(by).map(([cs,arr])=>`<div class="clsgrp" style="${clsVars(arr[0].c)}"><span class="dot"></span>${arr[0].c.ko}</div><div class="stiles">${arr.map(tile).join("")}</div>`).join("")||'<p class="muted">검색 결과 없음</p>';
+}
+const HERODESC={
+ "paladin/protection":{templar:{one:"1분마다 Divine Toll → Hammer of Light로 몰아치는 딜 중심",star:"Wowhead 델브 추천"},lightsmith:{one:"Holy Bulwark 보호막으로 버티는 생존 중심, 운영이 단순",star:"Wowhead 쐐기·레이드 추천"}},
+ "death-knight/blood":{sanlayn:{one:"예시 초안: 흡혈 중심 지속 딜"},deathbringer:{one:"예시 초안: 룬 무기와 폭딜 중심"}}
+};
+// ============ 상단 고정 바 + 같은 역할 줄 ============
+function lnav(key,active){
+ const {c}=SPEC[key];
+ return `<div class="lnav" style="${clsVars(c)}"><div class="wrap in">
+  <span class="nm"><span class="dot"></span>${specName(key,true)}</span>
+  <span class="seg" role="group" aria-label="보기"><button data-act="gocheat" aria-pressed="${active==="cheat"}"><span class="long">치트시트</span><span class="short">치트</span></button><button data-act="goguide" aria-pressed="${active==="guide"}"><span class="long">스킬 가이드</span><span class="short">가이드</span></button></span>
+  <button class="pill" data-act="opensheet"><span class="long">전문화 변경</span><span class="short">변경</span></button>
+ </div></div>`;
+}
+function specRow(key){
+ const role=SPEC[key].role;let list=Object.values(SPEC).filter(x=>x.role===role);
+ if(role==="dps") list=list.filter(x=>x.c.s===SPEC[key].c.s);
+ const btns=list.map(x=>`<button class="sr ${status(x.key)==="soon"?"soon":""}" data-act="switch" data-v="${x.key}" aria-current="${x.key===key}" style="${clsVars(x.c)}">${ico(x.key,32)}<span>${x.s.ko}<br><span class="muted">${x.c.ko}</span></span></button>`).join("");
+ const more=`<button class="sr" data-act="opensheet" data-role="${role}"><span class="more">⋯</span><span>${ROLE_KO[role]}<br><span class="muted">전체 ${Object.values(SPEC).filter(x=>x.role===role).length}</span></span></button>`;
+ return `<div class="specrow"><div class="wrap in" aria-label="같은 역할 전문화">${btns}${more}</div></div>`;
+}
+// ============ S2 치트시트 ============
+function cheat(key,opt={}){
+ const {c,s}=SPEC[key];const role=SPEC[key].role;const on=tagsFor(role);const L=LENS[role];
+ const st=status(key);const d=DUNGEONS.find(x=>x.id===ST.tab)||DUNGEONS[0];
+ const tabs=`<div class="tabs" role="tablist"><button class="tab" data-act="tab" data-v="general" aria-selected="${ST.tab==="general"}">공통</button>${DUNGEONS.map(x=>`<button class="tab" role="tab" data-act="tab" data-v="${x.id}" aria-selected="${x.id===ST.tab}">${esc(nm(x.name))}</button>`).join("")}</div>`;
+ const heroSeg=`<span class="g"><span class="lbl">영웅 특성</span> <span class="seg">${s.h.map(h=>`<button data-act="hero" data-v="${h.s}" aria-pressed="${hero(key)===h.s}">${ST.lang==="ko"?h.ko:h.en}</button>`).join("")}</span></span>`;
+ const langSeg=`<span class="g lang"><span class="lbl">게임 언어</span> <span class="seg" aria-label="게임 언어"><button data-act="lang" data-v="ko" aria-pressed="${ST.lang==="ko"}">한글</button><button data-act="lang" data-v="en" aria-pressed="${ST.lang==="en"}">English</button></span></span>`;
+ const filt=`<div class="filters" aria-label="태그 필터">${L.order.map(t=>`<button class="ft" data-act="ft" data-v="${t}" aria-pressed="${on.has(t)}" style="--t:var(--t-${t})">${TAGS[t]}</button>`).join("")}</div><div class="lensnote">${ROLE_KO[role]} 렌즈: 태그 순서와 기본 켜짐이 역할에 맞춰집니다${L.off.length?` (기본 꺼짐: ${L.off.map(t=>TAGS[t]).join(", ")})`:""}.</div>`;
+ const body=ST.tab==="general"?generalTab(key):dungeonBody(key,d);
+ return lnav(key,"cheat")+specRow(key)+`<div class="wrap" style="${clsVars(c)}">${opt.banner||""}${st==="soon"&&!opt.banner?soonBanner(key):""}
+  <div class="tabbar">${tabs}</div><div class="ctrl"><div class="row2">${heroSeg}${langSeg}</div>${filt}</div>${body}
+  <div class="foot">파란 띠 = 역할 층, 직업색 띠·글자 = 전문화 층, 회색 띠 = 던전 공용 층. 차단의 <span class="need must">필수</span>는 놓치면 파티가 죽을 수 있는 시전입니다.<br>출처: Icy Veins S2 던전 가이드 · Wowhead 툴팁 (프로토타입에는 Altar of Fangs만 상세 층을 채웠습니다)</div></div>`;
+}
+function soonBanner(key){return `<div class="banner soon"><div class="bt"><b>${sn(key)} 전문화 팁은 준비 중입니다.</b> 지금은 던전 공용 공략과 ${ROLE_KO[SPEC[key].role]} 공통 내용만 보여 드립니다. "내 기술" 자리는 비워 두었습니다.<div class="acts"><button class="btn gray" data-act="opensheet">다른 전문화 보기</button><a class="btn ghost" href="#map">준비 현황 ›</a></div></div></div>`;}
+function itemLi(key,it){
+ const on=tagsFor(SPEC[key].role); if(!on.has(it.tag)) return "";
+ if(it.roles&&!it.roles.includes(SPEC[key].role)) return "";
+ const r=respond(key,it.m,it.t);
+ const resp=r?` <span class="resp ${r.none?"none":""}">→ ${rich(r.t)}</span>`:"";
+ const need=it.need==="must"?`<span class="need must">필수</span>`:it.need==="rec"?`<span class="need rec">권장</span>`:"";
+ return `<li class="${it.layer==="role"?"role":it.layer==="spec"?"spec":""}"><span class="tag" style="--t:var(--t-${it.tag})">${TAGS[it.tag]}</span><span>${need}${rich(it.t)}${resp}${it.draft?'<span class="draft">예시 초안</span>':""}</span></li>`;
+}
+function convItem([tag,t,need,m]){ // 기존 BRIEF 항목 → 층 항목 (자동 변환 예시)
+ if(tag==="pos"&&/최우선 처치/.test(t)) tag="prio";
+ let mk=null; if(m&&m.includes("spec-response")) mk="tb"; else if(tag==="int") mk="kick"; else if(tag==="disp") mk="dispel";
+ const isTankOnly=tag==="tb"&&/SotR/.test(t);
+ return {tag,t:t.replace(/\s*SotR 유지/,"").replace(/\{Blessing of Freedom\}/,"이동 방해 해제"),need,m:mk,layer:"common"};
+}
+function dungeonBody(key,d){
+ const on=tagsFor(SPEC[key].role);const role=SPEC[key].role;
+ const hk=KIT[key]&&KIT[key].heroes&&KIT[key].heroes[hero(key)];
+ const heroCard=`<section class="card"><h3><span><span class="hl">${ST.lang==="ko"?heroObj(key).ko:heroObj(key).en}</span> 포인트</span><small>영웅 특성 · 전문화 층</small></h3><ul class="items">${hk?hk.map(([t,x])=>itemLi(key,{tag:t,t:x,layer:"spec",draft:KIT[key].draft})).join("")||'<li><span></span><span class="muted">선택한 태그 항목 없음</span></li>':`<li class="spec"><span class="tag">준비 중</span><span class="muted">이 전문화의 영웅 특성 팁은 준비 중입니다</span></li>`}</ul></section>`;
+ const cards=d.bosses.map((b,bi)=>{
+  const items=(d.id==="altar"&&b.n==="Rav'i")?RAVI_ITEMS:b.i.map(convItem);
+  const ord=LENS[role].order;const lis=items.slice().sort((a,b)=>ord.indexOf(a.tag)-ord.indexOf(b.tag)).map(it=>itemLi(key,it)).join("")||'<li><span></span><span class="muted">선택한 태그 항목 없음</span></li>';
+  const deep=(d.id==="altar"&&b.n==="Rav'i")?deepRavi(key):`<details class="deep"><summary><span>상세 공략</span><span class="chev">▾</span></summary><p class="dover muted">프로토타입은 Rav'i만 층을 채웠습니다.</p></details>`;
+  return `<section class="card"><h3><span>${esc(nm(b.n))}</span><small><a href="#">▶ 영상</a>우두머리 ${bi+1}</small></h3><ul class="items">${lis}</ul>${deep}</section>`;}).join("");
+ const trash=(d.trash||[]).map(g=>`<section class="card"><h3><span>${esc(g.n.replace(/^(.*) 전$/,(a,x)=>nm(x)+" 전"))}</span><small>일반몹 · ${g.i.length}</small></h3><ul class="items">${g.i.map(convItem).map(it=>itemLi(key,it)).join("")||'<li><span></span><span class="muted">선택한 태그 항목 없음</span></li>'}</ul></section>`).join("");
+ return `<div class="dhead"><h2 class="dname">${esc(nm(d.name))}</h2><p class="dsub"><span>${esc(d.sub)} · 제한 시간 <b>${d.time}분</b></span><a href="#">▶ Raider.IO 영상</a><a href="#" data-act="expall">상세 모두 펼치기</a></p>
+ <div class="legend"><span><i style="background:var(--common)"></i>던전 공용</span><span><i style="background:var(--role)"></i>역할 (${ROLE_KO[role]})</span><span><i style="background:var(--cls)"></i>전문화 (${SPEC[key].s.ko})</span></div></div>`+heroCard+cards+`<div class="sechead"><h2>일반몹</h2><p>구간 3개만 표시 · 출처 Icy Veins</p></div>`+trash;
+}
+function deepItems(key,arr){const on=tagsFor(SPEC[key].role);
+ return arr.map(s=>{const m=s.match(/^\[([^\]]+)\]\s*/);const tag=m?TAGK[m[1]]||"tip":"tip";const x=m?s.slice(m[0].length):s;return [tag,x];}).filter(([t])=>on.has(t)).map(([t,x])=>`<li><span class="tag" style="--t:var(--t-${t})">${TAGS[t]}</span><span>${rich(x)}</span></li>`).join("");}
+function deepRavi(key){
+ const role=SPEC[key].role;const R=RAVI_DETAIL.role[role];const S=RAVI_DETAIL.spec[key];
+ const blk=(title,lay,arr,draft,cls)=>{const lis=deepItems(key,arr);return lis?`<div class="dblk"><h4>${title} <span class="lay ${cls||""}">${lay}</span>${draft?'<span class="draft">예시 초안</span>':""}</h4><ul class="items">${lis.replace(/<li>/g,`<li class="${cls||""}">`)}</ul></div>`:"";};
+ return `<details class="deep" ${ST.openDeep?"open":""}><summary><span>상세 공략</span><span class="chev">▾</span></summary>
+ <p class="dover">${rich(RAVI_DETAIL.overview)} <span class="lay">공용</span></p>
+ ${RAVI_DETAIL.phases.map(([t,p])=>blk(rich(t),"공용",p)).join("")}
+ ${R?blk(R.title,"역할 층",R.pts,R.draft,"role"):""}
+ ${S?blk(sn(key)+" 활용","전문화 층",S.pts,S.draft,"spec"):`<div class="dblk"><h4>${sn(key)} 활용 <span class="lay spec">전문화 층</span></h4><ul class="items"><li class="spec"><span class="tag">준비 중</span><span class="muted">이 전문화 문장은 아직 없습니다</span></li></ul></div>`}
+ ${blk("파티 공통","공용",RAVI_DETAIL.group)}</details>`;
+}
+function generalTab(key){
+ const k=KIT[key];const role=SPEC[key].role;
+ const kitRows=k?[["차단",k.kick],["기절·제어",[k.stun,k.aoecc].filter(Boolean).join(", ")],["큰 생존기",k.big],["해제",Object.entries(k.dispel||{}).map(([t,v])=>`${{disease:"질병",poison:"독",curse:"저주",magic:"마법"}[t]}: ${v}`).join(" · ")||"없음"]].filter(r=>r[1]):[];
+ const disp=["disease","poison","curse","magic"].map(t=>{const mine=k&&k.dispel&&k.dispel[t];return `<tr><td>${{disease:"질병",poison:"독",curse:"저주",magic:"마법"}[t]}</td><td>${DISPEL_WHO[t]}</td><td>${mine?`<b class="resp">나</b> (${rich(mine)})`:`<span class="muted">${t==="magic"?"힐러":"다른 파티원"}</span>`}</td></tr>`;}).join("");
+ return `<div class="dhead"><h2 class="dname">공통</h2><p class="dsub">${sn(key)} 키트 요약 · 전문화 데이터에서 자동 생성</p></div>
+ <section class="card"><h3><span>키트 요약</span><small>전문화 층</small></h3><ul class="items">${kitRows.map(([a,b])=>`<li class="spec"><span class="tag">${a}</span><span>${rich(b)}</span></li>`).join("")||'<li class="spec"><span class="tag">준비 중</span><span class="muted">키트 데이터 없음</span></li>'}</ul></section>
+ <section class="card"><h3><span>해제 담당표</span><small>담당 칸은 내 전문화 키트로 계산</small></h3><div style="padding:0 14px 12px"><table class="tbl"><tr><th>디버프</th><th>풀 수 있는 직업</th><th>담당</th></tr>${disp}</table></div></section>`;
+}
+// ============ S3 스킬 가이드 ============
+function guide(key){
+ const {c}=SPEC[key];const h=heroObj(key);
+ if(key!=="paladin/protection") return lnav(key,"guide")+`<div class="wrap" style="${clsVars(c)}">${soonBanner(key).replace("전문화 팁은","스킬 가이드는")}</div><div class="wide ghero" style="${clsVars(c)}"><p class="eb">${sn(key)} 스킬 가이드</p><h1>${ST.lang==="ko"?h.ko:h.en}.</h1><p>생성 스크립트가 data/spec/${key.replace("/","-")}.json을 채우면 이 자리에 같은 구성의 가이드가 만들어집니다.</p></div>`;
+ const G=GUIDE[h.s];const ic=id=>ICONS[id]?`https://wow.zamimg.com/images/wow/icons/large/${ICONS[id].i}.jpg`:"";
+ const card=([id,n,d])=>`<div class="kc"><img src="${ic(id)}" alt="" loading="lazy"><div><div class="kn">${esc(nm(n))}</div>${ST.lang==="ko"&&KO2[n]?`<div class="kk">${esc(n)}</div>`:""}<div class="kd">${esc(d)}</div></div></div>`;
+ const LEAD={0:["전투 중 항시 사용.","쿨이 돌면 누르는 기술. 딜 사이클의 뼈대입니다."],1:["필요할 때 쓰는 기술.","생존기, 제어, 아군 보호, 해제, 차단. 상황을 보고 누릅니다."],2:["전투 전 준비.","오라와 무기 강화. 쐐기를 열기 전에 확인합니다."],3:["전투 후.","부활과 회복, 다음 풀로 이동."],4:["유지 버프.","트래킹 바로 띄워 끊기지 않게 봅니다."]};
+ const secs=G.map((t,i)=>{if(!t.cards.length) return "";let inner;
+  if(i===1&&SUBS[h.s]){const byId=Object.fromEntries(t.cards.map(x=>[x[0],x]));inner=SUBS[h.s].map(sg=>`<div class="sub">${sg.n}</div><div class="kgrid">${sg.ids.map(id=>byId[id]).filter(Boolean).map(card).join("")}</div>`).join("");}
+  else inner=`<div class="kgrid">${t.cards.map(card).join("")}</div>`;
+  const [a,b]=LEAD[i]||[t.hd,""];return `<section class="gsec"><div class="wide"><h2>${a} <span>${b}</span></h2><p class="lead"></p>${inner}</div></section>`;}).join("");
+ const codes=[["레이드","CIEAAAAAAAAAAAAAAAAAAAAAAsNzYWmZYGzM2WGDLzithBAYAAAAAAQamZxMmZGjZrNAMgBMYbAAgZm2mZWmBAYzyGzYAMmhxAAsNDwMDyYD"],["쐐기","CIEAAAAAAAAAAAAAAAAAAAAAAsZeAzyYGzYmZWWGjZZWmlZMAADAAAAAAaamhZMzwY2aDADMgZw2AAAzMtNzsMDAwmlFMAgZYMAALzAmZGkxC"],["델브 ★","CIEAAAAAAAAAAAAAAAAAAAAAAsZeAzyYGzYmZWWGjZZWmlZMAADAAAAAAaamhZMzwY2aDADMgZw2AAAzMtNzsMDAwmlFMAgZYMAALzAmZGkxC"]];
+ const one=HERODESC[key][h.s].one;
+ return lnav(key,"guide")+`<div style="${clsVars(c)}">
+ <div class="wide ghero"><p class="eb">${sn(key)} 스킬 가이드</p><h1>${ST.lang==="ko"?h.ko:h.en}.</h1><p>${one}.</p>
+  <div style="margin-top:22px;display:flex;justify-content:center"><span class="seg">${SPEC[key].s.h.map(x=>`<button data-act="ghero" data-v="${x.s}" aria-pressed="${x.s===h.s}">${ST.lang==="ko"?x.ko:x.en}</button>`).join("")}</span></div>
+  <div class="lk"><a href="#S4">두 영웅 특성 비교 ›</a><a href="#" data-act="gocheat">치트시트로 ›</a><a href="#" class="gprint" onclick="print();return false">인쇄 / PDF로 저장 ›</a></div></div>
+ ${secs}
+ <section class="gsec"><div class="wide"><h2>특성 빌드 코드. <span>Wowhead 기준, 2026-09-14 갱신</span></h2><p class="lead">특성 창(N) → 빌드 목록 → Import → 붙여넣기.</p><div class="codes">${codes.map(([k2,v])=>`<div class="cr"><b style="min-width:64px">${k2}</b><code>${v}</code><button class="btn gray" style="padding:6px 12px">복사</button></div>`).join("")}</div></div></section>
+ <div class="wide foot">A4 PDF 80개 대신 이 페이지의 인쇄용 CSS로 "PDF로 저장"합니다.</div></div>`;
+}
+// ============ S4 비교 ============
+function compare(key){
+ const s=SPEC[key].s;const [h1,h2]=s.h;const {c}=SPEC[key];
+ const V=CMP[key]||{};
+ const rows=Object.entries(V.rows||{}).map(([lb,[a,b]])=>`<div class="cmprow"><div class="lb">${lb}</div><div class="vals"><div>${a}</div><div>${b}</div></div></div>`).join("")||`<div class="cmprow"><div class="lb">비교 항목</div><div class="vals"><div class="muted">준비 중</div><div class="muted">준비 중</div></div></div>`;
+ const sel=(i)=>`<select aria-label="영웅 특성 ${i+1}">${s.h.map((h,j)=>`<option ${j===i?"selected":""}>${ST.lang==="ko"?h.ko:h.en}</option>`).join("")}</select>`;
+ return lnav(key,"guide")+`<div style="${clsVars(c)}"><div class="wrap"><div class="s1-hero" style="text-align:center;padding-bottom:20px"><h1 style="font-size:34px">영웅 특성 비교</h1><p>${sn(key)} · 쐐기 기준</p></div></div>
+ <div class="cmphead"><div class="wrap cmpcols"><div class="cmpcol">${sel(0)}</div><div class="cmpcol">${sel(1)}</div></div></div>
+ <div class="wrap">${rows}<div class="cmprow"><div class="vals"><div><button class="btn" data-act="pickcmp" data-v="${h1.s}">이 특성으로</button></div><div><button class="btn" data-act="pickcmp" data-v="${h2.s}">이 특성으로</button></div></div></div>
+ <div class="foot">출처: Wowhead 특성 빌드(2026-09-14), Murlok.io 쐐기 상위 50명(2026-09 확인), Maxroll 12.1 가이드.</div></div></div>`;
+}
+const CMP={"paladin/protection":{rows:{
+ "한 줄 요약":["1분 폭딜로 몰아치는 딜 중심","보호막으로 버티는 생존 중심"],
+ "핵심 버튼":["<span class='ab'>Divine Toll</span> → <span class='ab'>Hammer of Light</span>","<span class='ab'>Holy Bulwark</span> ↔ <span class='ab'>Sacred Weapon</span>"],
+ "쐐기 상위 50명 사용":["<span class='big'>2</span>명","<span class='big'>48</span>명"],
+ "운영 난이도":["<span class='meter'><i class=on></i><i class=on></i><i class=on></i></span><br>폭딜 구간 챙기기","<span class='meter'><i class=on></i><i class=on></i><i></i></span><br>발동 효과 적음"],
+ "추가 생존력":["없음","최대 체력 15% 보호막, 20초 동안 커짐"],
+ "유지 버프":["<span class='ab'>SotR</span>, <span class='ab'>Consecration</span>","+ <span class='ab'>Sacred Weapon</span>, <span class='ab'>Divine Guidance</span>"],
+ "Wowhead 추천 ★":["델브","레이드 · 쐐기"]}}};
+// ============ S5 전환 시트 ============
+function sheet(){
+ const role=ST.sheetRole||SPEC[ST.view].role;
+ return `<div class="sheet" data-act="closesheet-bg"><div class="sheet-panel" role="dialog" aria-modal="true" aria-label="전문화 변경">
+ <div class="sheet-head">${sid("S5","/specs/  (시트 · JS 없으면 이 주소의 목록 페이지)","")}<div class="t" style="margin-top:8px"><h2>전문화 변경</h2><button class="x" data-act="closesheet" aria-label="닫기">✕</button></div>
+  <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="seg">${["tank","healer","dps"].map(r=>`<button data-act="sheetrole" data-v="${r}" aria-pressed="${r===role}">${ROLE_KO[r]} ${Object.values(SPEC).filter(x=>x.role===r).length}</button>`).join("")}</span><a href="#" data-act="restart" style="font-size:13px">역할부터 다시 고르기 ›</a></div>
+  <input class="search" id="sq" placeholder="전문화·직업 이름 검색 (예: 혈기, 사제)" value="${esc(ST.q)}"></div>
+ <div class="sheet-body" id="sheetbody">${specTiles(role,"switch",ST.view,ST.q)}<p class="muted" style="font-size:12.5px;margin-top:16px">보던 던전(<b>${esc(nm((DUNGEONS.find(x=>x.id===ST.tab)||{name:"공통"}).name))}</b>)은 그대로 유지됩니다. 역할이 같으면 태그 필터도 유지됩니다.</p></div></div></div>`;
+}
+// ============ S6, S7, S8, S9, 지도 ============
+function S6(){
+ const key=ST.view;const mine=ST.saved;
+ const banner=key===mine?"":`<div class="banner share" style="${clsVars(SPEC[key].c)}"><div class="bt"><b>공유 링크로 ${sn(key)} 치트시트를 보는 중입니다.</b> 저장된 내 전문화는 ${sn(mine)}입니다.<div class="acts"><button class="btn gray" data-act="backmine">내 전문화로</button><button class="btn" data-act="savethis">이 전문화로 저장</button></div></div></div>`;
+ return sid("S6",`/${key}/?hero=${hero(key)}#${ST.tab}`,"공유 링크 도착 · 저장값을 덮어쓰지 않음")+cheat(key,{banner});
+}
+function S8(){
+ const rows=[["/prot-paladin-s2/  (pp-* 저장값 있음)","/paladin/protection/"],["/prot-paladin-s2/#altar","/paladin/protection/#altar"],["/guides/templar.html","/paladin/protection/templar/"],["/guides/lightsmith.html","/paladin/protection/lightsmith/"],["/files/prot-guide-templar-a4.pdf","그대로 둠 (PDF는 1회 유지 후 인쇄용 CSS로 대체)"]];
+ const keys=[["pp-hero","wg:hero:paladin/protection"],["pp-tiplang","wg:lang"],["pp-tab","wg:tab"],["pp-open","wg:open"],["(pp-* 중 하나라도 있음)","wg:spec = paladin/protection"]];
+ return sid("S8","/guides/templar.html → /paladin/protection/templar/","기존 주소 · 순간 화면")+`<div class="center"><p class="muted" style="font-size:13px;margin:0 0 8px">실제로는 0.1초 안에 넘어가는 빈 화면입니다</p><h1>새 주소로 이동합니다.</h1><p>보호 성기사 · 기사단 스킬 가이드<br><a href="#S3">바로 가기 ›</a></p>
+ <div class="wrap" style="max-width:640px;padding:0"><table class="tbl" style="margin-top:14px"><tr><th>기존 주소</th><th>새 주소 (location.replace)</th></tr>${rows.map(([a,b])=>`<tr><td><code>${a}</code></td><td><code>${b}</code></td></tr>`).join("")}</table>
+ <table class="tbl" style="margin-top:12px"><tr><th>기존 저장값</th><th>새 저장값 (1회 복사, 원본은 남김)</th></tr>${keys.map(([a,b])=>`<tr><td><code>${a}</code></td><td><code>${b}</code></td></tr>`).join("")}</table></div></div>`;
+}
+function S9(){
+ return sid("S9","/deathknight/blood/  (없는 주소 → 404.html)","404 · 가까운 페이지 추천")+`<div class="center" style="${clsVars(SPEC["death-knight/blood"].c)}"><h1>이 주소의 페이지가 없어요.</h1><p><code>/deathknight/blood/</code> 을 찾지 못했습니다.</p>
+ <div class="banner" style="text-align:left;max-width:420px;width:100%"><div class="bt"><b>혹시 이 페이지인가요?</b><div style="display:flex;gap:10px;align-items:center;margin-top:10px">${ico("death-knight/blood",36)}<a href="#S7/death-knight/blood" style="font-size:16px;font-weight:600">혈기 죽음의 기사 치트시트 ›</a></div></div></div>
+ <p style="margin-top:18px"><a href="#S1">처음부터 고르기 ›</a></p></div>`;
+}
+function MAP(){
+ const L=[["S1","첫 방문 선택","/","역할 → 전문화 → 영웅 특성을 한 페이지에서 차례로. 고른 값은 위 요약 칩으로 남음","#S1"],
+ ["S2","전문화 치트시트","/paladin/protection/#altar","상단 고정 바 · 같은 역할 줄 · 던전 탭 · 영웅 토글 · 역할 태그","#S2"],
+ ["S2b","층 비교 (설계 설명용)","—","Rav'i를 보호 성기사와 혈기 죽음의 기사로 나란히. 공용·역할·전문화 층 차이","#S2b"],
+ ["S3","스킬 가이드","/paladin/protection/templar/","도입부 크게, 구획은 제품 소개 섹션처럼","#S3"],
+ ["S4","영웅 특성 비교","/paladin/protection/compare/","2열 + 열 머리 드롭다운","#S4"],
+ ["S5","전문화 전환 시트","/specs/","역할로 좁히고 딜러는 직업별 묶음 · 준비 중 배지","#S5"],
+ ["S6","공유 링크 도착","/death-knight/blood/?hero=sanlayn#altar","내 저장값과 다를 때 배너","#S6/death-knight/blood"],
+ ["S7","준비 중 전문화","/demon-hunter/vengeance/#altar","공용 + 역할 층만 보여 주고 배너","#S7/demon-hunter/vengeance"],
+ ["S8","기존 주소 호환","/guides/templar.html","새 주소로 이동하는 순간 화면 · 저장값 이전","#S8"],
+ ["S9","404","/deathknight/blood/","로스터와 맞춰 가까운 페이지 추천","#S9"]];
+ return `<div class="wrap map"><h1>화면 지도</h1><p class="muted">각 화면 위 점선 줄에 화면 ID와 대응 URL(기준 ${BASE})을 붙였습니다. 휴대폰·데스크톱 폭, 제목 글꼴 A/B, 라이트/다크는 맨 위 검은 바에서 바꿉니다.</p>
+ <div class="flowline">S1 ─역할·전문화·영웅─▶ S2 ◀──세그먼트──▶ S3 ──▶ S4
+          │                 │  ▲
+          │   (재방문: S1 건너뜀)│  │ 전문화 변경
+          ▼                 ▼  │
+  S7 ◀─준비 중─ S5 ─준비됨─▶ S2(다른 전문화)
+  공유 링크 ──▶ S6 ─저장─▶ S2      기존 주소 ──▶ S8 ──▶ S2/S3      없는 주소 ──▶ S9 ──▶ S2/S1</div>
+ <ul class="mapl">${L.map(([id,n,u,d,h])=>`<li><span class="id">${id}</span><a class="nmm" href="${h}">${n} ›</a><code>${esc(BASE+(u==="—"?"":u))}</code><span class="ds">${d}</span></li>`).join("")}</ul>
+ <p class="muted" style="font-size:13px;padding-bottom:60px">예시 초안 배지가 붙은 혈기·복원 주술사·화염 마법사 문장과 힐러·딜러 역할 문장은 설계 설명용 초안이며 검수 전입니다. 태그 "광역 피해", "우선 처치", "제어"는 신규 제안입니다.</p></div>`;
+}
+function S2b(){
+ const keys=["paladin/protection","death-knight/blood"];const d=DUNGEONS[0];const b=d.bosses[0];
+ const col=k=>`<div style="${clsVars(SPEC[k].c)}"><div class="colh">${ico(k,28)}${sn(k)} · ${ST.lang==="ko"?heroObj(k).ko:heroObj(k).en}</div><section class="card"><h3><span>${esc(nm(b.n))}</span><small>우두머리 1</small></h3><ul class="items">${RAVI_ITEMS.map(it=>itemLi(k,it)).join("")}</ul>${deepRavi(k)}</section></div>`;
+ const was=ST.openDeep;ST.openDeep=true;const html=sid("S2b","(설계 설명용 화면)","같은 공용 데이터 1벌 + 역할·전문화 층")+`<div class="wrap" style="max-width:1180px"><div class="dhead"><h2 class="dname">${esc(nm(d.name))} · ${esc(nm(b.n))}</h2><p class="dsub">왼쪽과 오른쪽의 회색 띠 문장은 같은 데이터에서 나옵니다. "→ 내 기술" 부분과 직업색 띠 블록만 전문화마다 다릅니다.</p>
+ <div class="legend"><span><i style="background:var(--common)"></i>던전 공용 (전 전문화 공유)</span><span><i style="background:var(--role)"></i>역할 층 (탱커 6개 공유)</span><span><i style="background:#888"></i>전문화 층 (전문화마다)</span></div></div>
+ <div class="cmp2">${keys.map(col).join("")}</div><div class="foot">혈기 문장은 예시 초안입니다. 기술 이름은 Wowhead 툴팁 API로 존재·한글명을 확인했습니다(2026-09-26).</div></div>`;ST.openDeep=was;return html;
+}
+// ============ 라우터 ============
+const SCREENS=["map","S1","S2","S2b","S3","S4","S5","S6/death-knight/blood","S7/demon-hunter/vengeance","S8","S9"];
+function render(){
+ const h=location.hash.slice(1)||"map";const [id,...rest]=h.split("/");const arg=rest.length?rest.join("/"):null;
+ let html="";const app=document.getElementById("app");
+ if(id==="S1") html=S1();
+ else if(id==="S2"){ if(arg&&SPEC[arg]) ST.view=arg; html=sid("S2",`/${ST.view}/#${ST.tab}`,`${ROLE_KO[SPEC[ST.view].role]} 렌즈 · 저장: wg:spec, wg:hero, wg:tab`)+cheat(ST.view);}
+ else if(id==="S2b") html=S2b();
+ else if(id==="S3") html=sid("S3",`/${ST.view}/${hero(ST.view)}/`,"스킬 가이드 · 생성 스크립트 결과물")+guide(ST.view);
+ else if(id==="S4") html=sid("S4",`/${ST.view}/compare/`,"영웅 특성 비교")+compare(ST.view);
+ else if(id==="S5") html=sid("S2",`/${ST.view}/#${ST.tab}`,"뒤에 깔린 화면")+cheat(ST.view)+sheet();
+ else if(id==="S6"){ST.view=arg&&SPEC[arg]?arg:"death-knight/blood";ST.shareFrom=ST.saved;html=S6();}
+ else if(id==="S7"){ST.view=arg&&SPEC[arg]?arg:"demon-hunter/vengeance";html=sid("S7",`/${ST.view}/#${ST.tab}`,"준비 중 전문화 · 공용 + 역할 층만")+cheat(ST.view);}
+ else if(id==="S8") html=S8();
+ else if(id==="S9") html=S9();
+ else html=sid("지도","—","프로토타입 첫 화면")+MAP();
+ app.innerHTML=`<div class="screen">${html}</div>`;
+ document.getElementById("p-saved").textContent=sn(ST.saved);
+ const sel=document.getElementById("p-screen");if(sel.value!==h&&[...sel.options].some(o=>o.value===h)) sel.value=h;
+ const q=document.getElementById("sq");if(q){q.oninput=()=>{ST.q=q.value;document.getElementById("sheetbody").innerHTML=specTiles(ST.sheetRole||SPEC[ST.view].role,"switch",ST.view,ST.q);};}
+}
+function toScreenFor(key){return status(key)==="soon"?"#S7/"+key:"#S2/"+key;}
+document.addEventListener("click",e=>{
+ const el=e.target.closest("[data-act]");if(!el) return;const a=el.dataset.act,v=el.dataset.v;
+ if(a==="closesheet-bg"&&e.target!==el) return;
+ if(el.tagName==="A") e.preventDefault();
+ const P=ST.s1;
+ switch(a){
+  case "pickrole":P.role=v;P.spec=null;P.hero=null;render();smooth("st-spec");break;
+  case "pickspec":P.spec=v;P.hero=null;render();smooth("st-hero");break;
+  case "pickhero":P.hero=SPEC[P.spec].s.h.find(h=>h.s===v);ST.hero[P.spec]=v;render();setTimeout(()=>finishS1(),260);break;
+  case "herolater":finishS1();break;
+  case "s1go":finishS1();break;
+  case "s1role":go("#S1");break;
+  case "gocheat":go(status(ST.view)==="soon"?"#S7/"+ST.view:"#S2");break;
+  case "goguide":go("#S3");break;
+  case "opensheet":ST.sheetRole=el.dataset.role||null;ST.q="";go("#S5");break;
+  case "closesheet":case "closesheet-bg":history.length>1?history.back():go("#S2");break;
+  case "sheetrole":ST.sheetRole=v;render();break;
+  case "restart":ST.s1={role:null,spec:null,hero:null};go("#S1");break;
+  case "switch":{const oldRole=SPEC[ST.view].role;ST.view=v;ST.saved=v;ST.sheetRole=null;ST.q="";go(toScreenFor(v));break;}
+  case "tab":ST.tab=v;render();break;
+  case "hero":ST.hero[ST.view]=v;render();break;
+  case "ghero":ST.hero[ST.view]=v;render();break;
+  case "pickcmp":ST.hero[ST.view]=v;go("#S3");break;
+  case "lang":ST.lang=v;render();break;
+  case "ft":{const s=tagsFor(SPEC[ST.view].role);s.has(v)?s.delete(v):s.add(v);render();break;}
+  case "expall":ST.openDeep=!ST.openDeep;render();break;
+  case "backmine":ST.view=ST.saved;ST.shareFrom=null;go("#S2");break;
+  case "savethis":ST.saved=ST.view;ST.shareFrom=null;go("#S2");break;
+ }
+});
+function finishS1(){const P=ST.s1;if(!P.spec) return;ST.view=P.spec;ST.saved=P.spec;if(P.hero) ST.hero[P.spec]=P.hero.s;go(toScreenFor(P.spec));}
+function smooth(id){const el=document.getElementById(id);if(!el) return;const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;el.scrollIntoView({behavior:rm?"auto":"smooth",block:"start"});}
+// ============ 프로토타입 조작 ============
+const psel=document.getElementById("p-screen");
+[["map","지도"],["S1","S1 첫 방문 선택"],["S2/paladin/protection","S2 치트시트 (보호 성기사)"],["S2b","S2b 층 비교 (보호 성기사 vs 혈기)"],["S3","S3 스킬 가이드"],["S4","S4 영웅 특성 비교"],["S5","S5 전문화 전환 시트"],["S6/death-knight/blood","S6 공유 링크 (혈기)"],["S7/demon-hunter/vengeance","S7 준비 중 (복수 악마사냥꾼)"],["S2/shaman/restoration","S2 힐러 렌즈 (복원 주술사)"],["S2/mage/fire","S2 딜러 렌즈 (화염 마법사)"],["S8","S8 기존 주소 호환"],["S9","S9 404"]].forEach(([v,t])=>psel.add(new Option(t,v)));
+psel.onchange=()=>go("#"+psel.value);
+function bindSeg(id,fn,init){const seg=document.getElementById(id);const set=v=>{seg.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));fn(v);};seg.addEventListener("click",e=>{const b=e.target.closest("button");if(b) set(b.dataset.v);});set(init);}
+bindSeg("p-font",v=>{document.documentElement.dataset.font=v;},"b");
+bindSeg("p-theme",v=>{document.documentElement.dataset.theme=v;render();},matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+bindSeg("p-width",v=>{document.getElementById("dev").classList.toggle("phone",v==="phone");},innerWidth<700?"phone":"desk");
+document.getElementById("p-reset").onclick=()=>{ST.s1={role:null,spec:null,hero:null};ST.saved="paladin/protection";ST.view=ST.saved;ST.hero={};go("#S1");};
+addEventListener("hashchange",()=>{render();const d=document.getElementById("dev");if(d.classList.contains("phone")) d.scrollTop=0; else scrollTo(0,0);});
+render();
+</script>
+</body>
+</html>
