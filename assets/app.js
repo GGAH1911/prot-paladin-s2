@@ -320,6 +320,7 @@ async function sheetPage() {
   const present = new Set();
   D.forEach(d => d.bosses.forEach(b => (b.i || []).forEach(([t]) => present.add(t))));
   Object.values(TRASH).forEach(gs => gs.forEach(g => g.i.forEach(([t]) => present.add(t))));
+  [role.brief, spec && spec.brief].forEach(src => Object.values(src || {}).forEach(bs => Object.values(bs).forEach(arr => arr.forEach(([t]) => present.add(t)))));
   if (spec) Object.values(spec.heroCards).forEach(h => h.items.forEach(([t]) => present.add(t)));
   const tagRe = new RegExp(`^\\[(${Object.values(TAGS).join("|")})\\]\\s*`);
   [DETAIL, RDETAIL, SDETAIL].forEach(src => Object.values(src).forEach(bs => Object.values(bs).forEach(x => {
@@ -388,7 +389,11 @@ async function sheetPage() {
 
   // ---- 상세 공략 ----
   const escH = x => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const abWrap = x => escH(x).replace(/([A-Z](?:[A-Za-z'’\-]+|(?=\s[A-Z]))(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g, m => `<span class="ab">${m}</span>`);
+  const AB_RE = /([A-Z](?:[A-Za-z'’\-]+|(?=\s[A-Z]))(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g;
+  // "Power Word: Shield"처럼 콜론이 든 이름은 툴팁·한글 사전에 있는 이름일 때만 한 덩어리로 감싼다
+  const AB_COLON = /([A-Z][A-Za-z'’\-]*(?:\s[A-Z][A-Za-z'’\-]*)*:\s[A-Z][A-Za-z'’\-]*(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g;
+  const abKnown = m => { const k = tipNorm(m.replace(/&amp;/g, "&")); return Object.values(core.tips).some(t => t[k]) || (spec && spec.tips[k]) || core.commonTips[k] || KO_ALL[m] != null; };
+  const abWrap = x => escH(x).split(AB_COLON).map((part, i) => i % 2 && abKnown(part) ? `<span class="ab">${part}</span>` : part.replace(AB_RE, m => `<span class="ab">${m}</span>`)).join("");
   function deepItems(arr) {
     return (arr || []).map(x => { const m = String(x).match(tagRe); return [m ? TAGK[m[1]] : "tip", m ? String(x).slice(m[0].length) : String(x)]; })
       .filter(([t]) => on.has(t))
@@ -422,10 +427,13 @@ async function sheetPage() {
   const TIPS = core.tips;
   function decorateTips(did) {
     const maps = [TIPS[did] || {}, spec ? spec.tips : {}, core.commonTips];
+    // 상세 공략의 공용·역할 블록은 던전 기술 이름이므로 전문화 tips 를 쓰지 않는다(예: 기원사 Echo ↔ Echo of Nalorakk)
+    const shared = [TIPS[did] || {}, core.commonTips];
     mainEl.querySelectorAll(".ab").forEach(el => {
       if (el.dataset.sid) return;
       const k = tipNorm(el.textContent); let id = null;
-      for (const m of maps) { if (m[k]) { id = m[k]; break; } }
+      const inShared = el.closest(".deepbody") && !el.closest(".dblk.spec");
+      for (const m of inShared ? shared : maps) { if (m[k]) { id = m[k]; break; } }
       if (!id) return;
       el.dataset.sid = id; el.classList.add("has-tip"); el.tabIndex = 0; el.setAttribute("role", "button");
     });
@@ -542,7 +550,9 @@ async function sheetPage() {
     const blockHtml = b => b.block === "dispel" ? dispelTable() : macros();
     mainEl.innerHTML = `<div><h2 class="dname">${d.name}</h2><p class="dsub">${d.sub}${d.time ? ` · <span class="dtime">제한 시간 <b>${d.time}분</b></span>` : ""}${RIO[d.id] ? `</p><p class="dlinks"><a class="vid" href="${rioVideo(d.id)}" target="_blank" rel="noopener">▶ Raider.IO 영상</a><a class="vid rio" href="${rioArticle(d.id)}" target="_blank" rel="noopener">Raider.IO 글</a><button class="expall" type="button">상세 모두 펼치기</button>` : ` · <a class="vid" href="${core.generalVideo.href}" target="_blank" rel="noopener">${core.generalVideo.label}</a>`}</p></div>` + (d.id !== "general" ? heroCard(d) : "") + bosses.map(b => {
       if (b.block) return fold(b, blockHtml(b));
-      const lis = b.i.filter(([t]) => on.has(t)).map(it => `<li><span class="tag t-${it[0]}">${TAGS[it[0]]}</span><span>${itemHtml(it)}</span></li>`).join("");
+      // 보스 요약 항목 = 공용 층 + 역할 층(role.brief) + 전문화 층(spec.brief)
+      const extra = [...(((role.brief || {})[d.id] || {})[b.n] || []), ...(((spec && spec.brief || {})[d.id] || {})[b.n] || [])];
+      const lis = [...b.i, ...extra].filter(([t]) => on.has(t)).map(it => `<li><span class="tag t-${it[0]}">${TAGS[it[0]]}</span><span>${itemHtml(it)}</span></li>`).join("");
       const body = lis ? `<ul class="items">${lis}</ul>` : `<p class="empty">선택한 태그 항목 없음</p>`;
       if (d.id === "general") return fold(b, body, b.hero ? " herocard" : "");
       const vid = (RIO[d.id] && b.k !== "Trash") ? `<a class="vid" href="${rioVideo(d.id, b.t)}" target="_blank" rel="noopener">▶ 영상</a>` : "";

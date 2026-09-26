@@ -24,7 +24,7 @@ const want = new Set(Object.entries(core.detail).flatMap(([d, bs]) => Object.key
 const got = new Set(Object.entries(S.detail || {}).flatMap(([d, bs]) => Object.keys(bs).map(b => `${d}/${b}`)));
 [...want].filter(k => !got.has(k)).forEach(k => errs.push('보스 문장 없음: ' + k));
 [...got].filter(k => !want.has(k)).forEach(k => errs.push('모르는 보스 키: ' + k));
-const TAGRE = /^\[(탱버|차단|회피|해제|위치|참고)\]\s/;
+const TAGRE = /^\[(탱버|차단|회피|해제|위치|참고|광역 피해|우선 처치|제어)\]\s/;
 Object.entries(S.detail || {}).forEach(([d, bs]) => Object.entries(bs).forEach(([b, arr]) => arr.forEach(l => { if (!TAGRE.test(l)) errs.push(`태그 없는 문장 ${d}/${b}: ${l}`); })));
 
 // 이름 → 툴팁 연결
