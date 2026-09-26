@@ -252,7 +252,7 @@
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=432459"></a></div>
-        <div class="info"><div class="name">Holy Bulwark ↔ Sacred Weapon</div><div class="desc">2회 충전. 쓸 때마다 보호막(Bulwark)과 추가 피해(Weapon)가 번갈아 나옴. 아군에게 주면 나도 같이 받음</div></div>
+        <div class="info"><div class="name">Holy Bulwark ↔ Sacred Weapon</div><div class="desc">2회 충전. 쓸 때마다 보호막(Holy Bulwark)과 추가 피해(Sacred Weapon)가 번갈아 나옴. 아군에게 주면 나도 같이 받음</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=389539"></a></div>
@@ -368,7 +368,7 @@
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=465"></a></div>
-        <div class="info"><div class="name">오라</div><div class="desc">Devotion / Concentration / Crusader 중 선택</div></div>
+        <div class="info"><div class="name">오라</div><div class="desc">Devotion Aura / Concentration Aura / Crusader Aura 중 선택</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=432459"></a></div>
@@ -493,7 +493,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape") hideTip();});
 addEventListener("scroll",()=>{if(!tipEl.hidden) hideTip();},{passive:true});
 
 // ---- 게임 언어: 한글 모드에서 카드·본문의 기술 이름과 게임 메뉴 이름을 한글 클라이언트 이름으로 ----
-const KO_EXTRA={"Hammer of Wrath":"천벌의 망치","Holy Power":"신성한 힘","Grand Crusader":"위대한 성전사","Vanguard":"선봉대","Divine Purpose":"신성한 목적","Shining Light":"눈부신 빛","Strength in Adversity":"위기 극복의 저력","Devotion":"헌신","Concentration":"집중","Crusader":"성전사","Bulwark":"보루","Weapon":"무기","SotR":"정의의 방패","parry":"무기 막기","stack":"중첩","charge":"충전","Templar":"기사단","Lightsmith":"빛의 대장장이","Holy Armaments":"신성한 무장","Options":"설정","Gameplay Enhancements":"게임 플레이 개선","Advanced Cooldown Settings":"고급 재사용 대기시간 설정","Buffs":"강화 효과","Tracked Bars":"추적 중인 막대","Tracked Buffs":"추적 중인 강화 효과","Import":"가져오기","Mythic+":"신화+"};
+const KO_EXTRA={"Hammer of Wrath":"천벌의 망치","Holy Power":"신성한 힘","Grand Crusader":"위대한 성전사","Vanguard":"선봉대","Divine Purpose":"신성한 목적","Shining Light":"눈부신 빛","Strength in Adversity":"위기 극복의 저력","SotR":"정의의 방패","parry":"무기 막기","stack":"중첩","charge":"충전","Templar":"기사단","Lightsmith":"빛의 대장장이","Holy Armaments":"신성한 무장","Options":"설정","Gameplay Enhancements":"게임 플레이 개선","Advanced Cooldown Settings":"고급 재사용 대기시간 설정","Buffs":"강화 효과","Tracked Bars":"추적 중인 막대","Tracked Buffs":"추적 중인 강화 효과","Import":"가져오기","Mythic+":"신화+","Devotion Aura":"헌신의 오라","Concentration Aura":"집중의 오라","Crusader Aura":"성전사의 오라"};
 const KO_ALL=(()=>{const o={};for(const id in G_EN){if(G_KO[id])o[G_EN[id].n]=G_KO[id].n;}return Object.assign(o,KO_EXTRA);})();
 const KO_RE=new RegExp("(?<![A-Za-z'’])("+Object.keys(KO_ALL).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z'’])","g");
 const JOSA=[["으로","로"],["이나","나"],["을","를"],["은","는"],["이","가"],["과","와"]];
