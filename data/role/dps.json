@@ -1,0 +1,1 @@
+{"role":"dps","label":"딜러 운영","tags":{"tb":"탱버","int":"차단","dodge":"회피","disp":"해제","pos":"위치","tip":"참고","aoe":"광역 피해","prio":"우선 처치","cc":"제어"},"order":["int","prio","cc","dodge","aoe","disp","pos","tip","tb"],"off":["tb"],"answers":{"dispel.poison":"독 해제 담당","dispel.disease":"질병 해제 담당","freedom":"이동 방해 해제"},"detail":{}}
