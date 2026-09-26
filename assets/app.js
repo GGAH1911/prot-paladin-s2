@@ -371,7 +371,9 @@ async function sheetPage() {
     const kit = spec ? spec.kit.dispel : {};
     const rows = core.dispel.rows.map(r => {
       const mine = kit[r.type];
-      const who = mine ? `${esc(s.koFull)} ${A(mine)}, ${r.who}` : tokens(r.whoAll);
+      // 내가 풀 수 있으면 내 전문화를 맨 앞에 두고, 목록에서 내 직업 항목은 뺀다
+      const others = r.whoAll.split(", ").filter(x => !x.startsWith(s.cls.ko)).join(", ");
+      const who = mine ? `${esc(s.koFull)} ${A(mine)}${others ? ", " + tokens(others) : ""}` : tokens(r.whoAll);
       return `<tr><td><span class="tag t-${r.cls}">${r.label}</span></td><td>${who}</td><td${mine ? ' class="me"' : ""}>${mine ? "나" : r.owner}</td></tr>`;
     }).join("");
     return `<div class="tbl"><table><thead><tr><th>디버프</th><th>풀 수 있는 직업</th><th>담당</th></tr></thead><tbody>${rows}</tbody></table></div><p class="note">${core.dispel.note}</p>`;
