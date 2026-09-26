@@ -180,7 +180,7 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
     <div class="tabtrack" id="tabtrack" hidden><div class="tabthumb" id="tabthumb"></div></div>
     <div class="herorow"><span data-ko="영웅 특성">Hero</span><div class="seg" id="hero" role="group" aria-label="Hero talent">
       <button id="h-templar" data-h="templar" aria-pressed="true" data-ko="기사단">Templar</button><button id="h-lightsmith" data-h="lightsmith" aria-pressed="false" data-ko="빛의 대장장이">Lightsmith</button>
-    </div><span class="tlabel">게임 언어</span><div class="seg" id="tiplang" role="group" aria-label="게임 언어 (기술·NPC 이름과 툴팁)"><button data-l="ko" aria-pressed="true">한글</button><button data-l="en" aria-pressed="false">English</button></div></div>
+    </div><span class="tlabel">게임 언어</span><div class="seg" id="tiplang" role="group" aria-label="게임 언어 (기술·NPC 이름과 툴팁)"><button data-l="ko" aria-pressed="false">한글</button><button data-l="en" aria-pressed="true">English</button></div></div>
     <div class="filters" id="filters"></div>
   </nav>
   <main id="main"></main>
@@ -869,7 +869,7 @@ function decorateTips(did){
     el.dataset.sid=id; el.classList.add("has-tip"); el.tabIndex=0; el.setAttribute("role","button");
   });
 }
-let tipLang="ko";
+let tipLang="en";
 try{const s=localStorage.getItem("pp-tiplang"); if(s==="ko"||s==="en") tipLang=s;}catch(e){}
 function syncLangBtns(){document.querySelectorAll("#tiplang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===tipLang));}
 syncLangBtns();
