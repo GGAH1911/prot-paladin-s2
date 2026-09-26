@@ -889,6 +889,32 @@ function render(){
 }
 render();
 
+// ---- 모바일: 영상 링크를 YouTube 앱으로 열기 ----
+(function(){
+  const ua=navigator.userAgent;
+  const isAndroid=/Android/i.test(ua);
+  const isIOS=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(!isAndroid&&!isIOS) return;
+  document.addEventListener("click",e=>{
+    const a=e.target.closest('a[href*="youtube.com/watch"]'); if(!a) return;
+    const u=new URL(a.href), v=u.searchParams.get("v"), t=parseInt(u.searchParams.get("t"),10);
+    if(!v) return;
+    e.preventDefault();
+    const q=`watch?v=${v}${t>0?`&t=${t}`:""}`;
+    if(isAndroid){
+      // 앱이 없으면 browser_fallback_url로 웹 영상이 열림
+      location.href=`intent://www.youtube.com/${q}#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent(a.href)};end`;
+      return;
+    }
+    // iOS: 앱으로 넘어가면 페이지가 숨겨짐. 1.5초 뒤에도 그대로면 앱이 없는 것이니 웹으로 열기
+    let left=false; const onHide=()=>{left=true;};
+    document.addEventListener("visibilitychange",onHide,{once:true});
+    addEventListener("pagehide",onHide,{once:true});
+    location.href=`youtube://www.youtube.com/${q}`;
+    setTimeout(()=>{if(!left&&!document.hidden) location.href=a.href;},1500);
+  });
+})();
+
 // ---- 던전 목록 스크롤 막대 ----
 (function(){
   const track=document.getElementById("tabtrack"), thumb=document.getElementById("tabthumb");
