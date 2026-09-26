@@ -1,0 +1,188 @@
+{
+"sources": [
+{
+"url": "https://www.icy-veins.com/wow/blood-death-knight-pve-tank-mythic-plus-tips",
+"checked": "2026-09-26",
+"what": "12.1 쐐기 유틸 키트: Mind Freeze(15초, 특성), Asphyxiate(45초 기절), Blinding Sleet(방향 상실), Death Grip(시전 끊기, Death's Echo로 2회), Gorefiend's Grasp(15야드 끌기+3초 침묵, 자신에게 쓰지 말 것), Death and Decay+Grip of the Dead(감속), Raise Ally, Anti-Magic Zone, Devour 어픽스는 Death Strike로 회복"
+},
+{
+"url": "https://nether.wowhead.com/tooltip/spell/<id>?dataEnv=1&locale=0",
+"checked": "2026-09-26",
+"what": "기술 존재·효과 확인: Death Strike 49998, Bone Shield 195181, Vampiric Blood 55233(최대 생명력·치유 30% 10초, 1분 30초), Icebound Fortitude 48792(30% 감소 8초, 2분), Anti-Magic Shell 48707(마법 피해 흡수·해로운 마법 효과 적용 방지 5초), Anti-Magic Zone 51052, Rune Tap 194679, Dancing Rune Weapon 49028, Gorefiend's Grasp 108199, Death Grip 49576, Mind Freeze 47528, Asphyxiate 221562, Blinding Sleet 207167, Dark Command 56222, Death's Advance 48265(10초 이동속도, 감속 무시, 강제 이동·넉백 면역), Wraith Walk 212552(뿌리 효과 제거), Raise Ally 61999, Blood Boil 50842, Death and Decay 43265"
+}
+],
+"bosses": {
+"altar/Rav'i": [
+"[탱버] Hydrastrike 3연타 직전에 Bone Shield 중첩을 확인하고, 맞은 직후 Death Strike로 체력을 되돌려라",
+"[탱버] 체력이 낮은 상태에서 Hydrastrike가 오면 Vampiric Blood를 먼저 켜라",
+"[해제] Regurgitate 질병은 혈기가 해제할 수 없으니 해제 가능한 파티원에게 맡겨라",
+"[위치] 빈 더미가 멀면 Death's Advance로 이동 속도를 올려 보스를 끌어가라"
+],
+"altar/The Writhing Coil": [
+"[탱버] Tail Scythe 전에 Death's Advance를 켜 두면 넉백을 받지 않아 자리를 지킬 수 있다",
+"[차단] Toxic Atrophy 차단 순번에 Mind Freeze를 넣고, 놓치면 Death Grip으로 시전을 한 번 끊어라",
+"[위치] Uncoil 때 흩어진 Uncoiled Writhe를 Gorefiend's Grasp로 파티원 한 명 위에 모아라",
+"[차단] Uncoil 때 Toxic Atrophy 시전 Writhe를 Asphyxiate나 Blinding Sleet로 늦춰라"
+],
+"altar/Zul'jan": [
+"[탱버] Chop Down 2연타 뒤 Death Strike로 체력을 되돌리고, 체력이 낮으면 Vampiric Blood를 켜라",
+"[탱버] Ritual Venom 중첩이 쌓인 구간에 Chop Down이 겹치면 Icebound Fortitude를 써라",
+"[위치] 담당 빔 자리가 멀면 Death's Advance로 Ritual of the Fang 시작 전에 도착하라"
+],
+"vale/Lightblossom Trinity": [
+"[탱버] Bedrock Slam 직전에 Bone Shield를 유지하고, 높은 단수면 Vampiric Blood를 더한다.",
+"[차단] Kezkitt의 Light Bolt는 Mind Freeze로 끊는다.",
+"[위치] 세 보스가 떨어지면 Death Grip으로 하나를 당겨 다시 붙인다.",
+"[참고] Bedrock Surge와 Overgrowth가 겹치면 Anti-Magic Zone으로 파티 마법 피해를 줄인다."
+],
+"vale/Ikuzz the Light Hunter": [
+"[해제] 혈기는 아군의 Bloodthorn Roots를 풀 수 없으니 뿌리를 보스 광역에 함께 맞혀 빨리 부순다.",
+"[탱버] Frenzy 구간의 Thorncaller Roar에는 Vampiric Blood를 쓴다.",
+"[참고] 파티가 광역 피해로 위험하면 Anti-Magic Zone을 깔아 마법 피해를 줄인다."
+],
+"vale/Lightwarden Ruia": [
+"[탱버] Bear Form 동안 Bone Shield를 끊기지 않게 유지하고 겹치는 구간에는 Dancing Rune Weapon을 쓴다.",
+"[차단] Warden's Wrath는 Mind Freeze로 끊는다.",
+"[탱버] 40% 이후에는 Vampiric Blood와 Icebound Fortitude를 나눠 쓴다."
+],
+"vale/Ziekket": [
+"[탱버] Thornspike 전에 Death's Advance를 켜 넉백을 막고, 뒤따르는 출혈 피해는 Death Strike로 회복한다.",
+"[차단] 부활 전 Lashers의 Lightspore Shot은 Mind Freeze로 끊는다.",
+"[위치] 소환된 Lashers는 Gorefiend's Grasp로 한곳에 모으고, 부활 전이면 Blinding Sleet로 시전을 막는다."
+],
+"nalorakk/The Hoardmonger": [
+"[해제] Toxic Spores는 혈기가 해제할 수 없으니 버섯을 많이 밟아 파티원 중첩을 줄이고 해제는 파티원에게 맡긴다.",
+"[탱버] Ravenous Bellow·Hearty Bellow는 방어도 무시 물리라 Bone Shield로 줄지 않으니 Vampiric Blood나 Icebound Fortitude로 받는다.",
+"[위치] 멀리 떨어진 버섯은 Death's Advance로 달려가 12초 안에 밟는다."
+],
+"nalorakk/Sentinel of Winter": [
+"[차단] Mind Freeze로 Shivercore 하나의 Winter's Shroud를 맡고, 다른 하나는 Asphyxiate로 늦춘다.",
+"[탱버] Snowdrift 밖에서 Frozen Tempest를 맞게 되면 Anti-Magic Shell과 Icebound Fortitude를 켠다.",
+"[위치] Rimeshatter를 밟을 사람이 없으면 탱커가 직접 밟고 Death Strike로 회복한다."
+],
+"nalorakk/Nalorakk": [
+"[탱버] Forceful Slam은 Vampiric Blood와 Bone Shield를 켜고 받는다.",
+"[탱버] 방어도 무시인 Overwhelming Onslaught 3연타는 Icebound Fortitude로 받는다.",
+"[위치] Overwhelming Onslaught 전에 Death's Advance를 켜면 넉백을 받지 않아 Forceful Slam 자리를 지킬 수 있다.",
+"[참고] Spectral Slash나 Echoing Fury 피해가 쌓이면 Death Strike로 자힐한다."
+],
+"murder/Kystia Manaheart": [
+"[탱버] Chaos Barrage 첫 타 전에 Death Strike로 체력을 채우고, 아프게 들어오면 Icebound Fortitude를 켠다.",
+"[차단] Mirror Images는 Mind Freeze로 하나를 끊고, 모인 분신은 Blinding Sleet로 Felstorm을 막는다.",
+"[차단] 흩어진 분신은 Gorefiend's Grasp로 모아 3초 침묵시킨다.",
+"[해제] Corroding Spittle은 마법이라 혈기가 해제할 수 없으니 힐러에게 맡긴다."
+],
+"murder/Zaen Bladesorrow": [
+"[탱버] Envenom 시전 때 Bone Shield에 Vampiric Blood를 겹치고 직후 Death Strike를 쓴다.",
+"[해제] 뒤따르는 Heartstop Poison은 혈기가 해제할 수 없으니 해제 가능한 파티원에게 미리 알린다.",
+"[회피] 통이 모자라면 Icebound Fortitude와 Anti-Magic Shell로 Murder in a Row 줄을 받아내고 통을 파티에 넘긴다."
+],
+"murder/Xathuux the Annihilator": [
+"[탱버] Legion Strike 치유 감소 8초 동안 Death Strike 회복이 줄어드니 Vampiric Blood와 Dancing Rune Weapon을 번갈아 겹친다.",
+"[탱버] Infernal Crush와 Demonic Rage 광역 피해가 겹치면 Icebound Fortitude를 쓴다.",
+"[위치] Axe Toss 도끼 쪽으로 보스를 빨리 옮길 때 Death's Advance를 쓴다."
+],
+"murder/Lithiel Cinderfury": [
+"[차단] Chaos Bolt는 Mind Freeze로 끊는다.",
+"[차단] Wild Imp 무리는 Gorefiend's Grasp로 모아 침묵시키고 Blinding Sleet로 Felfire Burst를 막는다.",
+"[탱버] Furious Vilefiend의 Shadow Bite는 마법 피해라 Anti-Magic Shell로 받는다.",
+"[위치] Infernal에게서 벗어나 자리를 옮길 때 Death's Advance를 쓴다."
+],
+"voidscar/Taz'Rah": [
+"[탱버] Void Blast는 암흑 피해라 Anti-Magic Shell로 흡수하고, 아프게 들어오면 Vampiric Blood를 더한다.",
+"[위치] Void Blast 전에 Death's Advance를 켜면 넉백을 받지 않아 장판으로 밀리지 않는다.",
+"[참고] Dark Bloom 구간에 파티 피해가 크면 Anti-Magic Zone을 깐다."
+],
+"voidscar/Atroxus": [
+"[탱버] Hulking Claw는 자연 피해라 Anti-Magic Shell로 흡수하고, 직후 Death Strike로 체력을 채운다.",
+"[회피] Toxic Creeper에게 따라잡힐 것 같으면 Death's Advance로 거리를 벌린다.",
+"[해제] Mind-Numbing Poison은 혈기가 해제할 수 없으니 Poison Pool을 밟지 않게 보스를 옮기고 해제는 파티원에게 맡긴다."
+],
+"voidscar/Charonus": [
+"[탱버] Dark Waves는 암흑 전방기라 Anti-Magic Shell에 Icebound Fortitude를 겹쳐 받는다.",
+"[참고] Condensed Mass 중첩은 혈기가 지울 수 없으니 이동 방해 해제는 파티원에게 맡긴다.",
+"[참고] Cosmic Crash 도트로 파티 체력이 떨어지면 Anti-Magic Zone을 깐다."
+],
+"kings/The Golden Serpent": [
+"[탱버] Tail Thrash 시전 타이밍에 Bone Shield가 켜져 있게 유지한다.",
+"[차단] 보스로 향하는 Animated Gold 무리는 Blinding Sleet나 Asphyxiate로 묶고, Death and Decay로 늦춘다.",
+"[위치] 금 덩어리를 피해 보스를 끌고 갈 때 Death's Advance로 빠르게 자리를 옮긴다."
+],
+"kings/Mchimba the Embalmer": [
+"[차단] 미라의 Wretched Discharge에 Mind Freeze를 먼저 넣고, 놓치면 Death Grip으로 시전을 끊는다.",
+"[위치] 깨어난 미라가 흩어지면 Gorefiend's Grasp로 보스 옆에 모은다.",
+"[위치] Entomb 관 수색 때 Death's Advance로 반대편 관까지 빠르게 이동한다."
+],
+"kings/The Council of Tribes": [
+"[탱버] Backhand 직후 Vampiric Blood와 Icebound Fortitude를 켜고 버티며, 없으면 Death's Advance로 카이팅한다.",
+"[위치] Backhand 전에 Death's Advance를 켜면 넉백을 받지 않아 플랫폼 밖으로 떨어지지 않는다.",
+"[차단] Poison Nova에 Mind Freeze를 배정해 확실히 끊는다."
+],
+"kings/Dazar, The First King": [
+"[탱버] Savage Maul+Blade Combo에는 Vampiric Blood와 Dancing Rune Weapon을 번갈아 쓴다.",
+"[탱버] 쿨기가 빈 콤보에는 Icebound Fortitude를 쓰거나 외부 생존기를 요청하고, 콤보 직후 Death Strike로 회복한다.",
+"[차단] Reban의 Deathly Roar에 Mind Freeze를 배정한다.",
+"[위치] 80%에 나오는 T'zala는 Dark Command로 바로 어그로를 잡는다."
+],
+"ruby/Melidrussa Chillworn": [
+"[차단] Frigid Shard에 Mind Freeze를 쓴다.",
+"[탱버] 차단이 빠진 Frigid Shard 앞에는 Bone Shield를 유지하고 직후 Death Strike를 쓴다.",
+"[위치] Infused Whelp가 나오면 Gorefiend's Grasp로 보스 위에 모으고 Blood Boil로 어그로를 잡는다.",
+"[해제] Cold Claws 중첩은 혈기가 지울 수 없으니 해제는 파티원에게 맡기고 Whelp를 빨리 잡는다."
+],
+"ruby/Kokia Blazehoof": [
+"[탱버] Searing Blows 채널 전에 Bone Shield를 유지하고 중첩이 높으면 Vampiric Blood를 더한다.",
+"[차단] Blaze Volley에 Mind Freeze를 쓴다.",
+"[참고] Searing Wounds 출혈로 체력이 빠지면 Death Strike로 자힐한다."
+],
+"ruby/Kyrakka & Erkhart Stormvein": [
+"[탱버] Stormslam 시전 중 Anti-Magic Shell을 켜 자연 피해 부분을 흡수하고, 해제가 늦어 중첩되면 Icebound Fortitude를 쓴다.",
+"[해제] Stormslam 디버프는 마법이라 혈기가 해제할 수 없으니 힐러에게 맡긴다.",
+"[탱버] 2페이즈 진입에 대비해 Vampiric Blood와 Anti-Magic Shell 하나를 남겨 둔다."
+],
+"temple/Adderis & Aspix": [
+"[탱버] Overload 동안 Bone Shield를 유지하고 겹치면 Vampiric Blood를 쓴다.",
+"[위치] Gale Force 전에 Death's Advance를 켜면 넉백을 받지 않아 Thunder and Lightning 분담 자리를 지킨다.",
+"[참고] Thunder and Lightning 분담 구간에 Anti-Magic Zone을 깔아 파티 피해를 줄인다."
+],
+"temple/Merektha": [
+"[탱버] Lightning Bite의 자연 피해는 Anti-Magic Shell로 흡수하고, 고단에선 Vampiric Blood를 더한다.",
+"[차단] Toxic Viper의 Poison Spit은 Mind Freeze로 끊는다.",
+"[위치] A Knot of Snakes 이후 흩어진 뱀은 Gorefiend's Grasp로 한곳에 모아 광역 처리를 돕는다."
+],
+"temple/Galvazzt": [
+"[탱버] 딜러·힐러가 부족해 광선을 대신 막아야 하면 Anti-Magic Shell이나 Icebound Fortitude를 켠 뒤 들어간다.",
+"[위치] Induction Field가 깔리면 Death's Advance로 빠르게 보스를 새 자리로 옮긴다.",
+"[참고] 광선 소화자가 죽으면 Raise Ally로 즉시 살린다."
+],
+"temple/Avatar of Sethraliss": [
+"[탱버] Tainted Strike에 Bone Shield를 유지하고 중첩이 쌓이면 Vampiric Blood를 쓴다.",
+"[차단] Twisted Hexxer의 Flame Shock은 Mind Freeze로 끊는다.",
+"[위치] 힐러에게 가는 Faithless Tormentor는 Death Grip으로 당기거나 Asphyxiate로 묶는다.",
+"[위치] Faithless Tormentor 무리가 들어오면 Gorefiend's Grasp로 모아 한 번에 친다."
+]
+},
+"answers": {
+"tankbuster": "{Death Strike}·{Bone Shield} 유지",
+"tankbuster.major": "{Death Strike} + {Vampiric Blood}",
+"tankbuster.hold": "{Bone Shield} 유지",
+"dispel.poison": "해제 가능한 파티원 담당",
+"dispel.disease": "해제 가능한 파티원 담당",
+"freedom": "해제 가능한 파티원 담당"
+},
+"answerBasis": {
+"tankbuster": "Death Strike 49998(피해 비례 회복), Bone Shield 195181(방어도 증가, 근접 공격마다 충전 소모)",
+"tankbuster.major": "Vampiric Blood 55233",
+"tankbuster.hold": "Bone Shield 195181",
+"dispel.*": "혈기 죽음의 기사는 독·질병·마법·저주 해제 기술이 없음(Icy Veins 유틸 목록에 해제 없음)",
+"freedom": "아군 이동 방해 해제 수단 없음. Wraith Walk 212552는 자신의 뿌리 효과만 제거. Death's Advance 48265는 감속 무시·넉백 면역이지만 뿌리 해제는 툴팁에 없음"
+},
+"notes": [
+"Wowhead 특성 계산기(12.1 혈기 트리) 페이지는 JS 렌더링이라 노드 목록을 직접 읽지 못했다. 기술 존재는 툴팁 API와 Icy Veins 12.1 유틸 목록으로 확인했다. Dancing Rune Weapon·Rune Tap·Anti-Magic Zone·Wraith Walk의 12.1 쐐기 빌드 채택 여부는 미확인이다.",
+"보스별 혈기 대응(어떤 생존기를 어떤 기믹에)은 던전별 혈기 전용 출처를 찾지 못해 일반 혈기 원칙을 적용했다: 물리 탱버=Bone Shield 유지+Death Strike 회복+Vampiric Blood, 마법 피해=Anti-Magic Shell, 방어도 무시=Icebound Fortitude, 넉백=Death's Advance, 쫄 모으기=Gorefiend's Grasp, 해제=파티원 담당.",
+"마법(암흑·자연·지옥불) 피해로 분류한 기믹: Void Blast, Dark Waves, Chaos Barrage, Shadow Bite, Stormslam(자연 부분), Lightning Bite, Frozen Tempest. 피해 계열은 detail 문장·기술 이름에서 추정했고 툴팁 학파는 대조하지 않았다(미확인).",
+"Stormslam 디버프를 Anti-Magic Shell로 막을 수 있는지(해로운 마법 효과 적용 방지)는 실제 효과 여부를 확인하지 못해 문장에 넣지 않았다.",
+"Asphyxiate·Blinding Sleet는 보스에게 통하지 않는다고 보고 일반몹·쫄에만 썼다(보스 면역 여부는 개별 확인 안 함).",
+"모든 문장은 검수 전 예시 초안이다."
+]
+}

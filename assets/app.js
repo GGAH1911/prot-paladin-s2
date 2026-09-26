@@ -357,6 +357,7 @@ async function sheetPage() {
     if (spec) spec.sources.forEach(x => src.splice(x.after + 1, 0, x));
     return `<div><b style="color:var(--int)">차단</b> 항목의 <span class="need must">필수</span>는 놓치면 파티가 죽을 수 있는 시전, <span class="need rec">권장</span>은 피해를 줄이는 용도라 놓쳐도 생존기로 버틸 수 있는 시전입니다.</div>
       <div>한글 모드의 NPC·던전 이름은 Mythic Dungeon Tools와 LittleWigs 애드온의 한국어 번역 데이터, 기술 이름은 Wowhead 한국어 데이터를 따릅니다. 몹 이름을 누르면 나오는 생김새 이미지는 Wowhead 모델 썸네일입니다.</div>
+      ${spec && spec.note ? `<div>${esc(spec.note)}</div>` : ""}
       ${spec ? `<div><b style="color:var(--tip)">참고</b> 태그는 가이드 원문이 아니라 ${esc(s.koFull)} 키트에 맞춘 추가 팁입니다.</div>` : ""}
       <div>출처: ${src.map(x => `<a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a>`).join(" · ")}</div>
       <div>전문화 목록과 아이콘은 게임 데이터(${esc(ROSTER.meta.gameBuild)}) 기준입니다. <a href="${BASE}specs/">전체 전문화</a> · <a href="${BASE}?pick">처음부터 고르기</a></div>`;
@@ -391,13 +392,19 @@ async function sheetPage() {
       .filter(([t]) => on.has(t))
       .map(([t, x]) => `<li><span class="tag t-${t}">${TAGS[t]}</span><span>${abWrap(x)}</span></li>`).join("");
   }
+  // 역할 층 문장 중 전문화가 자기 문구로 바꿔 쓰는 줄(roleOverride: {"던전/보스": {줄번호: 문장}})
+  function roleLines(did, bn) {
+    const arr = (RDETAIL[did] || {})[bn]; if (!arr) return arr;
+    const ov = spec && spec.roleOverride && spec.roleOverride[`${did}/${bn}`];
+    return ov ? arr.map((l, i) => ov[i] ?? l) : arr;
+  }
   function deepHtml(did, b) {
     const x = (DETAIL[did] || {})[b.n]; if (!x) return "";
     const key = `deep-${did}-${b.n}`;
     const open = openState[key] === true;
     const blk = (title, arr, cls) => { const lis = deepItems(arr); return lis ? `<div class="dblk${cls ? " " + cls : ""}"><h4>${title}</h4><ul class="items">${lis}</ul></div>` : ""; };
     const phases = (x.phases || []).map(p => blk(escH(p.title), p.points)).join("");
-    const body = (x.overview ? `<p class="dover">${abWrap(x.overview)}</p>` : "") + phases + blk(role.label, (RDETAIL[did] || {})[b.n], "role") + blk(`${s.koFull} 활용`, (SDETAIL[did] || {})[b.n], "spec") + blk("파티 공통", x.group);
+    const body = (x.overview ? `<p class="dover">${abWrap(x.overview)}</p>` : "") + phases + blk(role.label, roleLines(did, b.n), "role") + blk(`${s.koFull} 활용`, (SDETAIL[did] || {})[b.n], "spec") + blk("파티 공통", x.group);
     return `<details class="deep fold" data-k="${key}"${open ? " open" : ""}><summary><span>상세 공략</span><span class="chev" aria-hidden="true">▾</span></summary><div class="deepbody">${body || '<p class="empty">선택한 태그 항목 없음</p>'}</div></details>`;
   }
   document.addEventListener("click", e => {
