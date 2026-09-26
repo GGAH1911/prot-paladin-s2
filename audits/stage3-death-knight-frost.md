@@ -29,3 +29,5 @@
 - Death Charge의 사용 방법(별도 버튼인지 Death's Advance 대체인지)은 툴팁에 없어 효과만 적었다.
 - Blinding Sleet가 분신·Wild Imp·Animated Gold에 통하는지, 매크로 동작은 게임 안에서 확인하지 않았다.
 - 보스별 냉기 전용 출처는 Wowhead 쐐기 팁의 던전별 한두 줄뿐이다. 나머지는 일반 원칙을 적용했고 spec.note에 적었다.
+
+- (부모 보완) 어픽스 줄의 이름을 Wowhead affix 툴팁 기준(160 Devour: 균열이 정수를 먹는 파티 디버프, 158 Voidbound: Voidbound Emissary가 주변 적을 강화)으로 바로잡았다.

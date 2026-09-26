@@ -24,3 +24,5 @@
 - Kidney Shot이 Kystia 분신·Writhe·Animated Gold·Wild Imp에 통하는지는 Wowhead 문장과 core 층 문장에 기댄 것이고 게임 안에서 확인하지 않음.
 - Gravitic Orbs 고정 대상이 Vanish를 쓰면 고정이 풀리는지 몰라 Vanish는 권하지 않음.
 - 매크로(특히 Tricks of the Trade 주시 대상 매크로)는 게임 안에서 확인하지 않음.
+
+- (부모 보완) 어픽스 줄의 이름을 Wowhead affix 툴팁 기준(160 Devour: 균열이 정수를 먹는 파티 디버프, 158 Voidbound: Voidbound Emissary가 주변 적을 강화)으로 바로잡았다.

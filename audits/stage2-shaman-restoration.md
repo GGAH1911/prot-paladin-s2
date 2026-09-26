@@ -39,3 +39,5 @@
 - Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.
 
 - (부모 보완) Stormslam은 시전 기술 381512와 디버프 381515의 id가 따로 있고, 디버프는 Wowhead 기술 페이지·nether 툴팁 모두 **Magic**이다. 첫 판에서 381512만 보고 "해제 종류 없음"으로 판단한 것을 바로잡아 해제 문장을 넣었다(core 층의 "힐러가 해제한다"가 맞았다).
+
+- (부모 보완) 어픽스 줄의 이름을 Wowhead affix 툴팁 기준(160 Devour: 균열이 정수를 먹는 파티 디버프, 158 Voidbound: Voidbound Emissary가 주변 적을 강화)으로 바로잡았다.

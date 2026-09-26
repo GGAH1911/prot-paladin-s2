@@ -25,3 +25,5 @@
 - Capacitor Totem 기절이 분신·미라·Wild Imp·Animated Gold·Faithless Tormentor에 통하는지는 core 층 문장에 기댄 것이고 게임에서 확인하지 않았다.
 - Interrupting Cloudburst 잠금을 즉시 시전 기술로 피하는 문장은 "시전 중이면 잠긴다"는 core 문장에서 끌어낸 원칙이다.
 - 매크로는 게임에서 시험하지 않았다.
+
+- (부모 보완) 어픽스 줄의 이름을 Wowhead affix 툴팁 기준(160 Devour: 균열이 정수를 먹는 파티 디버프, 158 Voidbound: Voidbound Emissary가 주변 적을 강화)으로 바로잡았다.
