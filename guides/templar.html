@@ -208,6 +208,10 @@
   .bcopy{font:inherit;font-size:13px;font-weight:700;color:#1a1408;background:var(--gold);border:0;border-radius:6px;padding:6px 12px;cursor:pointer;min-width:64px}
   .bcopy.done{background:#6fbf73}
   .blink{font-size:12.5px;color:#8fb0e6}
+
+  .howto{margin:6px 0 0;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .howto b{color:#e6e0cc}
+  .howto code{font-size:12px;color:#e6e0cc;background:#0f1115;padding:0 4px;border-radius:3px}
 </style>
 </head>
 <body>
@@ -232,7 +236,7 @@
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=53600"></a></div>
-        <div class="info"><div class="name">Shield of the Righteous</div><div class="desc">신성한 힘 소모. 방어 핵심, 계속 유지</div></div>
+        <div class="info"><div class="name">Shield of the Righteous</div><div class="desc">Holy Power 소모. 방어 핵심, 계속 유지</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=26573"></a></div>
@@ -347,7 +351,7 @@
       <div class="skill-grid">
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=391054"></a></div>
-        <div class="info"><div class="name">Intercession</div><div class="desc">전투 중 부활 (신성한 힘 3)</div></div>
+        <div class="info"><div class="name">Intercession</div><div class="desc">전투 중 부활 (Holy Power 3)</div></div>
       </div>
     </div>
     </div>
@@ -364,7 +368,7 @@
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=391054"></a></div>
-        <div class="info"><div class="name">신성한 힘 3개</div><div class="desc">Intercession 대비로 남겨두기</div></div>
+        <div class="info"><div class="name">Holy Power 3개</div><div class="desc">Intercession 대비로 남겨두기</div></div>
       </div>
       <div class="skill-card">
         <div class="icon-slot"><a href="https://www.wowhead.com/spell=375576"></a></div>
@@ -395,6 +399,28 @@
 </div>
 
 
+
+<div class="tier" id="upkeep">
+  <div class="tier-header">5. 유지 버프 <span class="count">트래킹 바로 띄워서 보기</span></div>
+  <div class="tier-body">
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=53600"></a></div>
+        <div class="info"><div class="name">Shield of the Righteous</div><div class="desc">최대 13.5초까지 쌓임. 막대가 절반쯤 내려오면 다시 사용</div></div>
+      </div>
+      <div class="skill-card">
+        <div class="icon-slot"><a href="https://www.wowhead.com/spell=26573"></a></div>
+        <div class="info"><div class="name">Consecration</div><div class="desc">12초 장판. 꺼지기 전에 다시 깔기</div></div>
+      </div>
+    </div>
+    <p class="bnote" style="margin:12px 0 6px"><b>유지 대상은 이 두 개가 전부</b>입니다. Strength in Adversity(Avenger's Shield로 parry 15초)는 사이클만 돌리면 저절로 유지되니 막대는 선택입니다.</p>
+    <p class="bnote" style="margin:0 0 6px"><b>막대 대신 아이콘이 빛나게 (Bar Glows)</b>: Grand Crusader → Avenger's Shield · Vanguard → Shield of the Righteous · Divine Purpose → Shield of the Righteous · Shining Light → Word of Glory(체력이 낮을 때).</p>
+    <ol class="howto">
+      <li>ESC → Options → Gameplay Enhancements → <b>Advanced Cooldown Settings</b> → <b>Buffs</b> 탭에서 위 버프를 <b>Tracked Bars</b> 칸으로 옮기기. Tracked Buffs 칸에 두면 막대에 시간이 안 나옵니다.</li>
+      <li><code>/eui</code> → Cooldown Manager → <b>Tracking Bars</b>에서 막대로 추가하고, <b>Unlock Mode</b>로 중앙 아이콘 줄 옆에 붙이기.</li>
+    </ol>
+  </div>
+</div>
 
 <div class="tier" id="builds">
   <div class="tier-header">특성 빌드 코드 <span class="count">Wowhead 기준 (2026-09-14 갱신, 12.1)</span></div>
