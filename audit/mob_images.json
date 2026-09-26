@@ -1,0 +1,867 @@
+{
+  "Ritual Chieftain": {
+    "npc": 270306,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/248/146680.png",
+    "src": "wowhead"
+  },
+  "Bloodletter": {
+    "npc": 261552,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/229/146661.png",
+    "src": "wowhead"
+  },
+  "High Evolutionist": {
+    "npc": 261557,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/231/146663.png",
+    "src": "wowhead"
+  },
+  "Living Venom": {
+    "npc": 263112,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/245/146677.png",
+    "src": "wowhead"
+  },
+  "Primal Serpent": {
+    "npc": 261560,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/221/146653.png",
+    "src": "wowhead"
+  },
+  "Ravenous Descendant": {
+    "npc": 261553,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/222/146654.png",
+    "src": "wowhead"
+  },
+  "Ula'tek's Chosen": {
+    "npc": 263109,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/122/147578.png",
+    "src": "wowhead"
+  },
+  "Ascendant Serpent": {
+    "npc": 261573,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/123/146299.png",
+    "src": "wowhead"
+  },
+  "Twinfang Harrower": {
+    "npc": 261554,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/113/147569.png",
+    "src": "wowhead"
+  },
+  "Venom Leech": {
+    "npc": 261550,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/166/146598.png",
+    "src": "wowhead"
+  },
+  "Rattling Writhe": {
+    "npc": 262011,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/232/146664.png",
+    "src": "wowhead"
+  },
+  "Rav'i": {
+    "npc": 259445,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/238/144110.png",
+    "src": "wowhead"
+  },
+  "The Writhing Coil": {
+    "npc": 259446,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/28/144156.png",
+    "src": "wowhead"
+  },
+  "Zul'jan": {
+    "npc": 259447,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/27/145435.png",
+    "src": "wowhead"
+  },
+  "Uncoiled Writhe": {
+    "npc": 262398,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/25/142361.png",
+    "src": "wowhead"
+  },
+  "Lightgorged Lasher": {
+    "npc": 245345,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/179/125875.png",
+    "src": "wowhead"
+  },
+  "Lasher": {
+    "npc": 245410,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/25/104473.png",
+    "src": "wowhead"
+  },
+  "Underbrush Stalker": {
+    "npc": 245339,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/198/127942.png",
+    "src": "wowhead"
+  },
+  "Virid Grovekeeper": {
+    "npc": 245346,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/202/127946.png",
+    "src": "wowhead"
+  },
+  "Sporeblight Belcher": {
+    "npc": 254850,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/254/126462.png",
+    "src": "wowhead"
+  },
+  "Radiant Spellsower": {
+    "npc": 245336,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/201/127945.png",
+    "src": "wowhead"
+  },
+  "Lightfeather Petalwing": {
+    "npc": 245484,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/54/136758.png",
+    "src": "wowhead"
+  },
+  "Thorny Saptor": {
+    "npc": 245473,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/181/122805.png",
+    "src": "wowhead"
+  },
+  "Overgrown Hydra": {
+    "npc": 245513,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/247/142839.png",
+    "src": "wowhead"
+  },
+  "Luminous Thornmaw": {
+    "npc": 246871,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/209/126929.png",
+    "src": "wowhead"
+  },
+  "Meittik": {
+    "npc": 243028,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/52/129588.png",
+    "src": "wowhead"
+  },
+  "Kezkitt": {
+    "npc": 243029,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/19/139027.png",
+    "src": "wowhead"
+  },
+  "Lekshi": {
+    "npc": 243030,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/17/139025.png",
+    "src": "wowhead"
+  },
+  "Lightwarden Ruia": {
+    "npc": 245912,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/64/129856.png",
+    "src": "wowhead"
+  },
+  "Ziekket": {
+    "npc": 247676,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/171/136619.png",
+    "src": "wowhead"
+  },
+  "Ikuzz the Light Hunter": {
+    "npc": 244887,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/144/129424.png",
+    "src": "wowhead"
+  },
+  "Lightblossom": {
+    "npc": 244528,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/237/129261.png",
+    "src": "wowhead"
+  },
+  "Potatoad Matriarch": {
+    "npc": 249756,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/90/136026.png",
+    "src": "wowhead"
+  },
+  "Potadpole Egg": {
+    "npc": 249783,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/171/83115.png",
+    "src": "wowhead"
+  },
+  "Spirit of Hunger": {
+    "npc": 245855,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/233/26857.png",
+    "src": "wowhead"
+  },
+  "Earthwhisper Tender": {
+    "npc": 241814,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/80/128080.png",
+    "src": "wowhead"
+  },
+  "Thornclaw Gatherer": {
+    "npc": 241813,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/157/141213.png",
+    "src": "wowhead"
+  },
+  "Territorial Matriarch": {
+    "npc": 241808,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/236/14316.png",
+    "src": "wowhead"
+  },
+  "The Winter Squall": {
+    "npc": 250478,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/133/138885.png",
+    "src": "wowhead"
+  },
+  "Frigid Mauler": {
+    "npc": 241872,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/232/141288.png",
+    "src": "wowhead"
+  },
+  "Glacial Revenant": {
+    "npc": 241876,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/45/103213.png",
+    "src": "wowhead"
+  },
+  "Avatar of Determination": {
+    "npc": 241869,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/95/128095.png",
+    "src": "wowhead"
+  },
+  "Ruthless Totemcaller": {
+    "npc": 245143,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/27/129563.png",
+    "src": "wowhead"
+  },
+  "Stormbound Mystic": {
+    "npc": 245139,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/26/129562.png",
+    "src": "wowhead"
+  },
+  "Grizzled Warbringer": {
+    "npc": 245146,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/46/131630.png",
+    "src": "wowhead"
+  },
+  "Bonded Beasttamer": {
+    "npc": 245145,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/45/129581.png",
+    "src": "wowhead"
+  },
+  "The Hoardmonger": {
+    "npc": 241812,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/64/129344.png",
+    "src": "wowhead"
+  },
+  "Keen-Eyed Striker": {
+    "npc": 241816,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/52/124212.png",
+    "src": "wowhead"
+  },
+  "Sentinel of Winter": {
+    "npc": 244100,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/138/129418.png",
+    "src": "wowhead"
+  },
+  "Fractured Shivercore": {
+    "npc": 244759,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/63/103231.png",
+    "src": "wowhead"
+  },
+  "Loa Speaker Nanea": {
+    "npc": 244889,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/88/138584.png",
+    "src": "wowhead"
+  },
+  "Nalorakk": {
+    "npc": 246404,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/197/129989.png",
+    "src": "wowhead"
+  },
+  "Zul'jarra": {
+    "npc": 246409,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/221/125149.png",
+    "src": "wowhead"
+  },
+  "Echo of Nalorakk": {
+    "npc": 247301,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/197/129989.png",
+    "src": "wowhead"
+  },
+  "Felwyrm": {
+    "npc": 236085,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/221/139997.png",
+    "src": "wowhead"
+  },
+  "Row Hooligan": {
+    "npc": 236073,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/235/136939.png",
+    "src": "wowhead"
+  },
+  "Felonious Mage": {
+    "npc": 236084,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/248/129784.png",
+    "src": "wowhead"
+  },
+  "Bribed Captain": {
+    "npc": 252529,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/234/137450.png",
+    "src": "wowhead"
+  },
+  "Seductive Sayaad": {
+    "npc": 236082,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/88/77400.png",
+    "src": "wowhead"
+  },
+  "Massive Felwyrm": {
+    "npc": 236902,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/220/139996.png",
+    "src": "wowhead"
+  },
+  "Street Sneak": {
+    "npc": 236091,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/225/137441.png",
+    "src": "wowhead"
+  },
+  "Warehouse Worker": {
+    "npc": 236893,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/130/136834.png",
+    "src": "wowhead"
+  },
+  "Keen Taskmaster": {
+    "npc": 236897,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/209/136657.png",
+    "src": "wowhead"
+  },
+  "Unleashed Imp": {
+    "npc": 234849,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/109/65901.png",
+    "src": "wowhead"
+  },
+  "Fel Invoker": {
+    "npc": 235268,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/98/124770.png",
+    "src": "wowhead"
+  },
+  "Wrathguard Flayer": {
+    "npc": 235267,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/224/63968.png",
+    "src": "wowhead"
+  },
+  "Corrupted Warlock": {
+    "npc": 235265,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/91/124763.png",
+    "src": "wowhead"
+  },
+  "Shivan Punisher": {
+    "npc": 235465,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/168/76712.png",
+    "src": "wowhead"
+  },
+  "Felmaster Lucsei": {
+    "npc": 236905,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/35/138787.png",
+    "src": "wowhead"
+  },
+  "Defiled Golem": {
+    "npc": 235322,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/92/137564.png",
+    "src": "wowhead"
+  },
+  "Xathuux the Annihilator": {
+    "npc": 234647,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/236/140268.png",
+    "src": "wowhead"
+  },
+  "Kystia Manaheart": {
+    "npc": 234648,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/162/124578.png",
+    "src": "wowhead"
+  },
+  "Zaen Bladesorrow": {
+    "npc": 234649,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/176/124592.png",
+    "src": "wowhead"
+  },
+  "Nibbles": {
+    "npc": 234660,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/247/126199.png",
+    "src": "wowhead"
+  },
+  "Lithiel Cinderfury": {
+    "npc": 234763,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/161/124577.png",
+    "src": "wowhead"
+  },
+  "Furious Vilefiend": {
+    "npc": 234799,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/202/84426.png",
+    "src": "wowhead"
+  },
+  "Forbidden Freight": {
+    "npc": 234852,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/216/137176.png",
+    "src": "wowhead"
+  },
+  "Wild Imp": {
+    "npc": 237626,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/94/77406.png",
+    "src": "wowhead"
+  },
+  "Infernal": {
+    "npc": 238414,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/184/103096.png",
+    "src": "wowhead"
+  },
+  "Lost Sethrak": {
+    "npc": 243996,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/13/140045.png",
+    "src": "wowhead"
+  },
+  "Feral Saberon": {
+    "npc": 243988,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/9/140041.png",
+    "src": "wowhead"
+  },
+  "Sycophantic Tarasek": {
+    "npc": 243983,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/5/140037.png",
+    "src": "wowhead"
+  },
+  "Dominated Brawler": {
+    "npc": 238883,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/152/130200.png",
+    "src": "wowhead"
+  },
+  "Enthralled Shaman": {
+    "npc": 241496,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/153/130201.png",
+    "src": "wowhead"
+  },
+  "Voidtouched Magi": {
+    "npc": 252072,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/114/137330.png",
+    "src": "wowhead"
+  },
+  "Brutal Overseer": {
+    "npc": 252053,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/113/137329.png",
+    "src": "wowhead"
+  },
+  "Aegyra the Unyielding": {
+    "npc": 267545,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/178/147378.png",
+    "src": "wowhead"
+  },
+  "Raj'kess the Spellstorm": {
+    "npc": 267546,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/163/147363.png",
+    "src": "wowhead"
+  },
+  "Chitigoth": {
+    "npc": 244260,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/224/140256.png",
+    "src": "wowhead"
+  },
+  "Protective Turtle": {
+    "npc": 249603,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/7/140295.png",
+    "src": "wowhead"
+  },
+  "Brutok": {
+    "npc": 244309,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/232/140264.png",
+    "src": "wowhead"
+  },
+  "Savage Shredclaw": {
+    "npc": 243835,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/242/141810.png",
+    "src": "wowhead"
+  },
+  "Kilivore Screamer": {
+    "npc": 243766,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/140/141196.png",
+    "src": "wowhead"
+  },
+  "Agitated Voidscythe": {
+    "npc": 263228,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/227/138723.png",
+    "src": "wowhead"
+  },
+  "Watchful Harrower": {
+    "npc": 245950,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/230/141286.png",
+    "src": "wowhead"
+  },
+  "Devouring Brutalizer": {
+    "npc": 268184,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/3/147459.png",
+    "src": "wowhead"
+  },
+  "Taz'Rah": {
+    "npc": 238887,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/12/140300.png",
+    "src": "wowhead"
+  },
+  "Atroxus": {
+    "npc": 239008,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/225/131553.png",
+    "src": "wowhead"
+  },
+  "Charonus": {
+    "npc": 239167,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/29/138269.png",
+    "src": "wowhead"
+  },
+  "Toxic Creeper": {
+    "npc": 239070,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/86/140374.png",
+    "src": "wowhead"
+  },
+  "Animated Guardian": {
+    "npc": 133935,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/52/83252.png",
+    "src": "wowhead"
+  },
+  "Minion of Zul": {
+    "npc": 133943,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/23/76055.png",
+    "src": "wowhead"
+  },
+  "Risen Hexer": {
+    "npc": 134174,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/171/83371.png",
+    "src": "wowhead"
+  },
+  "Shadow-Borne Champion": {
+    "npc": 134158,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/164/83364.png",
+    "src": "wowhead"
+  },
+  "The Golden Serpent": {
+    "npc": 135322,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/234/84202.png",
+    "src": "wowhead"
+  },
+  "Queen Patlaa": {
+    "npc": 137486,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/39/85287.png",
+    "src": "wowhead"
+  },
+  "Bloodsworn Assassin": {
+    "npc": 137485,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/37/85285.png",
+    "src": "wowhead"
+  },
+  "Seneschal M'bara": {
+    "npc": 134251,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/61/83517.png",
+    "src": "wowhead"
+  },
+  "King Rahu'ai": {
+    "npc": 134331,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/88/83544.png",
+    "src": "wowhead"
+  },
+  "King Timalji": {
+    "npc": 137474,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/24/85272.png",
+    "src": "wowhead"
+  },
+  "Queen Wasi": {
+    "npc": 137478,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/26/85274.png",
+    "src": "wowhead"
+  },
+  "Purification Construct": {
+    "npc": 134739,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/124/83836.png",
+    "src": "wowhead"
+  },
+  "Interment Construct": {
+    "npc": 137969,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/173/85677.png",
+    "src": "wowhead"
+  },
+  "Mchimba the Embalmer": {
+    "npc": 134993,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/73/83529.png",
+    "src": "wowhead"
+  },
+  "Phantom Hex Priest": {
+    "npc": 135204,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/172/84140.png",
+    "src": "wowhead"
+  },
+  "Royal Berserker": {
+    "npc": 135167,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/144/84112.png",
+    "src": "wowhead"
+  },
+  "Spectral Shaman": {
+    "npc": 135239,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/195/84163.png",
+    "src": "wowhead"
+  },
+  "Ghostly Brute": {
+    "npc": 135231,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/133/85125.png",
+    "src": "wowhead"
+  },
+  "Honored Raptor": {
+    "npc": 135192,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/165/84133.png",
+    "src": "wowhead"
+  },
+  "Shadow of Zul": {
+    "npc": 138489,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/100/85860.png",
+    "src": "wowhead"
+  },
+  "Embalming Fluid": {
+    "npc": 137989,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/240/33008.png",
+    "src": "wowhead"
+  },
+  "Thundering Totem": {
+    "npc": 135761,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/200/84680.png",
+    "src": "wowhead"
+  },
+  "Explosive Totem": {
+    "npc": 135764,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/197/84933.png",
+    "src": "wowhead"
+  },
+  "T'zala": {
+    "npc": 136976,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/50/84274.png",
+    "src": "wowhead"
+  },
+  "Reban": {
+    "npc": 136984,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/49/84273.png",
+    "src": "wowhead"
+  },
+  "Aka'ali the Conqueror": {
+    "npc": 269808,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/45/84269.png",
+    "src": "wowhead"
+  },
+  "Zanazal the Wise": {
+    "npc": 269810,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/47/84271.png",
+    "src": "wowhead"
+  },
+  "Kula the Butcher": {
+    "npc": 269811,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/48/84272.png",
+    "src": "wowhead"
+  },
+  "Half-Finished Mummy": {
+    "npc": 270502,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/208/84688.png",
+    "src": "wowhead"
+  },
+  "Animated Gold": {
+    "npc": 135406,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/75/88651.png",
+    "src": "wowhead"
+  },
+  "Primal Juggernaut": {
+    "npc": 188244,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/89/101209.png",
+    "src": "wowhead"
+  },
+  "Flashfrost Chillweaver": {
+    "npc": 188067,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/133/107397.png",
+    "src": "wowhead"
+  },
+  "Infused Whelp": {
+    "npc": 187894,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/41/110633.png",
+    "src": "wowhead"
+  },
+  "Defier Draghar": {
+    "npc": 187897,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/98/107106.png",
+    "src": "wowhead"
+  },
+  "Melidrussa Chillworn": {
+    "npc": 188252,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/139/106891.png",
+    "src": "wowhead"
+  },
+  "Primalist Cinderweaver": {
+    "npc": 190207,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/230/102886.png",
+    "src": "wowhead"
+  },
+  "Blazebound Destroyer": {
+    "npc": 190034,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/105/102505.png",
+    "src": "wowhead"
+  },
+  "Ashseer Flamelasher": {
+    "npc": 190206,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/57/102969.png",
+    "src": "wowhead"
+  },
+  "Kokia Blazehoof": {
+    "npc": 189232,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/99/106851.png",
+    "src": "wowhead"
+  },
+  "Storm Warrior": {
+    "npc": 197982,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/116/110964.png",
+    "src": "wowhead"
+  },
+  "Primal Thundercloud": {
+    "npc": 197509,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/116/102516.png",
+    "src": "wowhead"
+  },
+  "Tempest Channeler": {
+    "npc": 198047,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/119/110967.png",
+    "src": "wowhead"
+  },
+  "High Channeler Ryvati": {
+    "npc": 197535,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/118/110966.png",
+    "src": "wowhead"
+  },
+  "Erkhart Stormvein": {
+    "npc": 190485,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/30/108318.png",
+    "src": "wowhead"
+  },
+  "Kyrakka": {
+    "npc": 190484,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/129/107137.png",
+    "src": "wowhead"
+  },
+  "Blazebound Firestorm": {
+    "npc": 189886,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/105/102505.png",
+    "src": "wowhead"
+  },
+  "Sandswept Hunter": {
+    "npc": 134600,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/68/83780.png",
+    "src": "wowhead"
+  },
+  "Barbed Krolusk": {
+    "npc": 134616,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/75/83787.png",
+    "src": "wowhead"
+  },
+  "Storm Adept": {
+    "npc": 134990,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/56/84024.png",
+    "src": "wowhead"
+  },
+  "Shrouded Fang": {
+    "npc": 134602,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/70/83782.png",
+    "src": "wowhead"
+  },
+  "Sand-Sworn Rider": {
+    "npc": 134629,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/25/84761.png",
+    "src": "wowhead"
+  },
+  "Poisonous Viper": {
+    "npc": 135562,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/170/78250.png",
+    "src": "wowhead"
+  },
+  "Lightning Serpent": {
+    "npc": 135846,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/167/78247.png",
+    "src": "wowhead"
+  },
+  "Faithless Subjugator": {
+    "npc": 134364,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/238/86510.png",
+    "src": "wowhead"
+  },
+  "Merektha": {
+    "npc": 133384,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/9/88585.png",
+    "src": "wowhead"
+  },
+  "Agitated Nimbus": {
+    "npc": 136076,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/95/65631.png",
+    "src": "wowhead"
+  },
+  "Imbued Stormcaller": {
+    "npc": 134599,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/67/83779.png",
+    "src": "wowhead"
+  },
+  "Static Anomaly": {
+    "npc": 134691,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/247/81655.png",
+    "src": "wowhead"
+  },
+  "Twisted Hexxer": {
+    "npc": 136250,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/196/84676.png",
+    "src": "wowhead"
+  },
+  "Avatar of Sethraliss": {
+    "npc": 133392,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/3/83203.png",
+    "src": "wowhead"
+  },
+  "Toxic Viper": {
+    "npc": 134389,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/170/78250.png",
+    "src": "wowhead"
+  },
+  "Storm Serpent": {
+    "npc": 134390,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/143/147087.png",
+    "src": "wowhead"
+  },
+  "Orb Watcher": {
+    "npc": 135007,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/23/84503.png",
+    "src": "wowhead"
+  },
+  "Eye of Sethraliss": {
+    "npc": 240681,
+    "img": null,
+    "src": null
+  },
+  "Adderis": {
+    "npc": 262530,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/94/83550.png",
+    "src": "wowhead"
+  },
+  "Aspix": {
+    "npc": 262822,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/96/83552.png",
+    "src": "wowhead"
+  },
+  "Galvazzt": {
+    "npc": 263658,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/155/147355.png",
+    "src": "wowhead"
+  },
+  "Faithless Tormentor": {
+    "npc": 268317,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/6/147718.png",
+    "src": "wowhead"
+  },
+  "Corrupted Guardian": {
+    "npc": 268344,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/25/84761.png",
+    "src": "wowhead"
+  },
+  "Lifeforce": {
+    "npc": 268364,
+    "img": null,
+    "src": null
+  },
+  "Essence Defiler": {
+    "npc": 268427,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/56/84024.png",
+    "src": "wowhead"
+  },
+  "Temple Disruptor": {
+    "npc": 269227,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/65/80961.png",
+    "src": "wowhead"
+  },
+  "Flame Channeler": {
+    "npc": 197985,
+    "img": "https://wow.zamimg.com/modelviewer/live/webthumbs/npc/121/110969.png",
+    "src": "wowhead"
+  }
+}
