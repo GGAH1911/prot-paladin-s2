@@ -1,0 +1,1697 @@
+{
+ "meta": {
+  "patch": "12.1.0 (Midnight Season 2)",
+  "gameBuild": "12.1.0.69933",
+  "checked": "2026-09-26",
+  "method": "게임 클라이언트 데이터(DB2)에서 직접 계산. 전문화·영웅 특성 연결은 각 직업 특성 트리의 영웅 특성 선택 노드(TraitNode Type=3)에 붙은 전문화 조건(TraitNodeXTraitCond → TraitCond.SpecSetID → SpecSetMember)으로 구함. 영문·한글 이름은 같은 빌드의 enUS·koKR 로캘 값.",
+  "sources": [
+   "https://wago.tools/db2/ChrClasses?build=12.1.0.69933&locale=enUS",
+   "https://wago.tools/db2/ChrClasses?build=12.1.0.69933&locale=koKR",
+   "https://wago.tools/db2/ChrSpecialization?build=12.1.0.69933&locale=enUS",
+   "https://wago.tools/db2/ChrSpecialization?build=12.1.0.69933&locale=koKR",
+   "https://wago.tools/db2/TraitSubTree?build=12.1.0.69933&locale=enUS",
+   "https://wago.tools/db2/TraitSubTree?build=12.1.0.69933&locale=koKR",
+   "https://wago.tools/db2/TraitNode?build=12.1.0.69933",
+   "https://wago.tools/db2/TraitNodeXTraitCond?build=12.1.0.69933",
+   "https://wago.tools/db2/TraitCond?build=12.1.0.69933",
+   "https://wago.tools/db2/SpecSetMember?build=12.1.0.69933",
+   "https://www.wowhead.com/ko/talent-calc/demon-hunter/devourer (전문화 한글명 '포식' 교차 확인, 2026-09-26)",
+   "https://maxroll.gg/wow/class-guides/devourer-demon-hunter-mythic-guide (포식: Annihilator/Void-Scarred 교차 확인)",
+   "https://www.method.gg/guides/vengeance-demon-hunter/talents (복수: Annihilator/Aldrachi Reaver 교차 확인)"
+  ],
+  "roleCodes": "ChrSpecialization.Role 0=tank, 1=healer, 2=dps",
+  "colorSource": "ChrClasses.ClassColorR/G/B (같은 빌드)",
+  "slugRule": "영문 이름 소문자, 작은따옴표 제거, 영숫자 외 문자는 '-' (Wowhead·Murlok 주소와 같은 규칙)"
+ },
+ "counts": {
+  "classes": 13,
+  "specs": 40,
+  "tank": 6,
+  "healer": 7,
+  "dps": 27,
+  "guides(spec×hero)": 80
+ },
+ "classes": [
+  {
+   "id": 1,
+   "token": "WARRIOR",
+   "slug": "warrior",
+   "en": "Warrior",
+   "ko": "전사",
+   "color": "#C69B6D",
+   "specs": [
+    {
+     "id": 71,
+     "slug": "arms",
+     "en": "Arms",
+     "ko": "무기",
+     "koFull": "무기 전사",
+     "enFull": "Arms Warrior",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 60,
+       "slug": "slayer",
+       "en": "Slayer",
+       "ko": "학살자"
+      },
+      {
+       "id": 62,
+       "slug": "colossus",
+       "en": "Colossus",
+       "ko": "거신"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warrior/arms",
+      "https://www.wowhead.com/ko/talent-calc/warrior/arms"
+     ]
+    },
+    {
+     "id": 72,
+     "slug": "fury",
+     "en": "Fury",
+     "ko": "분노",
+     "koFull": "분노 전사",
+     "enFull": "Fury Warrior",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 60,
+       "slug": "slayer",
+       "en": "Slayer",
+       "ko": "학살자"
+      },
+      {
+       "id": 61,
+       "slug": "mountain-thane",
+       "en": "Mountain Thane",
+       "ko": "산왕"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warrior/fury",
+      "https://www.wowhead.com/ko/talent-calc/warrior/fury"
+     ]
+    },
+    {
+     "id": 73,
+     "slug": "protection",
+     "en": "Protection",
+     "ko": "방어",
+     "koFull": "방어 전사",
+     "enFull": "Protection Warrior",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 61,
+       "slug": "mountain-thane",
+       "en": "Mountain Thane",
+       "ko": "산왕"
+      },
+      {
+       "id": 62,
+       "slug": "colossus",
+       "en": "Colossus",
+       "ko": "거신"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warrior/protection",
+      "https://www.wowhead.com/ko/talent-calc/warrior/protection"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "token": "PALADIN",
+   "slug": "paladin",
+   "en": "Paladin",
+   "ko": "성기사",
+   "color": "#F48CBA",
+   "specs": [
+    {
+     "id": 65,
+     "slug": "holy",
+     "en": "Holy",
+     "ko": "신성",
+     "koFull": "신성 성기사",
+     "enFull": "Holy Paladin",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 49,
+       "slug": "lightsmith",
+       "en": "Lightsmith",
+       "ko": "빛의 대장장이"
+      },
+      {
+       "id": 50,
+       "slug": "herald-of-the-sun",
+       "en": "Herald of the Sun",
+       "ko": "태양의 사자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/paladin/holy",
+      "https://www.wowhead.com/ko/talent-calc/paladin/holy"
+     ]
+    },
+    {
+     "id": 66,
+     "slug": "protection",
+     "en": "Protection",
+     "ko": "보호",
+     "koFull": "보호 성기사",
+     "enFull": "Protection Paladin",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 48,
+       "slug": "templar",
+       "en": "Templar",
+       "ko": "기사단"
+      },
+      {
+       "id": 49,
+       "slug": "lightsmith",
+       "en": "Lightsmith",
+       "ko": "빛의 대장장이"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/paladin/protection",
+      "https://www.wowhead.com/ko/talent-calc/paladin/protection"
+     ]
+    },
+    {
+     "id": 70,
+     "slug": "retribution",
+     "en": "Retribution",
+     "ko": "징벌",
+     "koFull": "징벌 성기사",
+     "enFull": "Retribution Paladin",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 48,
+       "slug": "templar",
+       "en": "Templar",
+       "ko": "기사단"
+      },
+      {
+       "id": 50,
+       "slug": "herald-of-the-sun",
+       "en": "Herald of the Sun",
+       "ko": "태양의 사자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/paladin/retribution",
+      "https://www.wowhead.com/ko/talent-calc/paladin/retribution"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "token": "HUNTER",
+   "slug": "hunter",
+   "en": "Hunter",
+   "ko": "사냥꾼",
+   "color": "#AAD372",
+   "specs": [
+    {
+     "id": 253,
+     "slug": "beast-mastery",
+     "en": "Beast Mastery",
+     "ko": "야수",
+     "koFull": "야수 사냥꾼",
+     "enFull": "Beast Mastery Hunter",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 43,
+       "slug": "pack-leader",
+       "en": "Pack Leader",
+       "ko": "무리의 지도자"
+      },
+      {
+       "id": 44,
+       "slug": "dark-ranger",
+       "en": "Dark Ranger",
+       "ko": "어둠 순찰자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/hunter/beast-mastery",
+      "https://www.wowhead.com/ko/talent-calc/hunter/beast-mastery"
+     ]
+    },
+    {
+     "id": 254,
+     "slug": "marksmanship",
+     "en": "Marksmanship",
+     "ko": "사격",
+     "koFull": "사격 사냥꾼",
+     "enFull": "Marksmanship Hunter",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 42,
+       "slug": "sentinel",
+       "en": "Sentinel",
+       "ko": "파수꾼"
+      },
+      {
+       "id": 44,
+       "slug": "dark-ranger",
+       "en": "Dark Ranger",
+       "ko": "어둠 순찰자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/hunter/marksmanship",
+      "https://www.wowhead.com/ko/talent-calc/hunter/marksmanship"
+     ]
+    },
+    {
+     "id": 255,
+     "slug": "survival",
+     "en": "Survival",
+     "ko": "생존",
+     "koFull": "생존 사냥꾼",
+     "enFull": "Survival Hunter",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 42,
+       "slug": "sentinel",
+       "en": "Sentinel",
+       "ko": "파수꾼"
+      },
+      {
+       "id": 43,
+       "slug": "pack-leader",
+       "en": "Pack Leader",
+       "ko": "무리의 지도자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/hunter/survival",
+      "https://www.wowhead.com/ko/talent-calc/hunter/survival"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "token": "ROGUE",
+   "slug": "rogue",
+   "en": "Rogue",
+   "ko": "도적",
+   "color": "#FFF468",
+   "specs": [
+    {
+     "id": 259,
+     "slug": "assassination",
+     "en": "Assassination",
+     "ko": "암살",
+     "koFull": "암살 도적",
+     "enFull": "Assassination Rogue",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 52,
+       "slug": "fatebound",
+       "en": "Fatebound",
+       "ko": "운명결속"
+      },
+      {
+       "id": 53,
+       "slug": "deathstalker",
+       "en": "Deathstalker",
+       "ko": "죽음추적자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/rogue/assassination",
+      "https://www.wowhead.com/ko/talent-calc/rogue/assassination"
+     ]
+    },
+    {
+     "id": 260,
+     "slug": "outlaw",
+     "en": "Outlaw",
+     "ko": "무법",
+     "koFull": "무법 도적",
+     "enFull": "Outlaw Rogue",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 51,
+       "slug": "trickster",
+       "en": "Trickster",
+       "ko": "기만자"
+      },
+      {
+       "id": 52,
+       "slug": "fatebound",
+       "en": "Fatebound",
+       "ko": "운명결속"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/rogue/outlaw",
+      "https://www.wowhead.com/ko/talent-calc/rogue/outlaw"
+     ]
+    },
+    {
+     "id": 261,
+     "slug": "subtlety",
+     "en": "Subtlety",
+     "ko": "잠행",
+     "koFull": "잠행 도적",
+     "enFull": "Subtlety Rogue",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 51,
+       "slug": "trickster",
+       "en": "Trickster",
+       "ko": "기만자"
+      },
+      {
+       "id": 53,
+       "slug": "deathstalker",
+       "en": "Deathstalker",
+       "ko": "죽음추적자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/rogue/subtlety",
+      "https://www.wowhead.com/ko/talent-calc/rogue/subtlety"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "token": "PRIEST",
+   "slug": "priest",
+   "en": "Priest",
+   "ko": "사제",
+   "color": "#FFFFFF",
+   "specs": [
+    {
+     "id": 256,
+     "slug": "discipline",
+     "en": "Discipline",
+     "ko": "수양",
+     "koFull": "수양 사제",
+     "enFull": "Discipline Priest",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 18,
+       "slug": "voidweaver",
+       "en": "Voidweaver",
+       "ko": "공허술사"
+      },
+      {
+       "id": 20,
+       "slug": "oracle",
+       "en": "Oracle",
+       "ko": "예언자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/priest/discipline",
+      "https://www.wowhead.com/ko/talent-calc/priest/discipline"
+     ]
+    },
+    {
+     "id": 257,
+     "slug": "holy",
+     "en": "Holy",
+     "ko": "신성",
+     "koFull": "신성 사제",
+     "enFull": "Holy Priest",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 19,
+       "slug": "archon",
+       "en": "Archon",
+       "ko": "집정관"
+      },
+      {
+       "id": 20,
+       "slug": "oracle",
+       "en": "Oracle",
+       "ko": "예언자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/priest/holy",
+      "https://www.wowhead.com/ko/talent-calc/priest/holy"
+     ]
+    },
+    {
+     "id": 258,
+     "slug": "shadow",
+     "en": "Shadow",
+     "ko": "암흑",
+     "koFull": "암흑 사제",
+     "enFull": "Shadow Priest",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 18,
+       "slug": "voidweaver",
+       "en": "Voidweaver",
+       "ko": "공허술사"
+      },
+      {
+       "id": 19,
+       "slug": "archon",
+       "en": "Archon",
+       "ko": "집정관"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/priest/shadow",
+      "https://www.wowhead.com/ko/talent-calc/priest/shadow"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "token": "DEATHKNIGHT",
+   "slug": "death-knight",
+   "en": "Death Knight",
+   "ko": "죽음의 기사",
+   "color": "#C41E3A",
+   "specs": [
+    {
+     "id": 250,
+     "slug": "blood",
+     "en": "Blood",
+     "ko": "혈기",
+     "koFull": "혈기 죽음의 기사",
+     "enFull": "Blood Death Knight",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 31,
+       "slug": "sanlayn",
+       "en": "San'layn",
+       "ko": "산레인"
+      },
+      {
+       "id": 33,
+       "slug": "deathbringer",
+       "en": "Deathbringer",
+       "ko": "죽음의 인도자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/death-knight/blood",
+      "https://www.wowhead.com/ko/talent-calc/death-knight/blood"
+     ]
+    },
+    {
+     "id": 251,
+     "slug": "frost",
+     "en": "Frost",
+     "ko": "냉기",
+     "koFull": "냉기 죽음의 기사",
+     "enFull": "Frost Death Knight",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 32,
+       "slug": "rider-of-the-apocalypse",
+       "en": "Rider of the Apocalypse",
+       "ko": "종말의 기수"
+      },
+      {
+       "id": 33,
+       "slug": "deathbringer",
+       "en": "Deathbringer",
+       "ko": "죽음의 인도자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/death-knight/frost",
+      "https://www.wowhead.com/ko/talent-calc/death-knight/frost"
+     ]
+    },
+    {
+     "id": 252,
+     "slug": "unholy",
+     "en": "Unholy",
+     "ko": "부정",
+     "koFull": "부정 죽음의 기사",
+     "enFull": "Unholy Death Knight",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 31,
+       "slug": "sanlayn",
+       "en": "San'layn",
+       "ko": "산레인"
+      },
+      {
+       "id": 32,
+       "slug": "rider-of-the-apocalypse",
+       "en": "Rider of the Apocalypse",
+       "ko": "종말의 기수"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/death-knight/unholy",
+      "https://www.wowhead.com/ko/talent-calc/death-knight/unholy"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "token": "SHAMAN",
+   "slug": "shaman",
+   "en": "Shaman",
+   "ko": "주술사",
+   "color": "#0070DD",
+   "specs": [
+    {
+     "id": 262,
+     "slug": "elemental",
+     "en": "Elemental",
+     "ko": "정기",
+     "koFull": "정기 주술사",
+     "enFull": "Elemental Shaman",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 55,
+       "slug": "stormbringer",
+       "en": "Stormbringer",
+       "ko": "폭풍인도자"
+      },
+      {
+       "id": 56,
+       "slug": "farseer",
+       "en": "Farseer",
+       "ko": "선견자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/shaman/elemental",
+      "https://www.wowhead.com/ko/talent-calc/shaman/elemental"
+     ]
+    },
+    {
+     "id": 263,
+     "slug": "enhancement",
+     "en": "Enhancement",
+     "ko": "고양",
+     "koFull": "고양 주술사",
+     "enFull": "Enhancement Shaman",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 54,
+       "slug": "totemic",
+       "en": "Totemic",
+       "ko": "토템술사"
+      },
+      {
+       "id": 55,
+       "slug": "stormbringer",
+       "en": "Stormbringer",
+       "ko": "폭풍인도자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/shaman/enhancement",
+      "https://www.wowhead.com/ko/talent-calc/shaman/enhancement"
+     ]
+    },
+    {
+     "id": 264,
+     "slug": "restoration",
+     "en": "Restoration",
+     "ko": "복원",
+     "koFull": "복원 주술사",
+     "enFull": "Restoration Shaman",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 54,
+       "slug": "totemic",
+       "en": "Totemic",
+       "ko": "토템술사"
+      },
+      {
+       "id": 56,
+       "slug": "farseer",
+       "en": "Farseer",
+       "ko": "선견자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/shaman/restoration",
+      "https://www.wowhead.com/ko/talent-calc/shaman/restoration"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "token": "MAGE",
+   "slug": "mage",
+   "en": "Mage",
+   "ko": "마법사",
+   "color": "#3FC7EB",
+   "specs": [
+    {
+     "id": 62,
+     "slug": "arcane",
+     "en": "Arcane",
+     "ko": "비전",
+     "koFull": "비전 마법사",
+     "enFull": "Arcane Mage",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 39,
+       "slug": "sunfury",
+       "en": "Sunfury",
+       "ko": "성난태양"
+      },
+      {
+       "id": 40,
+       "slug": "spellslinger",
+       "en": "Spellslinger",
+       "ko": "주문술사"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/mage/arcane",
+      "https://www.wowhead.com/ko/talent-calc/mage/arcane"
+     ]
+    },
+    {
+     "id": 63,
+     "slug": "fire",
+     "en": "Fire",
+     "ko": "화염",
+     "koFull": "화염 마법사",
+     "enFull": "Fire Mage",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 39,
+       "slug": "sunfury",
+       "en": "Sunfury",
+       "ko": "성난태양"
+      },
+      {
+       "id": 41,
+       "slug": "frostfire",
+       "en": "Frostfire",
+       "ko": "서리불꽃"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/mage/fire",
+      "https://www.wowhead.com/ko/talent-calc/mage/fire"
+     ]
+    },
+    {
+     "id": 64,
+     "slug": "frost",
+     "en": "Frost",
+     "ko": "냉기",
+     "koFull": "냉기 마법사",
+     "enFull": "Frost Mage",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 40,
+       "slug": "spellslinger",
+       "en": "Spellslinger",
+       "ko": "주문술사"
+      },
+      {
+       "id": 41,
+       "slug": "frostfire",
+       "en": "Frostfire",
+       "ko": "서리불꽃"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/mage/frost",
+      "https://www.wowhead.com/ko/talent-calc/mage/frost"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "token": "WARLOCK",
+   "slug": "warlock",
+   "en": "Warlock",
+   "ko": "흑마법사",
+   "color": "#8788EE",
+   "specs": [
+    {
+     "id": 265,
+     "slug": "affliction",
+     "en": "Affliction",
+     "ko": "고통",
+     "koFull": "고통 흑마법사",
+     "enFull": "Affliction Warlock",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 57,
+       "slug": "soul-harvester",
+       "en": "Soul Harvester",
+       "ko": "영혼 수확자"
+      },
+      {
+       "id": 58,
+       "slug": "hellcaller",
+       "en": "Hellcaller",
+       "ko": "지옥소환사"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warlock/affliction",
+      "https://www.wowhead.com/ko/talent-calc/warlock/affliction"
+     ]
+    },
+    {
+     "id": 266,
+     "slug": "demonology",
+     "en": "Demonology",
+     "ko": "악마",
+     "koFull": "악마 흑마법사",
+     "enFull": "Demonology Warlock",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 57,
+       "slug": "soul-harvester",
+       "en": "Soul Harvester",
+       "ko": "영혼 수확자"
+      },
+      {
+       "id": 59,
+       "slug": "diabolist",
+       "en": "Diabolist",
+       "ko": "악마학자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warlock/demonology",
+      "https://www.wowhead.com/ko/talent-calc/warlock/demonology"
+     ]
+    },
+    {
+     "id": 267,
+     "slug": "destruction",
+     "en": "Destruction",
+     "ko": "파괴",
+     "koFull": "파괴 흑마법사",
+     "enFull": "Destruction Warlock",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 58,
+       "slug": "hellcaller",
+       "en": "Hellcaller",
+       "ko": "지옥소환사"
+      },
+      {
+       "id": 59,
+       "slug": "diabolist",
+       "en": "Diabolist",
+       "ko": "악마학자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/warlock/destruction",
+      "https://www.wowhead.com/ko/talent-calc/warlock/destruction"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "token": "MONK",
+   "slug": "monk",
+   "en": "Monk",
+   "ko": "수도사",
+   "color": "#00FF98",
+   "specs": [
+    {
+     "id": 268,
+     "slug": "brewmaster",
+     "en": "Brewmaster",
+     "ko": "양조",
+     "koFull": "양조 수도사",
+     "enFull": "Brewmaster Monk",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 65,
+       "slug": "shado-pan",
+       "en": "Shado-Pan",
+       "ko": "음영파"
+      },
+      {
+       "id": 66,
+       "slug": "master-of-harmony",
+       "en": "Master of Harmony",
+       "ko": "조화의 종사"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/monk/brewmaster",
+      "https://www.wowhead.com/ko/talent-calc/monk/brewmaster"
+     ]
+    },
+    {
+     "id": 270,
+     "slug": "mistweaver",
+     "en": "Mistweaver",
+     "ko": "운무",
+     "koFull": "운무 수도사",
+     "enFull": "Mistweaver Monk",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 64,
+       "slug": "conduit-of-the-celestials",
+       "en": "Conduit of the Celestials",
+       "ko": "천신의 대변자"
+      },
+      {
+       "id": 66,
+       "slug": "master-of-harmony",
+       "en": "Master of Harmony",
+       "ko": "조화의 종사"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/monk/mistweaver",
+      "https://www.wowhead.com/ko/talent-calc/monk/mistweaver"
+     ]
+    },
+    {
+     "id": 269,
+     "slug": "windwalker",
+     "en": "Windwalker",
+     "ko": "풍운",
+     "koFull": "풍운 수도사",
+     "enFull": "Windwalker Monk",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 64,
+       "slug": "conduit-of-the-celestials",
+       "en": "Conduit of the Celestials",
+       "ko": "천신의 대변자"
+      },
+      {
+       "id": 65,
+       "slug": "shado-pan",
+       "en": "Shado-Pan",
+       "ko": "음영파"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/monk/windwalker",
+      "https://www.wowhead.com/ko/talent-calc/monk/windwalker"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "token": "DRUID",
+   "slug": "druid",
+   "en": "Druid",
+   "ko": "드루이드",
+   "color": "#FF7C0A",
+   "specs": [
+    {
+     "id": 102,
+     "slug": "balance",
+     "en": "Balance",
+     "ko": "조화",
+     "koFull": "조화 드루이드",
+     "enFull": "Balance Druid",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 23,
+       "slug": "keeper-of-the-grove",
+       "en": "Keeper of the Grove",
+       "ko": "숲의 수호자"
+      },
+      {
+       "id": 24,
+       "slug": "elunes-chosen",
+       "en": "Elune's Chosen",
+       "ko": "엘룬의 대행자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/druid/balance",
+      "https://www.wowhead.com/ko/talent-calc/druid/balance"
+     ]
+    },
+    {
+     "id": 103,
+     "slug": "feral",
+     "en": "Feral",
+     "ko": "야성",
+     "koFull": "야성 드루이드",
+     "enFull": "Feral Druid",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 21,
+       "slug": "druid-of-the-claw",
+       "en": "Druid of the Claw",
+       "ko": "발톱의 드루이드"
+      },
+      {
+       "id": 22,
+       "slug": "wildstalker",
+       "en": "Wildstalker",
+       "ko": "야생추적자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/druid/feral",
+      "https://www.wowhead.com/ko/talent-calc/druid/feral"
+     ]
+    },
+    {
+     "id": 104,
+     "slug": "guardian",
+     "en": "Guardian",
+     "ko": "수호",
+     "koFull": "수호 드루이드",
+     "enFull": "Guardian Druid",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 21,
+       "slug": "druid-of-the-claw",
+       "en": "Druid of the Claw",
+       "ko": "발톱의 드루이드"
+      },
+      {
+       "id": 24,
+       "slug": "elunes-chosen",
+       "en": "Elune's Chosen",
+       "ko": "엘룬의 대행자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/druid/guardian",
+      "https://www.wowhead.com/ko/talent-calc/druid/guardian"
+     ]
+    },
+    {
+     "id": 105,
+     "slug": "restoration",
+     "en": "Restoration",
+     "ko": "회복",
+     "koFull": "회복 드루이드",
+     "enFull": "Restoration Druid",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 22,
+       "slug": "wildstalker",
+       "en": "Wildstalker",
+       "ko": "야생추적자"
+      },
+      {
+       "id": 23,
+       "slug": "keeper-of-the-grove",
+       "en": "Keeper of the Grove",
+       "ko": "숲의 수호자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/druid/restoration",
+      "https://www.wowhead.com/ko/talent-calc/druid/restoration"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "token": "DEMONHUNTER",
+   "slug": "demon-hunter",
+   "en": "Demon Hunter",
+   "ko": "악마사냥꾼",
+   "color": "#A330C9",
+   "specs": [
+    {
+     "id": 577,
+     "slug": "havoc",
+     "en": "Havoc",
+     "ko": "파멸",
+     "koFull": "파멸 악마사냥꾼",
+     "enFull": "Havoc Demon Hunter",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 34,
+       "slug": "fel-scarred",
+       "en": "Fel-Scarred",
+       "ko": "지옥상흔"
+      },
+      {
+       "id": 35,
+       "slug": "aldrachi-reaver",
+       "en": "Aldrachi Reaver",
+       "ko": "알드라치 파괴자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/demon-hunter/havoc",
+      "https://www.wowhead.com/ko/talent-calc/demon-hunter/havoc"
+     ]
+    },
+    {
+     "id": 581,
+     "slug": "vengeance",
+     "en": "Vengeance",
+     "ko": "복수",
+     "koFull": "복수 악마사냥꾼",
+     "enFull": "Vengeance Demon Hunter",
+     "role": "tank",
+     "heroTalents": [
+      {
+       "id": 35,
+       "slug": "aldrachi-reaver",
+       "en": "Aldrachi Reaver",
+       "ko": "알드라치 파괴자"
+      },
+      {
+       "id": 124,
+       "slug": "annihilator",
+       "en": "Annihilator",
+       "ko": "궤멸자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/demon-hunter/vengeance",
+      "https://www.wowhead.com/ko/talent-calc/demon-hunter/vengeance"
+     ]
+    },
+    {
+     "id": 1480,
+     "slug": "devourer",
+     "en": "Devourer",
+     "ko": "포식",
+     "koFull": "포식 악마사냥꾼",
+     "enFull": "Devourer Demon Hunter",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 124,
+       "slug": "annihilator",
+       "en": "Annihilator",
+       "ko": "궤멸자"
+      },
+      {
+       "id": 126,
+       "slug": "void-scarred",
+       "en": "Void-Scarred",
+       "ko": "공허상흔"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/demon-hunter/devourer",
+      "https://www.wowhead.com/ko/talent-calc/demon-hunter/devourer"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "token": "EVOKER",
+   "slug": "evoker",
+   "en": "Evoker",
+   "ko": "기원사",
+   "color": "#33937F",
+   "specs": [
+    {
+     "id": 1467,
+     "slug": "devastation",
+     "en": "Devastation",
+     "ko": "황폐",
+     "koFull": "황폐 기원사",
+     "enFull": "Devastation Evoker",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 36,
+       "slug": "scalecommander",
+       "en": "Scalecommander",
+       "ko": "비늘사령관"
+      },
+      {
+       "id": 37,
+       "slug": "flameshaper",
+       "en": "Flameshaper",
+       "ko": "불꽃형성자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/evoker/devastation",
+      "https://www.wowhead.com/ko/talent-calc/evoker/devastation"
+     ]
+    },
+    {
+     "id": 1468,
+     "slug": "preservation",
+     "en": "Preservation",
+     "ko": "보존",
+     "koFull": "보존 기원사",
+     "enFull": "Preservation Evoker",
+     "role": "healer",
+     "heroTalents": [
+      {
+       "id": 37,
+       "slug": "flameshaper",
+       "en": "Flameshaper",
+       "ko": "불꽃형성자"
+      },
+      {
+       "id": 38,
+       "slug": "chronowarden",
+       "en": "Chronowarden",
+       "ko": "시간 감시자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/evoker/preservation",
+      "https://www.wowhead.com/ko/talent-calc/evoker/preservation"
+     ]
+    },
+    {
+     "id": 1473,
+     "slug": "augmentation",
+     "en": "Augmentation",
+     "ko": "증강",
+     "koFull": "증강 기원사",
+     "enFull": "Augmentation Evoker",
+     "role": "dps",
+     "heroTalents": [
+      {
+       "id": 36,
+       "slug": "scalecommander",
+       "en": "Scalecommander",
+       "ko": "비늘사령관"
+      },
+      {
+       "id": 38,
+       "slug": "chronowarden",
+       "en": "Chronowarden",
+       "ko": "시간 감시자"
+      }
+     ],
+     "sources": [
+      "https://www.wowhead.com/talent-calc/evoker/augmentation",
+      "https://www.wowhead.com/ko/talent-calc/evoker/augmentation"
+     ]
+    }
+   ]
+  }
+ ],
+ "heroTrees": [
+  {
+   "id": 18,
+   "slug": "voidweaver",
+   "en": "Voidweaver",
+   "ko": "공허술사",
+   "class": "Priest",
+   "specs": [
+    "Discipline",
+    "Shadow"
+   ]
+  },
+  {
+   "id": 19,
+   "slug": "archon",
+   "en": "Archon",
+   "ko": "집정관",
+   "class": "Priest",
+   "specs": [
+    "Holy",
+    "Shadow"
+   ]
+  },
+  {
+   "id": 20,
+   "slug": "oracle",
+   "en": "Oracle",
+   "ko": "예언자",
+   "class": "Priest",
+   "specs": [
+    "Discipline",
+    "Holy"
+   ]
+  },
+  {
+   "id": 21,
+   "slug": "druid-of-the-claw",
+   "en": "Druid of the Claw",
+   "ko": "발톱의 드루이드",
+   "class": "Druid",
+   "specs": [
+    "Feral",
+    "Guardian"
+   ]
+  },
+  {
+   "id": 22,
+   "slug": "wildstalker",
+   "en": "Wildstalker",
+   "ko": "야생추적자",
+   "class": "Druid",
+   "specs": [
+    "Feral",
+    "Restoration"
+   ]
+  },
+  {
+   "id": 23,
+   "slug": "keeper-of-the-grove",
+   "en": "Keeper of the Grove",
+   "ko": "숲의 수호자",
+   "class": "Druid",
+   "specs": [
+    "Balance",
+    "Restoration"
+   ]
+  },
+  {
+   "id": 24,
+   "slug": "elunes-chosen",
+   "en": "Elune's Chosen",
+   "ko": "엘룬의 대행자",
+   "class": "Druid",
+   "specs": [
+    "Balance",
+    "Guardian"
+   ]
+  },
+  {
+   "id": 31,
+   "slug": "sanlayn",
+   "en": "San'layn",
+   "ko": "산레인",
+   "class": "Death Knight",
+   "specs": [
+    "Blood",
+    "Unholy"
+   ]
+  },
+  {
+   "id": 32,
+   "slug": "rider-of-the-apocalypse",
+   "en": "Rider of the Apocalypse",
+   "ko": "종말의 기수",
+   "class": "Death Knight",
+   "specs": [
+    "Frost",
+    "Unholy"
+   ]
+  },
+  {
+   "id": 33,
+   "slug": "deathbringer",
+   "en": "Deathbringer",
+   "ko": "죽음의 인도자",
+   "class": "Death Knight",
+   "specs": [
+    "Blood",
+    "Frost"
+   ]
+  },
+  {
+   "id": 34,
+   "slug": "fel-scarred",
+   "en": "Fel-Scarred",
+   "ko": "지옥상흔",
+   "class": "Demon Hunter",
+   "specs": [
+    "Havoc"
+   ]
+  },
+  {
+   "id": 35,
+   "slug": "aldrachi-reaver",
+   "en": "Aldrachi Reaver",
+   "ko": "알드라치 파괴자",
+   "class": "Demon Hunter",
+   "specs": [
+    "Havoc",
+    "Vengeance"
+   ]
+  },
+  {
+   "id": 36,
+   "slug": "scalecommander",
+   "en": "Scalecommander",
+   "ko": "비늘사령관",
+   "class": "Evoker",
+   "specs": [
+    "Devastation",
+    "Augmentation"
+   ]
+  },
+  {
+   "id": 37,
+   "slug": "flameshaper",
+   "en": "Flameshaper",
+   "ko": "불꽃형성자",
+   "class": "Evoker",
+   "specs": [
+    "Devastation",
+    "Preservation"
+   ]
+  },
+  {
+   "id": 38,
+   "slug": "chronowarden",
+   "en": "Chronowarden",
+   "ko": "시간 감시자",
+   "class": "Evoker",
+   "specs": [
+    "Preservation",
+    "Augmentation"
+   ]
+  },
+  {
+   "id": 39,
+   "slug": "sunfury",
+   "en": "Sunfury",
+   "ko": "성난태양",
+   "class": "Mage",
+   "specs": [
+    "Arcane",
+    "Fire"
+   ]
+  },
+  {
+   "id": 40,
+   "slug": "spellslinger",
+   "en": "Spellslinger",
+   "ko": "주문술사",
+   "class": "Mage",
+   "specs": [
+    "Arcane",
+    "Frost"
+   ]
+  },
+  {
+   "id": 41,
+   "slug": "frostfire",
+   "en": "Frostfire",
+   "ko": "서리불꽃",
+   "class": "Mage",
+   "specs": [
+    "Fire",
+    "Frost"
+   ]
+  },
+  {
+   "id": 42,
+   "slug": "sentinel",
+   "en": "Sentinel",
+   "ko": "파수꾼",
+   "class": "Hunter",
+   "specs": [
+    "Marksmanship",
+    "Survival"
+   ]
+  },
+  {
+   "id": 43,
+   "slug": "pack-leader",
+   "en": "Pack Leader",
+   "ko": "무리의 지도자",
+   "class": "Hunter",
+   "specs": [
+    "Beast Mastery",
+    "Survival"
+   ]
+  },
+  {
+   "id": 44,
+   "slug": "dark-ranger",
+   "en": "Dark Ranger",
+   "ko": "어둠 순찰자",
+   "class": "Hunter",
+   "specs": [
+    "Beast Mastery",
+    "Marksmanship"
+   ]
+  },
+  {
+   "id": 48,
+   "slug": "templar",
+   "en": "Templar",
+   "ko": "기사단",
+   "class": "Paladin",
+   "specs": [
+    "Protection",
+    "Retribution"
+   ]
+  },
+  {
+   "id": 49,
+   "slug": "lightsmith",
+   "en": "Lightsmith",
+   "ko": "빛의 대장장이",
+   "class": "Paladin",
+   "specs": [
+    "Holy",
+    "Protection"
+   ]
+  },
+  {
+   "id": 50,
+   "slug": "herald-of-the-sun",
+   "en": "Herald of the Sun",
+   "ko": "태양의 사자",
+   "class": "Paladin",
+   "specs": [
+    "Holy",
+    "Retribution"
+   ]
+  },
+  {
+   "id": 51,
+   "slug": "trickster",
+   "en": "Trickster",
+   "ko": "기만자",
+   "class": "Rogue",
+   "specs": [
+    "Outlaw",
+    "Subtlety"
+   ]
+  },
+  {
+   "id": 52,
+   "slug": "fatebound",
+   "en": "Fatebound",
+   "ko": "운명결속",
+   "class": "Rogue",
+   "specs": [
+    "Assassination",
+    "Outlaw"
+   ]
+  },
+  {
+   "id": 53,
+   "slug": "deathstalker",
+   "en": "Deathstalker",
+   "ko": "죽음추적자",
+   "class": "Rogue",
+   "specs": [
+    "Assassination",
+    "Subtlety"
+   ]
+  },
+  {
+   "id": 54,
+   "slug": "totemic",
+   "en": "Totemic",
+   "ko": "토템술사",
+   "class": "Shaman",
+   "specs": [
+    "Enhancement",
+    "Restoration"
+   ]
+  },
+  {
+   "id": 55,
+   "slug": "stormbringer",
+   "en": "Stormbringer",
+   "ko": "폭풍인도자",
+   "class": "Shaman",
+   "specs": [
+    "Elemental",
+    "Enhancement"
+   ]
+  },
+  {
+   "id": 56,
+   "slug": "farseer",
+   "en": "Farseer",
+   "ko": "선견자",
+   "class": "Shaman",
+   "specs": [
+    "Elemental",
+    "Restoration"
+   ]
+  },
+  {
+   "id": 57,
+   "slug": "soul-harvester",
+   "en": "Soul Harvester",
+   "ko": "영혼 수확자",
+   "class": "Warlock",
+   "specs": [
+    "Affliction",
+    "Demonology"
+   ]
+  },
+  {
+   "id": 58,
+   "slug": "hellcaller",
+   "en": "Hellcaller",
+   "ko": "지옥소환사",
+   "class": "Warlock",
+   "specs": [
+    "Affliction",
+    "Destruction"
+   ]
+  },
+  {
+   "id": 59,
+   "slug": "diabolist",
+   "en": "Diabolist",
+   "ko": "악마학자",
+   "class": "Warlock",
+   "specs": [
+    "Demonology",
+    "Destruction"
+   ]
+  },
+  {
+   "id": 60,
+   "slug": "slayer",
+   "en": "Slayer",
+   "ko": "학살자",
+   "class": "Warrior",
+   "specs": [
+    "Arms",
+    "Fury"
+   ]
+  },
+  {
+   "id": 61,
+   "slug": "mountain-thane",
+   "en": "Mountain Thane",
+   "ko": "산왕",
+   "class": "Warrior",
+   "specs": [
+    "Fury",
+    "Protection"
+   ]
+  },
+  {
+   "id": 62,
+   "slug": "colossus",
+   "en": "Colossus",
+   "ko": "거신",
+   "class": "Warrior",
+   "specs": [
+    "Arms",
+    "Protection"
+   ]
+  },
+  {
+   "id": 64,
+   "slug": "conduit-of-the-celestials",
+   "en": "Conduit of the Celestials",
+   "ko": "천신의 대변자",
+   "class": "Monk",
+   "specs": [
+    "Mistweaver",
+    "Windwalker"
+   ]
+  },
+  {
+   "id": 65,
+   "slug": "shado-pan",
+   "en": "Shado-Pan",
+   "ko": "음영파",
+   "class": "Monk",
+   "specs": [
+    "Brewmaster",
+    "Windwalker"
+   ]
+  },
+  {
+   "id": 66,
+   "slug": "master-of-harmony",
+   "en": "Master of Harmony",
+   "ko": "조화의 종사",
+   "class": "Monk",
+   "specs": [
+    "Brewmaster",
+    "Mistweaver"
+   ]
+  },
+  {
+   "id": 124,
+   "slug": "annihilator",
+   "en": "Annihilator",
+   "ko": "궤멸자",
+   "class": "Demon Hunter",
+   "specs": [
+    "Vengeance",
+    "Devourer"
+   ]
+  },
+  {
+   "id": 126,
+   "slug": "void-scarred",
+   "en": "Void-Scarred",
+   "ko": "공허상흔",
+   "class": "Demon Hunter",
+   "specs": [
+    "Devourer"
+   ]
+  }
+ ]
+}
