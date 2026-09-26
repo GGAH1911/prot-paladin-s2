@@ -487,7 +487,8 @@ document.addEventListener("click",e=>{
   if(c){e.preventDefault(); if(tipFor===c&&!canHover) hideTip(); else showTip(c); return;}
   if(!tipEl.contains(e.target)) hideTip();
 },true);
-document.addEventListener("focusin",e=>{const c=e.target.closest&&e.target.closest(".skill-card[data-sid]"); if(c) showTip(c);});
+let lastPtr=0; document.addEventListener("pointerdown",()=>{lastPtr=Date.now();},true);
+document.addEventListener("focusin",e=>{if(Date.now()-lastPtr<800) return; const c=e.target.closest&&e.target.closest(".skill-card[data-sid]"); if(c) showTip(c);});
 document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest(".skill-card[data-sid]")) hideTip();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape") hideTip();});
 addEventListener("scroll",()=>{if(!tipEl.hidden) hideTip();},{passive:true});

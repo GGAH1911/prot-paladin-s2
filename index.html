@@ -144,6 +144,9 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
 #sptip .tt-meta{color:#a9a9a9;font-size:12px}
 #sptip .tt-desc{color:#ffd100;opacity:.92}
 #sptip .tt-none{color:#a9a9a9;font-style:italic}
+.npc-tip{cursor:help;text-decoration:underline dotted;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--muted) 70%,transparent)}
+.npc-tip:hover,.npc-tip:focus-visible{color:var(--gold);outline:none}
+#sptip img.tt-model{display:block;width:180px;height:180px;max-width:100%;margin:0 auto 8px;object-fit:contain;border:0;border-radius:6px;background:radial-gradient(circle,#2a2f3b,#141820)}
 #sptip .tt-link{display:inline-block;margin-top:8px;font-size:12px;color:#8fb0e6}
 
 .tabs{padding-bottom:2px}
@@ -183,7 +186,7 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
   <main id="main"></main>
   <footer>
     <div><b style="color:var(--int)">차단</b> 항목의 <span class="need must">필수</span>는 놓치면 파티가 죽을 수 있는 시전, <span class="need rec">권장</span>은 피해를 줄이는 용도라 놓쳐도 생존기로 버틸 수 있는 시전입니다.</div>
-    <div>한글 모드의 NPC·던전 이름은 Mythic Dungeon Tools와 LittleWigs 애드온의 한국어 번역 데이터, 기술 이름은 Wowhead 한국어 데이터를 따릅니다.</div>
+    <div>한글 모드의 NPC·던전 이름은 Mythic Dungeon Tools와 LittleWigs 애드온의 한국어 번역 데이터, 기술 이름은 Wowhead 한국어 데이터를 따릅니다. 몹 이름을 누르면 나오는 생김새 이미지는 Wowhead 모델 썸네일입니다.</div>
     <div><b style="color:var(--tip)">참고</b> 태그는 가이드 원문이 아니라 보호 성기사 키트에 맞춘 추가 팁입니다.</div>
     <div>출처: <a href="https://www.icy-veins.com/wow/midnight-mythic-season-2-guide" target="_blank" rel="noopener">Icy Veins S2 던전 가이드</a> · <a href="https://www.icy-veins.com/wow/protection-paladin-pve-tank-mythic-plus-tips" target="_blank" rel="noopener">Icy Veins Prot Paladin M+ Tips</a> · <a href="https://www.wowhead.com/guide/midnight/mythic-plus-season-overview" target="_blank" rel="noopener">Wowhead S2 Overview</a> · <a href="https://raider.io/news" target="_blank" rel="noopener">Raider.IO Quick Boss Guides</a> · <a href="https://www.method.gg/guides/dungeons" target="_blank" rel="noopener">Method 던전 가이드</a></div>
   </footer>
@@ -467,7 +470,7 @@ const D=[
    ["dodge",`${A("Verdant Stomp")} 넉백, 가장자리 피하기`],
    ["pos",`${A("Bloodthorn Roots")} 묶인 아군 쪽으로 보스 데려가기`]]},
   {n:"Lightwarden Ruia",k:"Boss 3",i:[
-   ["tb",`곰 형상 ${A("Mangling Claws")} 피해 증가`],
+   ["tb",`Bear Form ${A("Mangling Claws")} 피해 증가`],
    ["pos",`${A("Pulverizing Strikes")} 원뿔, 파티 산개`],
    ["int",`Moonkin Form ${A("Warden's Wrath")}`],
    ["tip",`40% ${A("Spirits of the Vale")}: 가장 위험한 구간, 쿨기 아껴두기`]]},
@@ -616,7 +619,7 @@ const BRIEF={
    ["disp",`${A("Bloodthorn Roots")} 묶인 아군 → ${A("Blessing of Freedom")}`],
    ["tip",`50% ${A("Lightcrazed Frenzy")}부터 광역 피해 지속, 쿨기 아껴두기`]],
   "Lightwarden Ruia":[
-   ["tb",`곰 형상 ${A("Mangling Claws")} 평타 2배 → SotR 유지`],
+   ["tb",`Bear Form ${A("Mangling Claws")} 평타 2배 → SotR 유지`],
    ["int",`${REC}Moonkin Form ${A("Warden's Wrath")}`],
    ["pos",`${A("Pulverizing Strikes")} 대상은 멈춰서 원뿔을 파티 반대로`],
    ["tip",`40% ${A("Spirits of the Vale")}: 가장 위험, 쿨기 아껴두기`]],
@@ -807,7 +810,7 @@ function koText(s){
   return out+s.slice(i);
 }
 function koApply(root){
-  root.querySelectorAll(".ab").forEach(el=>{
+  root.querySelectorAll(".ab,.mob,.npc").forEach(el=>{
     const en=el.textContent, sk=el.dataset.sid&&SPELLS_KO[el.dataset.sid];
     // 툴팁 ID의 공식 이름은 본문 이름이 그 주문과 같을 때만 씀 (예: "Holy Armaments (Lightsmith)" 매크로 제목은 제외)
     const ko=(sk&&tipNorm(en)===tipNorm(SPELLS[el.dataset.sid].n)&&sk.n)||KO_ALL[en]||koText(en);
@@ -817,8 +820,35 @@ function koApply(root){
     if(nx&&nx.nodeType===3){const p=josaFix(ko,nx.data); if(p) nx.data=p[1]+nx.data.slice(p[0]);}
   });
   const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), nodes=[]; let n;
-  while((n=w.nextNode())) if(!n.parentElement.closest(".ab")) nodes.push(n);
+  while((n=w.nextNode())) if(!n.parentElement.closest(".ab,.mob,.npc")) nodes.push(n);
   nodes.forEach(n=>{const t=koText(n.data); if(t!==n.data) n.data=t;});
+}
+// ---- 몹 생김새 툴팁: [NPC ID, 모델 번호] (MDT·Wowhead 모델 번호 일치 확인, 이미지는 Wowhead 썸네일) ----
+const MOBS={"Ritual Chieftain":[270306,146680],"Bloodletter":[261552,146661],"High Evolutionist":[261557,146663],"Living Venom":[263112,146677],"Primal Serpent":[261560,146653],"Ravenous Descendant":[261553,146654],"Ula'tek's Chosen":[263109,147578],"Ascendant Serpent":[261573,146299],"Twinfang Harrower":[261554,147569],"Venom Leech":[261550,146598],"Rattling Writhe":[262011,146664],"Rav'i":[259445,144110],"The Writhing Coil":[259446,144156],"Zul'jan":[259447,145435],"Uncoiled Writhe":[262398,142361],"Lightgorged Lasher":[245345,125875],"Lasher":[245410,104473],"Underbrush Stalker":[245339,127942],"Virid Grovekeeper":[245346,127946],"Sporeblight Belcher":[254850,126462],"Radiant Spellsower":[245336,127945],"Lightfeather Petalwing":[245484,136758],"Thorny Saptor":[245473,122805],"Overgrown Hydra":[245513,142839],"Luminous Thornmaw":[246871,126929],"Meittik":[243028,129588],"Kezkitt":[243029,139027],"Lekshi":[243030,139025],"Lightwarden Ruia":[245912,129856],"Ziekket":[247676,136619],"Ikuzz the Light Hunter":[244887,129424],"Potatoad Matriarch":[249756,136026],"Potadpole Egg":[249783,83115],"Spirit of Hunger":[245855,26857],"Earthwhisper Tender":[241814,128080],"Thornclaw Gatherer":[241813,141213],"Territorial Matriarch":[241808,14316],"The Winter Squall":[250478,138885],"Frigid Mauler":[241872,141288],"Glacial Revenant":[241876,103213],"Avatar of Determination":[241869,128095],"Ruthless Totemcaller":[245143,129563],"Stormbound Mystic":[245139,129562],"Grizzled Warbringer":[245146,131630],"Bonded Beasttamer":[245145,129581],"The Hoardmonger":[241812,129344],"Keen-Eyed Striker":[241816,124212],"Sentinel of Winter":[244100,129418],"Fractured Shivercore":[244759,103231],"Loa Speaker Nanea":[244889,138584],"Nalorakk":[246404,129989],"Zul'jarra":[246409,125149],"Echo of Nalorakk":[247301,129989],"Felwyrm":[236085,139997],"Row Hooligan":[236073,136939],"Felonious Mage":[236084,129784],"Bribed Captain":[252529,137450],"Seductive Sayaad":[236082,77400],"Massive Felwyrm":[236902,139996],"Street Sneak":[236091,137441],"Warehouse Worker":[236893,136834],"Keen Taskmaster":[236897,136657],"Unleashed Imp":[234849,65901],"Fel Invoker":[235268,124770],"Wrathguard Flayer":[235267,63968],"Corrupted Warlock":[235265,124763],"Shivan Punisher":[235465,76712],"Felmaster Lucsei":[236905,138787],"Defiled Golem":[235322,137564],"Xathuux the Annihilator":[234647,140268],"Kystia Manaheart":[234648,124578],"Zaen Bladesorrow":[234649,124592],"Nibbles":[234660,126199],"Lithiel Cinderfury":[234763,124577],"Furious Vilefiend":[234799,84426],"Forbidden Freight":[234852,137176],"Wild Imp":[237626,77406],"Infernal":[238414,103096],"Lost Sethrak":[243996,140045],"Feral Saberon":[243988,140041],"Sycophantic Tarasek":[243983,140037],"Dominated Brawler":[238883,130200],"Enthralled Shaman":[241496,130201],"Voidtouched Magi":[252072,137330],"Brutal Overseer":[252053,137329],"Aegyra the Unyielding":[267545,147378],"Raj'kess the Spellstorm":[267546,147363],"Chitigoth":[244260,140256],"Protective Turtle":[249603,140295],"Brutok":[244309,140264],"Savage Shredclaw":[243835,141810],"Kilivore Screamer":[243766,141196],"Agitated Voidscythe":[263228,138723],"Watchful Harrower":[245950,141286],"Devouring Brutalizer":[268184,147459],"Taz'Rah":[238887,140300],"Atroxus":[239008,131553],"Charonus":[239167,138269],"Toxic Creeper":[239070,140374],"Animated Guardian":[133935,83252],"Minion of Zul":[133943,76055],"Risen Hexer":[134174,83371],"Shadow-Borne Champion":[134158,83364],"The Golden Serpent":[135322,84202],"Queen Patlaa":[137486,85287],"Bloodsworn Assassin":[137485,85285],"Seneschal M'bara":[134251,83517],"King Rahu'ai":[134331,83544],"King Timalji":[137474,85272],"Queen Wasi":[137478,85274],"Purification Construct":[134739,83836],"Interment Construct":[137969,85677],"Mchimba the Embalmer":[134993,83529],"Phantom Hex Priest":[135204,84140],"Royal Berserker":[135167,84112],"Spectral Shaman":[135239,84163],"Ghostly Brute":[135231,85125],"Honored Raptor":[135192,84133],"Shadow of Zul":[138489,85860],"Embalming Fluid":[137989,33008],"Thundering Totem":[135761,84680],"Explosive Totem":[135764,84933],"T'zala":[136976,84274],"Reban":[136984,84273],"Aka'ali the Conqueror":[269808,84269],"Zanazal the Wise":[269810,84271],"Kula the Butcher":[269811,84272],"Half-Finished Mummy":[270502,84688],"Animated Gold":[135406,88651],"Primal Juggernaut":[188244,101209],"Flashfrost Chillweaver":[188067,107397],"Infused Whelp":[187894,110633],"Defier Draghar":[187897,107106],"Melidrussa Chillworn":[188252,106891],"Primalist Cinderweaver":[190207,102886],"Blazebound Destroyer":[190034,102505],"Ashseer Flamelasher":[190206,102969],"Kokia Blazehoof":[189232,106851],"Storm Warrior":[197982,110964],"Primal Thundercloud":[197509,102516],"Tempest Channeler":[198047,110967],"High Channeler Ryvati":[197535,110966],"Erkhart Stormvein":[190485,108318],"Kyrakka":[190484,107137],"Blazebound Firestorm":[189886,102505],"Sandswept Hunter":[134600,83780],"Barbed Krolusk":[134616,83787],"Storm Adept":[134990,84024],"Shrouded Fang":[134602,83782],"Sand-Sworn Rider":[134629,84761],"Poisonous Viper":[135562,78250],"Lightning Serpent":[135846,78247],"Faithless Subjugator":[134364,86510],"Merektha":[133384,88585],"Agitated Nimbus":[136076,65631],"Imbued Stormcaller":[134599,83779],"Static Anomaly":[134691,81655],"Twisted Hexxer":[136250,84676],"Avatar of Sethraliss":[133392,83203],"Toxic Viper":[134389,78250],"Storm Serpent":[134390,147087],"Orb Watcher":[135007,84503],"Eye of Sethraliss":[240681,0],"Adderis":[262530,83550],"Aspix":[262822,83552],"Galvazzt":[263658,147355],"Faithless Tormentor":[268317,147718],"Corrupted Guardian":[268344,84761],"Essence Defiler":[268427,84024],"Temple Disruptor":[269227,80961],"Flame Channeler":[197985,110969]};
+const NPC_RE=new RegExp("(?<![A-Za-z'’])("+[...new Set([...Object.keys(KO_ALL),...Object.keys(MOBS)])].sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")(?![A-Za-z'’])","g");
+function npcMark(el,name){el.dataset.npc=name; el.classList.add("has-tip","npc-tip"); el.tabIndex=0; el.setAttribute("role","button");}
+function npcDecorate(root){
+  root.querySelectorAll(".mob, .ab:not([data-sid]), .boss h3 > span").forEach(el=>{const n=el.textContent.trim(); if(MOBS[n]) npcMark(el,n);});
+  // 태그 없이 본문에 적힌 몹 이름도 감싸기. 더 긴 이름(예: Adderis & Aspix)에 속한 경우는 그대로 둠
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), nodes=[]; let n;
+  while((n=w.nextNode())) if(!n.parentElement.closest(".ab,.mob,[data-npc],pre,a,button,.tag,.need")) nodes.push(n);
+  nodes.forEach(t=>{
+    const s=t.data; let m, i=0, frag=null; NPC_RE.lastIndex=0;
+    while((m=NPC_RE.exec(s))){
+      if(!MOBS[m[1]]) continue;
+      frag=frag||document.createDocumentFragment();
+      frag.append(s.slice(i,m.index));
+      const sp=document.createElement("span"); sp.className="npc"; sp.textContent=m[1]; npcMark(sp,m[1]); frag.append(sp);
+      i=m.index+m[1].length;
+    }
+    if(frag){frag.append(s.slice(i)); t.replaceWith(frag);}
+  });
+}
+function showNpc(el){
+  const name=el.dataset.npc, [id,disp]=MOBS[name]||[], ko=KO_ALL[name], useKo=tipLang==="ko"&&ko;
+  const esc=x=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  tipFor=el;
+  tipEl.innerHTML=`${disp?`<img class="tt-model" src="https://wow.zamimg.com/modelviewer/live/webthumbs/npc/${disp%256}/${disp}.png" alt="">`:""}<div class="tt-name">${esc(useKo?ko:name)}${useKo?`<span class="tt-orig">${esc(name)}</span>`:""}</div><a class="tt-link" href="https://www.wowhead.com/${tipLang==="ko"?"ko/":""}npc=${id}" target="_blank" rel="noopener">${tipLang==="ko"?"Wowhead에서 3D 모델 보기":"View 3D model on Wowhead"} ↗</a>`;
 }
 function applyChrome(){
   const ko=tipLang==="ko";
@@ -845,6 +875,7 @@ function syncLangBtns(){document.querySelectorAll("#tiplang button").forEach(b=>
 syncLangBtns();
 document.querySelectorAll("#tiplang button").forEach(b=>b.onclick=()=>{tipLang=b.dataset.l;try{localStorage.setItem("pp-tiplang",tipLang)}catch(e){}syncLangBtns();hideTip();render();applyChrome();});
 function showTip(el){
+  if(el.dataset.npc){showNpc(el);return placeTip(el);}
   const en=SPELLS[el.dataset.sid]; if(!en) return;
   const ko=SPELLS_KO[el.dataset.sid];
   const useKo=tipLang==="ko"&&ko;
@@ -852,6 +883,9 @@ function showTip(el){
   tipFor=el;
   const esc=x=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;");
   tipEl.innerHTML=`<div class="tt-head"><img src="https://wow.zamimg.com/images/wow/icons/medium/${s.i}.jpg" alt=""><div><div class="tt-name">${esc(s.n)}${useKo?`<span class="tt-orig">${esc(en.n)}</span>`:""}</div>${s.m?`<div class="tt-meta">${esc(s.m)}</div>`:""}</div></div><div class="tt-desc">${s.d?esc(s.d).replace(/\n/g,"<br>"):(useKo?'<span class="tt-none">Wowhead에 공식 설명이 없는 기술입니다.</span>':'<span class="tt-none">No official description on Wowhead.</span>')}</div><a class="tt-link" href="https://${useKo?"ko.":"www."}wowhead.com/spell=${el.dataset.sid}" target="_blank" rel="noopener">${useKo?"Wowhead에서 보기":"View on Wowhead"}</a>`;
+  placeTip(el);
+}
+function placeTip(el){
   tipEl.hidden=false;
   const r=el.getBoundingClientRect(), vw=innerWidth, vh=innerHeight, w=tipEl.offsetWidth, h=tipEl.offsetHeight;
   let left=Math.min(Math.max(8,r.left),vw-w-8), top=r.bottom+8;
@@ -869,7 +903,9 @@ document.addEventListener("click",e=>{
   if(el){ e.preventDefault(); e.stopPropagation(); if(tipFor===el&&!canHover) hideTip(); else showTip(el); return; }
   if(!tipEl.contains(e.target)) hideTip();
 },true);
-document.addEventListener("focusin",e=>{const el=e.target.closest&&e.target.closest(".has-tip"); if(el) showTip(el);});
+// 터치·클릭으로 생긴 focus 는 무시 (그 뒤 click 이 툴팁을 토글하므로, 여기서 먼저 열면 click 이 바로 닫아 버림)
+let lastPtr=0; document.addEventListener("pointerdown",()=>{lastPtr=Date.now();},true);
+document.addEventListener("focusin",e=>{if(Date.now()-lastPtr<800) return; const el=e.target.closest&&e.target.closest(".has-tip"); if(el) showTip(el);});
 document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest(".has-tip")) hideTip();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape") hideTip();});
 addEventListener("scroll",()=>{if(!tipEl.hidden) hideTip();},{passive:true});
@@ -934,6 +970,7 @@ function render(){
     return `<section class="boss${b.hero?" herocard":""}"><h3><span>${b.n}</span><small>${vid}${b.k}</small></h3>${body}${deepHtml(d.id,b)}</section>`;
   }).join("")+trashSection(d,fold);
   decorateTips(d.id);
+  npcDecorate(mainEl);
   if(tipLang==="ko") koApply(mainEl);
   const t=document.getElementById("tab-"+active); t&&t.scrollIntoView({block:"nearest",inline:"center"});
 }
