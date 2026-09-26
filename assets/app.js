@@ -185,6 +185,15 @@ function makeKo(dict) {
 const ro = w => { const c = w.charCodeAt(w.length - 1); if (c < 0xAC00 || c > 0xD7A3) return w + "(으)로"; const j = (c - 0xAC00) % 28; return w + (j === 0 || j === 8 ? "로" : "으로"); };
 const tipNorm = s => s.replace(/\s*\([^)]*\)\s*$/, "").replace(/[’]/g, "'").replace(/\s+/g, " ").trim().toLowerCase();
 
+// ---------- Wowhead 링크: 게임 언어가 한글이면 한국어 Wowhead(/ko/), 영문이면 영문 ----------
+const wh = path => `https://www.wowhead.com/${lang === "ko" ? "ko/" : ""}${path}`;
+function whLinks(root) {
+  (root || document).querySelectorAll('a[href*="wowhead.com/"]').forEach(a => {
+    const m = a.href.match(/^https:\/\/(?:www|ko)\.wowhead\.com\/(?:ko\/)?(.*)$/); if (!m) return;
+    a.href = wh(m[1]);
+  });
+}
+
 // ---------- 툴팁 공용 ----------
 const tipEl = document.createElement("div"); tipEl.id = "sptip"; tipEl.setAttribute("role", "tooltip"); tipEl.hidden = true;
 const canHover = matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -200,7 +209,7 @@ function hideTip() { tipEl.hidden = true; tipFor = null; }
 function spellTipHtml(id, en, ko) {
   const useKo = lang === "ko" && ko;
   const s = useKo ? { n: ko.n, m: ko.m, d: ko.d, i: en.i } : en;
-  return `<div class="tt-head"><img src="https://wow.zamimg.com/images/wow/icons/medium/${s.i}.jpg" alt=""><div><div class="tt-name">${esc(s.n)}${useKo ? `<span class="tt-orig">${esc(en.n)}</span>` : ""}</div>${s.m ? `<div class="tt-meta">${esc(s.m)}</div>` : ""}</div></div><div class="tt-desc">${s.d ? esc(s.d).replace(/\n/g, "<br>") : (useKo ? '<span class="tt-none">Wowhead에 공식 설명이 없는 기술입니다.</span>' : '<span class="tt-none">No official description on Wowhead.</span>')}</div><a class="tt-link" href="https://${useKo ? "ko." : "www."}wowhead.com/spell=${id}" target="_blank" rel="noopener">${useKo ? "Wowhead에서 보기" : "View on Wowhead"}</a>`;
+  return `<div class="tt-head"><img src="https://wow.zamimg.com/images/wow/icons/medium/${s.i}.jpg" alt=""><div><div class="tt-name">${esc(s.n)}${useKo ? `<span class="tt-orig">${esc(en.n)}</span>` : ""}</div>${s.m ? `<div class="tt-meta">${esc(s.m)}</div>` : ""}</div></div><div class="tt-desc">${s.d ? esc(s.d).replace(/\n/g, "<br>") : (useKo ? '<span class="tt-none">Wowhead에 공식 설명이 없는 기술입니다.</span>' : '<span class="tt-none">No official description on Wowhead.</span>')}</div><a class="tt-link" href="${wh("spell=" + id)}" target="_blank" rel="noopener">${lang === "ko" ? "Wowhead에서 보기" : "View on Wowhead"}</a>`;
 }
 function bindTips(sel) {
   document.body.appendChild(tipEl);
@@ -447,7 +456,7 @@ async function sheetPage() {
   function showNpc(el) {
     const name = el.dataset.npc, [id, disp] = MOBS[name] || [], k = KO_ALL[name], useKo = lang === "ko" && k;
     tipFor = el;
-    tipEl.innerHTML = `${disp ? `<img class="tt-model" src="https://wow.zamimg.com/modelviewer/live/webthumbs/npc/${disp % 256}/${disp}.png" alt="">` : ""}<div class="tt-name">${esc(useKo ? k : name)}${useKo ? `<span class="tt-orig">${esc(name)}</span>` : ""}</div><a class="tt-link" href="https://www.wowhead.com/${lang === "ko" ? "ko/" : ""}npc=${id}" target="_blank" rel="noopener">${lang === "ko" ? "Wowhead에서 3D 모델 보기" : "View 3D model on Wowhead"} ↗</a>`;
+    tipEl.innerHTML = `${disp ? `<img class="tt-model" src="https://wow.zamimg.com/modelviewer/live/webthumbs/npc/${disp % 256}/${disp}.png" alt="">` : ""}<div class="tt-name">${esc(useKo ? k : name)}${useKo ? `<span class="tt-orig">${esc(name)}</span>` : ""}</div><a class="tt-link" href="${wh("npc=" + id)}" target="_blank" rel="noopener">${lang === "ko" ? "Wowhead에서 3D 모델 보기" : "View 3D model on Wowhead"} ↗</a>`;
   }
   showTip = el => {
     if (el.dataset.npc) { showNpc(el); return placeTip(el); }
@@ -467,6 +476,7 @@ async function sheetPage() {
     document.querySelector(".lnav .n").textContent = specName(s);
     const hn = document.querySelector(".lnav .h"); if (hn) hn.textContent = "· " + heroName(heroOf(s, hero));
     document.title = `${specName(s)} · 쐐기 치트시트`;
+    whLinks();
   }
   document.querySelectorAll("#tiplang button").forEach(b => b.onclick = () => {
     lang = b.dataset.l; ls.set("wg:lang", lang);
@@ -532,6 +542,7 @@ async function sheetPage() {
     decorateTips(d.id);
     npcDecorate(mainEl);
     if (lang === "ko") koApply(mainEl);
+    whLinks(mainEl);
     const t = document.getElementById("tab-" + active); t && t.scrollIntoView({ block: "nearest", inline: "center" });
   }
   render();
@@ -599,6 +610,7 @@ function guidePage() {
     });
     document.querySelector(".lnav .n").textContent = specName(s);
     document.querySelector(".lnav .h").textContent = "· " + heroName(heroOf(s, hero));
+    whLinks();
   }
   document.addEventListener("click", e => {
     const b = e.target.closest("#tiplang button"); if (!b) return;
