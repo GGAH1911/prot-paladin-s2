@@ -139,8 +139,10 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
 #sptip .tt-name{font-weight:700;color:#ffd100;font-size:14px}
 #sptip .tt-orig{display:block;font-weight:500;font-size:11.5px;color:#c9b67a}
 .herorow{flex-wrap:wrap}
-.tlabel{margin-left:auto}
-@media (max-width:520px){.tlabel{margin-left:0}}
+.herogrp,.langgrp{display:inline-flex;align-items:center;gap:10px;flex-wrap:nowrap;white-space:nowrap}
+.langgrp{margin-left:auto}
+.tlabel{margin-left:0}
+@media (max-width:520px){.langgrp{margin-left:0}}
 #sptip .tt-meta{color:#a9a9a9;font-size:12px}
 #sptip .tt-desc{color:#ffd100;opacity:.92}
 #sptip .tt-none{color:#a9a9a9;font-style:italic}
@@ -178,9 +180,9 @@ details.deep:not([open]) .chev{transform:rotate(-90deg)}
   <nav>
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="tabtrack" id="tabtrack" hidden><div class="tabthumb" id="tabthumb"></div></div>
-    <div class="herorow"><span data-ko="영웅 특성">Hero</span><div class="seg" id="hero" role="group" aria-label="Hero talent">
+    <div class="herorow"><span class="herogrp"><span data-ko="영웅 특성">Hero</span><div class="seg" id="hero" role="group" aria-label="Hero talent">
       <button id="h-templar" data-h="templar" aria-pressed="true" data-ko="기사단">Templar</button><button id="h-lightsmith" data-h="lightsmith" aria-pressed="false" data-ko="빛의 대장장이">Lightsmith</button>
-    </div><span class="tlabel">게임 언어</span><div class="seg" id="tiplang" role="group" aria-label="게임 언어 (기술·NPC 이름과 툴팁)"><button data-l="ko" aria-pressed="false">한글</button><button data-l="en" aria-pressed="true">English</button></div></div>
+    </div></span><span class="langgrp"><span class="tlabel">게임 언어</span><div class="seg" id="tiplang" role="group" aria-label="게임 언어 (기술·NPC 이름과 툴팁)"><button data-l="ko" aria-pressed="false">한글</button><button data-l="en" aria-pressed="true">English</button></div></span></div>
     <div class="filters" id="filters"></div>
   </nav>
   <main id="main"></main>
