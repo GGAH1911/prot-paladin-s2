@@ -389,7 +389,11 @@ async function sheetPage() {
 
   // ---- 상세 공략 ----
   const escH = x => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const abWrap = x => escH(x).replace(/([A-Z](?:[A-Za-z'’\-]+|(?=\s[A-Z]))(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g, m => `<span class="ab">${m}</span>`);
+  const AB_RE = /([A-Z](?:[A-Za-z'’\-]+|(?=\s[A-Z]))(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g;
+  // "Power Word: Shield"처럼 콜론이 든 이름은 툴팁·한글 사전에 있는 이름일 때만 한 덩어리로 감싼다
+  const AB_COLON = /([A-Z][A-Za-z'’\-]*(?:\s[A-Z][A-Za-z'’\-]*)*:\s[A-Z][A-Za-z'’\-]*(?:\s(?:(?:of|the|and|&amp;|on|in|to|a)\s)*[A-Z][A-Za-z'’\-]*)*)/g;
+  const abKnown = m => { const k = tipNorm(m.replace(/&amp;/g, "&")); return Object.values(core.tips).some(t => t[k]) || (spec && spec.tips[k]) || core.commonTips[k] || KO_ALL[m] != null; };
+  const abWrap = x => escH(x).split(AB_COLON).map((part, i) => i % 2 && abKnown(part) ? `<span class="ab">${part}</span>` : part.replace(AB_RE, m => `<span class="ab">${m}</span>`)).join("");
   function deepItems(arr) {
     return (arr || []).map(x => { const m = String(x).match(tagRe); return [m ? TAGK[m[1]] : "tip", m ? String(x).slice(m[0].length) : String(x)]; })
       .filter(([t]) => on.has(t))
@@ -423,10 +427,13 @@ async function sheetPage() {
   const TIPS = core.tips;
   function decorateTips(did) {
     const maps = [TIPS[did] || {}, spec ? spec.tips : {}, core.commonTips];
+    // 상세 공략의 공용·역할 블록은 던전 기술 이름이므로 전문화 tips 를 쓰지 않는다(예: 기원사 Echo ↔ Echo of Nalorakk)
+    const shared = [TIPS[did] || {}, core.commonTips];
     mainEl.querySelectorAll(".ab").forEach(el => {
       if (el.dataset.sid) return;
       const k = tipNorm(el.textContent); let id = null;
-      for (const m of maps) { if (m[k]) { id = m[k]; break; } }
+      const inShared = el.closest(".deepbody") && !el.closest(".dblk.spec");
+      for (const m of inShared ? shared : maps) { if (m[k]) { id = m[k]; break; } }
       if (!id) return;
       el.dataset.sid = id; el.classList.add("has-tip"); el.tabIndex = 0; el.setAttribute("role", "button");
     });
