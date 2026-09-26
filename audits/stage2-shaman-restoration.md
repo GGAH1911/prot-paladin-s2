@@ -32,3 +32,8 @@
 - Bloodthorn Roots를 Purify Spirit로 푸는 것은 툴팁 buff 분류(Magic) 기준이며 게임에서 확인하지 않음.
 - Avatar of Sethraliss: Healing Tide Totem은 툴팁상 "party or raid members"만 치유해 Avatar 치유에서 제외. Healing Wave·Riptide가 Avatar를 치유하는지는 게임에서 확인하지 않음(직접 대상 치유라 가능하다고 봄).
 - 매크로(Capacitor Totem의 [mod:ctrl,@player], Totemic에서 Healing Rain 매크로가 Surging Totem으로 바뀌는지)는 게임에서 시험하지 않음.
+
+
+## 해제 종류 재확인 (2026-09-27, 머지 뒤 보완)
+- 2단계 첫 판에서는 해제 종류를 nether 툴팁 buff 칸으로만 봤다. Wowhead 기술 페이지의 Dispel type 칸과 대조하니 **Mind-Numbing Poison(1263971)·Poison Splash(1226031)는 Poison**, **Cold Claws(적용 디버프 1305234)는 Magic**이었다(툴팁 buff 칸은 비어 있음). 이 전문화가 풀 수 있는 종류에 맞춰 Atroxus·Melidrussa 해제 문장을 넣었다. 앞의 "확인 못 한 것"에 적은 Mind-Numbing Poison·Poison Splash·Cold Claws 항목은 이것으로 해결됐다.
+- Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.

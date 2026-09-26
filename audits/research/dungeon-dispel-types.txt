@@ -1,0 +1,66 @@
+# 던전 기술 해제 종류 최종본 (2026-09-27). 기준: Wowhead 기술 페이지 Dispel type(+효과로 적용되는 하위 디버프), 없으면 nether 툴팁 buff 칸. Bleed/Enrage는 툴팁 buff 칸 기준.
+# 형식: 던전:기술 | id | 종류 | 근거
+altar:avenger's shield | 31935 | Magic | page
+altar:blessing of freedom | 1044 | Magic | page
+altar:blessing of protection | 1022 | Magic | page
+altar:envenom | 1307571 | Poison | page
+altar:evolve | 1306385 | Magic | page-sub 1306386 Evolve:Magic
+altar:hammer of justice | 853 | Magic | page
+altar:paralyzing shots | 1294569 | Magic | page
+altar:regurgitate | 1296069 | Disease | page
+altar:spiteful venom | 1305368 | Poison | page
+kings:ancestral fury | 269976 | Enrage | page
+kings:bestial berserk | 1297763 | Enrage | page
+kings:bind soul | 270920 | Magic | page
+kings:bloodthirsty axe | 1301851 | Bleed | tooltip
+kings:bound by shadow | 269935 | Magic | page
+kings:hex | 270492 | Curse | page
+kings:hex volley | 269972 | Curse | page
+kings:poison nova | 267273 | Poison | page
+kings:putrid seekers | 1298104 | Poison | page
+kings:savage maul | 1303490 | Bleed | tooltip
+kings:severing axe | 266231 | Bleed | tooltip
+kings:shadowfrost bolt | 1294815 | Magic | page
+kings:soul bolt | 1294972 | Magic | page
+kings:spectral bolt | 1295125 | Magic | page
+kings:unholy mending | 270901 | Magic | page
+kings:wretched discharge | 267763 | Disease | page
+murder:back to work! | 1216970 | Enrage | page
+murder:corroding spittle | 1228198 | Magic | page
+murder:curse of doom | 1217973 | Curse | page
+murder:cutpurse | 1216300 | Bleed | tooltip
+murder:divine shield | 642 | Magic | page
+murder:envenom | 1222795 | Poison | page-sub 1223939 Envenom:Poison, 474515 Heartstop Poison:Poison
+murder:fel rage | 1214922 | Enrage | page
+murder:glaive toss | 1295035 | Bleed | tooltip
+murder:heartstop poison | 1216590 | Poison | page
+murder:seduction | 1201554 | Magic | page
+nalorakk:bestial wrath | 1246865 | Enrage | page
+nalorakk:cryo surge | 1239860 | Magic | page
+nalorakk:glacial torment | 1235548 | Magic | tooltip-sub 1235549:Magic
+nalorakk:healing breeze | 1297696 | Magic | page
+nalorakk:mother's wrath | 1238053 | Enrage | page
+nalorakk:razor dive | 1238439 | Bleed | tooltip
+nalorakk:rotten supplies | 1297699 | Disease | page
+nalorakk:starvation effigy | 1238760 | Curse | tooltip-sub 1238801:Curse
+nalorakk:toxic spores | 1234846 | Poison | page
+ruby:cold claws | 1305233 | Magic | page-sub 1305234 Cold Claws:Magic
+ruby:frozen solid | 373593 | Magic | page-sub 1305234 Cold Claws:Magic
+ruby:primal chill | 372682 | Magic | page
+ruby:shock blast | 392924 | Magic | page
+ruby:tempest barrier | 391031 | Magic | page
+temple:addle mind | 1293307 | Curse | page
+temple:cytotoxin | 1308148 | Poison | page
+temple:imbued conduction | 1296052 | Magic | page
+temple:poison spit | 267027 | Poison | page
+temple:poisoned cheap shot | 1308100 | Poison | page
+temple:release charge | 1293475 | Magic | page-sub 1310739 Accumulate Charge:Magic
+vale:bloodthorn roots | 1236658 | Magic | page
+vale:grievous thrash | 1241058 | Bleed | tooltip
+vale:toxic spew | 1250937 | Poison | page
+voidscar:corrosive essence | 1289258 | Poison | page
+voidscar:feral rage | 1249661 | Enrage | page
+voidscar:melt armor | 1250043 | Magic | page
+voidscar:mind-numbing poison | 1263971 | Poison | page
+voidscar:poison splash | 1226031 | Poison | page
+voidscar:savage leap | 1267754 | Bleed | tooltip-sub 1267894:Bleed

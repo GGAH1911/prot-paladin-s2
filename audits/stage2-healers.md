@@ -19,13 +19,15 @@
 - `detail`: 28보스 111줄(보스당 3~4줄). 특정 힐러 기술 이름은 쓰지 않았다.
 - `brief`: 보스 요약 카드에 덧붙는 항목 38개. html 안 이름은 전부 `data/core/spells.en.json` 이름과 같고 그 던전 core tips에 있음(스크립트로 확인). 독·질병 항목은 `{m:"dispel.poison|disease"}`를 달아 전문화 답(예: "→ Cleanse")이 붙는다.
 - `answers`: 전문화가 준비되기 전 일반 문구.
-- 해제 종류는 nether 툴팁의 buff 칸(Magic/Poison/Disease/Curse/Bleed) 기준으로만 썼다. 확인된 보스 해제: Regurgitate(질병), Spiteful Venom·Toxic Spores·Heartstop Poison·Poison Nova·Poison Spit(독), Glacial Torment(연결 디버프 1235549)·Corroding Spittle·Bloodthorn Roots(마법), Wretched Discharge(질병).
+- 해제 종류는 Wowhead 기술 페이지의 **Dispel type** 칸(효과로 적용되는 하위 디버프 포함)과 nether 툴팁 buff 칸으로 확인한 것만 썼다. 던전 기술 401개 전체 표: `audits/research/dungeon-dispel-types.txt`.
+- 확인된 보스 해제: Regurgitate(질병), Spiteful Venom·Toxic Spores·Heartstop Poison·Poison Nova·Poison Spit·**Mind-Numbing Poison·Poison Splash**(독), Glacial Torment(하위 1235549)·Corroding Spittle·Bloodthorn Roots·**Cold Claws**(하위 1305234)(마법), Wretched Discharge(질병).
+- 첫 판(PR #10)은 툴팁 buff 칸만 봐서 굵게 표시한 3개를 "해제 종류 없음"으로 뺐다. 기술 페이지와 대조해 바로잡고 역할 층·전문화 7개에 해제 문장을 넣었다(PR #11). 툴팁 buff 칸은 비어 있어도 기술 페이지에는 종류가 있을 수 있으니, 앞으로는 기술 페이지를 먼저 본다.
 
 ## core 층과 어긋나는 점 (고치지 않고 기록만 함)
-- **Stormslam**(Kyrakka & Erkhart): core는 "힐러가 다음 Stormslam 전에 탱커 디버프를 해제한다"고 쓰지만, 툴팁 buff 칸에 해제 종류가 없다. 역할 층은 해제 대신 "다음 Stormslam 전에 탱커 체력을 가득 채워라"로 썼다.
-- **Mind-Numbing Poison**(Atroxus): core 요약은 `dispel.poison` 항목이지만 툴팁에 해제 종류가 없다. 역할 층은 "장판을 밟지 마라"로 썼다.
+- **Stormslam**(Kyrakka & Erkhart): core는 "힐러가 다음 Stormslam 전에 탱커 디버프를 해제한다"고 쓰지만, 툴팁 buff 칸과 기술 페이지 Dispel type 모두 해제 종류가 없다(n/a). 역할 층은 해제 대신 "다음 Stormslam 전에 탱커 체력을 가득 채워라"로 썼다.
+- ~~Mind-Numbing Poison~~: 기술 페이지 Dispel type이 Poison이라 core 요약(`dispel.poison`)이 맞았다. 어긋남 아님.
 - **Searing Blows**(Kokia): core 요약은 "출혈 중첩"이라고 쓰지만, 툴팁상 Searing Wounds는 화염 도트다.
-- 모두 게임 안에서 확인할 필요가 있다. core 문장은 탱커·보호 성기사 화면에도 나오므로 이번 단계에서 바꾸지 않았다.
+- 남은 2건은 core 문장이 보호 성기사 화면에도 그대로 나오고, 보호 성기사 무변경 규칙이 있어 바꾸지 않았다. 힐러 층은 확인된 사실만 쓴다(Stormslam은 "체력을 가득 채워라", Searing Blows는 "Searing Wounds 화염 도트").
 
 ## 엔진 변경 (`assets/app.js`)
 1. 상세 공략 `abWrap`: `Power Word: Shield`, `Holy Word: Serenity`처럼 콜론이 든 이름을, 그 이름이 tips(core·전문화)나 한글 사전에 있을 때만 한 덩어리로 감싼다. 전에는 "Power Word"와 "Shield"로 쪼개져 툴팁·한글 변환이 안 됐다.
