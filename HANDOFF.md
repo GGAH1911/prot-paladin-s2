@@ -18,12 +18,13 @@
 5. 검증(아래 4절) → PR → 머지 → 배포(아래 5절).
 
 ### 2단계에서 알게 된 것 (3단계에도 해당)
-- 해제 종류는 nether 툴팁 JSON의 `buff` 칸(`<th class="q"><b class="q">Magic</b></th>`)에 있다. 기술 id에 없으면 설명 링크의 디버프 id(`/spell=<id>/`)를 확인한다(Glacial Torment → 1235549). 어디에도 없으면 해제 종류를 쓰지 않는다.
+- 해제 종류는 **Wowhead 기술 페이지의 Dispel type 칸**(효과로 적용되는 하위 디버프 포함)을 먼저 본다. nether 툴팁 `buff` 칸은 비어 있는 경우가 있다(Mind-Numbing Poison·Poison Splash·Cold Claws). 던전 기술 401개 결과는 `audits/research/dungeon-dispel-types.txt`. 어디에도 없으면 해제 종류를 쓰지 않는다.
+- Wowhead(CloudFront)는 한 IP에서 연속 요청하면 403으로 막는다. 막히면 tme-laptop(다른 공인 IP)에서 `ssh 100.124.146.14 'curl -s -L -A "Mozilla/5.0" <url>'`로 받는다.
 - Wowhead 가이드 페이지와 nether 툴팁은 `curl -A 'Mozilla/5.0'`로 받힌다. Icy Veins는 curl 403이라 WebFetch나 브라우저를 쓴다. Wowhead 특성 계산기는 JS로 그려지므로 브라우저로 열어 `.dragonflight-talent-trees-tree[data-tree-type]`별로 선택 노드를 읽는다.
 - 툴팁의 전문화 문단 머리는 아이콘이 없거나 전문화 아이콘이 아닌 경우가 있다(성기사 등). 머리글 줄 글자(전문화 이름 쉼표 목록)로 알아보는 편이 안전하다.
 - 전문화 기술 이름이 보스 기술과 같으면(Void Blast, Healing Tide Totem) 그 던전에서는 core 툴팁이 이긴다. 그런 이름은 그 던전 문장에 쓰지 않는다.
 - 상세 문장 속 쉼표가 든 이름은 한 덩어리로 못 감싼다. 짧은 별칭을 쓰고 tips에 같은 id를 넣는다.
-- core 층에 툴팁과 어긋나는 문장 3건(Stormslam 해제, Mind-Numbing Poison 해제, Searing Blows 출혈)을 `audits/stage2-healers.md`에 적어 뒀다. 고칠 때는 보호 성기사 비교가 달라지니 사용자 확인 뒤 따로 한다.
+- core 층에 기술 데이터와 어긋나는 문장 2건(Stormslam 해제, Searing Blows 출혈)을 `audits/stage2-healers.md`에 적어 뒀다. 보호 성기사 화면에도 나오는 문장이라 무변경 규칙 때문에 그대로 두고, 역할·전문화 층에서는 확인된 사실만 쓴다.
 
 ## 3. 꼭 지킬 규칙 (사용자가 정한 것과 실제로 틀렸던 것)
 - 기술·자원·스탯 이름은 **항상 영어**. 설명은 한국어(`AGENTS.md` 한국어 규칙).

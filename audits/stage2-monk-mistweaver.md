@@ -27,3 +27,8 @@
 - Life Cocoon 흡수 보호막이 Legion Strike의 치유 감소에 영향을 받지 않는다는 점은 흡수 보호막이 치유가 아니라는 일반 원칙으로 쓴 것이고 게임에서 확인하지 않음.
 - Soothing Mist·Enveloping Mist가 NPC인 Avatar of Sethraliss를 치유하는지 게임에서 확인하지 않음(직접 치유 대상 기믹이라 단일 치유만 안내).
 - Icy Veins 운무 쐐기 팁은 읽지 않음(Wowhead 3개 페이지로 대신함).
+
+
+## 해제 종류 재확인 (2026-09-27, 머지 뒤 보완)
+- 2단계 첫 판에서는 해제 종류를 nether 툴팁 buff 칸으로만 봤다. Wowhead 기술 페이지의 Dispel type 칸과 대조하니 **Mind-Numbing Poison(1263971)·Poison Splash(1226031)는 Poison**, **Cold Claws(적용 디버프 1305234)는 Magic**이었다(툴팁 buff 칸은 비어 있음). 이 전문화가 풀 수 있는 종류에 맞춰 Atroxus·Melidrussa 해제 문장을 넣었다. 앞의 "확인 못 한 것"에 적은 Mind-Numbing Poison·Poison Splash·Cold Claws 항목은 이것으로 해결됐다.
+- Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.

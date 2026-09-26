@@ -31,3 +31,8 @@
 - Temporal Anomaly 흡수량은 툴팁이 공식만 보여 수치를 쓰지 않음.
 - 매크로 동작은 게임에서 확인하지 않음.
 - 이름 겹침 위험: 전문화 tips의 "Echo"가 Den of Nalorakk 공용·역할 문장의 "Echo"(Echo of Nalorakk 약칭)에 보존 Echo 툴팁·한글명(메아리)을 붙일 수 있음. 전문화 문장에서는 그 던전에서 Echo를 쓰지 않았음. 엔진·공용 데이터 쪽 판단이 필요함.
+
+
+## 해제 종류 재확인 (2026-09-27, 머지 뒤 보완)
+- 2단계 첫 판에서는 해제 종류를 nether 툴팁 buff 칸으로만 봤다. Wowhead 기술 페이지의 Dispel type 칸과 대조하니 **Mind-Numbing Poison(1263971)·Poison Splash(1226031)는 Poison**, **Cold Claws(적용 디버프 1305234)는 Magic**이었다(툴팁 buff 칸은 비어 있음). 이 전문화가 풀 수 있는 종류에 맞춰 Atroxus·Melidrussa 해제 문장을 넣었다. 앞의 "확인 못 한 것"에 적은 Mind-Numbing Poison·Poison Splash·Cold Claws 항목은 이것으로 해결됐다.
+- Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.

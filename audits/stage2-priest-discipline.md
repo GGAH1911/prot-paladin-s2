@@ -32,3 +32,8 @@
 - Power Word: Shield·Void Shield 흡수량은 툴팁에 "absorbing 0 damage"로 나와 수치를 쓰지 않음. Fade 쿨타임은 Improved Fade 툴팁 값이 "(5))"로 깨져 있어 숫자를 쓰지 않음.
 - Smite 매크로는 Wowhead 매크로에서 PvP 전용 Dark Reprimand 조건만 뺀 것이고 게임 안에서 확인하지 않음.
 - **엔진 한계(부모 확인 필요)**: 상세 공략 문장의 이름 감싸기(`abWrap`)가 콜론을 넘지 못해 Power Word: Shield·Power Word: Radiance·Shadow Word: Pain·Shadow Word: Death가 "Power Word"와 "Shield"로 나뉘어 감싸짐 → 이 문장들에서 툴팁이 안 뜨고 한글 게임 언어에서도 영어로 남음. 데이터로는 피할 수 없음.
+
+
+## 해제 종류 재확인 (2026-09-27, 머지 뒤 보완)
+- 2단계 첫 판에서는 해제 종류를 nether 툴팁 buff 칸으로만 봤다. Wowhead 기술 페이지의 Dispel type 칸과 대조하니 **Mind-Numbing Poison(1263971)·Poison Splash(1226031)는 Poison**, **Cold Claws(적용 디버프 1305234)는 Magic**이었다(툴팁 buff 칸은 비어 있음). 이 전문화가 풀 수 있는 종류에 맞춰 Atroxus·Melidrussa 해제 문장을 넣었다. 앞의 "확인 못 한 것"에 적은 Mind-Numbing Poison·Poison Splash·Cold Claws 항목은 이것으로 해결됐다.
+- Stormslam(381512)은 기술 페이지에서도 Dispel type n/a라 여전히 해제 문장을 쓰지 않는다.
